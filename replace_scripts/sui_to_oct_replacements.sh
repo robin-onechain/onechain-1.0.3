@@ -1,17 +1,20 @@
 #!/bin/bash
 
-# Script to replace SUI -> OCT across all *.rs files in the crates directory
+# Script to replace SUI -> OCT across all *.rs files (excluding target and replace_scripts)
 # Uses find + gsed for global replacements
 
-echo "Starting SUI -> OCT replacements in crates directory..."
+echo "Starting SUI -> OCT replacements across all directories (excluding target and replace_scripts)..."
 
 
 # Function to perform replacement on all *.rs files
 perform_replacements() {
     echo "Performing global replacements..."
 
-    # Find all *.rs files in crates directory and apply replacements
-    find ../crates -name "*.rs" -type f -exec gsed -i \
+    # Find all *.rs files excluding target and replace_scripts directories
+    find .. -name "*.rs" -type f \
+        -not -path "../target/*" \
+        -not -path "../replace_scripts/*" \
+        -exec gsed -i \
         -e 's/0x2::sui::SUI/0x2::oct::OCT/g' \
         -e 's/sui::sui::SUI/one::oct::OCT/g' \
         -e 's/sui::coin::Coin/one::coin::Coin/g' \
