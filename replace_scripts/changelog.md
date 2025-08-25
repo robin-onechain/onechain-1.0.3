@@ -2,7 +2,7 @@
 
 ## sui_to_oct_replacements.sh
 
-SUI → OCT 全局替换
+SUI → OCT global replacement
 
 ```
   - 0x2::sui::SUI -> 0x2::oct::OCT
@@ -49,3 +49,14 @@ SUI → OCT 全局替换
   - total_input_sui -> total_input_sui
   - total_output_sui -> total_output_oct
 ```
+
+### docs, json, move, proto, snap files
+
+```
+sui_to_oct_docs_replacements.sh
+sui_to_oct_json_replacements.sh
+sui_to_oct_move_replacements.sh
+sui_to_oct_proto_replacements.sh
+sui_to_oct_snap_replacements.sh
+```
+like the replacement in rust source code file, but for docs, json, mvoe, proto, snap files.
