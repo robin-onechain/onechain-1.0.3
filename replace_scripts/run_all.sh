@@ -54,8 +54,12 @@ echo "📝 Processing replace_gas_coin.sh"
 ./replace_gas_coin.sh
 echo "✅ Completed replace_gas_coin.sh"
 
-
 echo ""
 echo "📝 Processing replace_faucet_cargo.sh"
 ./replace_faucet_cargo.sh
 echo "✅ Completed replace_faucet_cargoy.sh"
+
+echo ""
+echo "📝 Processing replace_sui_move.sh"
+./replace_sui_move.sh
+echo "✅ Completed replace_sui_move.sh"
