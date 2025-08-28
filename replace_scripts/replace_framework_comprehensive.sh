@@ -21,7 +21,7 @@ if [ -d "../crates/sui-framework/docs/sui_system" ]; then
     echo "Renamed docs/sui_system to docs/one_system"
 fi
 
-if [ -d "../crates/sui-framework/packages_compiled/sui-framework" ]; then
+if [ -f "../crates/sui-framework/packages_compiled/sui-framework" ]; then
     mv "../crates/sui-framework/packages_compiled/sui-framework" "../crates/sui-framework/packages_compiled/one-framework"
     echo "Renamed packages_compiled/sui-framework to packages_compiled/one-framework"
 fi
