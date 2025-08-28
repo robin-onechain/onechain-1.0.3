@@ -31,14 +31,6 @@ if [ -f "../crates/sui-framework/packages_compiled/sui-system" ]; then
     echo "Renamed packages_compiled/sui-system to packages_compiled/one-system"
 fi
 
-echo "Replacing paths in files..."
-# Replace Sui = { local = ... } pattern with One = { local = ... }
-find .. -type f \( -name "*.toml" -o -name "*.move" \) \
-    -not -path "*/replace_scripts/*" \
-    -not -path "*/target/*" \
-    -exec gsed -i 's|Sui = { local = "\(.*\)/crates/sui-framework/packages/sui-framework" }|One = { local = "\1/crates/sui-framework/packages/one-framework" }|g' {} \;
-echo "Replaced Sui = { local = .../sui-framework } with One = { local = .../one-framework }"
-
 # File renames
 echo "Renaming files..."
 if [ -f "../crates/sui-framework/packages/one-system/sources/sui_system.move" ]; then
@@ -58,8 +50,8 @@ echo "Applying global replacements..."
 find .. -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.lock" -o -name "*.move" -o -name "*.md" -o -name "*.json" \) \
     ! -path "*/target/*" ! -path "*/replace_scripts/*" \
     -exec gsed -i \
+        -e 's|Sui = { local = "\(.*\)/crates/sui-framework/packages/sui-framework" }|One = { local = "\1/crates/sui-framework/packages/one-framework" }|g' \
         -e 's/sui = "0x2"/one = "0x2"/g' \
-        -e 's/sui-framework\/packages\/sui-system/sui-framework\/packages\/one-system/g' \
         -e 's/\bSuiSystem\b/OneSystem/g' \
         -e 's/sui_system::/one_system::/g' \
         -e 's/sui_node::/one_node::/g' \
