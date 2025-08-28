@@ -73,3 +73,8 @@ echo ""
 echo "📝 Processing replace_pay_sui.sh"
 ./replace_pay_sui.sh
 echo "✅ Completed replace_pay_sui.sh"
+
+echo ""
+echo "📝 Processing replace_client_commands.sh"
+./replace_client_commands.sh
+echo "✅ Completed replace_client_commands.sh"
