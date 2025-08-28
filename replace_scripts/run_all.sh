@@ -48,3 +48,14 @@ echo ""
 echo "Note: The following directories were excluded from all replacements:"
 echo "  - ../target/*"
 echo "  - ../replace_scripts/*"
+
+echo ""
+echo "📝 Processing replace_gas_coin.sh"
+./replace_gas_coin.sh
+echo "✅ Completed replace_gas_coin.sh"
+
+
+echo ""
+echo "📝 Processing replace_faucet_cargo.sh"
+./replace_faucet_cargo.sh
+echo "✅ Completed replace_faucet_cargoy.sh"
