@@ -88,3 +88,13 @@ echo ""
 echo "📝 Processing replace_sui_oct_multiple.sh"
 ./replace_sui_oct_multiple.sh
 echo "✅ Completed replace_sui_oct_multiple.sh"
+
+echo ""
+echo "📝 Processing replace_framework_comprehensive.sh"
+./replace_framework_comprehensive.sh
+echo "✅ Completed replace_framework_comprehensive.sh"
+
+echo ""
+echo "📝 Processing replace_specific_modifications.sh"
+./replace_specific_modifications.sh
+echo "✅ Completed replace_specific_modifications.sh"
