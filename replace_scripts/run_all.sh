@@ -83,3 +83,8 @@ echo ""
 echo "📝 Processing replace_genesis_inspector.sh"
 ./replace_genesis_inspector.sh
 echo "✅ Completed replace_genesis_inspector.sh"
+
+echo ""
+echo "📝 Processing replace_sui_oct_multiple.sh"
+./replace_sui_oct_multiple.sh
+echo "✅ Completed replace_sui_oct_multiple.sh"
