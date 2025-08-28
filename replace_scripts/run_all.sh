@@ -63,3 +63,8 @@ echo ""
 echo "📝 Processing replace_sui_move.sh"
 ./replace_sui_move.sh
 echo "✅ Completed replace_sui_move.sh"
+
+echo ""
+echo "📝 Processing replace_sui_md.sh"
+./replace_sui_md.sh
+echo "✅ Completed replace_sui_md.sh"
