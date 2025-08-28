@@ -85,7 +85,7 @@ if [ -f "../crates/sui-framework/src/lib.rs" ]; then
         -e 's/\bSui\b/One/g' \
         -e 's/sui-framework/one-framework/g' \
         -e 's/SuiSystem/OneSystem/g' \
-        -e 's/sui_system/one_system/g' \
+        -e 's/SUI_SYSTEM/ONE_SYSTEM/g' \
         "../crates/sui-framework/src/lib.rs"
 fi
 
