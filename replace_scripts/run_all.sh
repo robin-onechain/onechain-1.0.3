@@ -78,3 +78,8 @@ echo ""
 echo "📝 Processing replace_client_commands.sh"
 ./replace_client_commands.sh
 echo "✅ Completed replace_client_commands.sh"
+
+echo ""
+echo "📝 Processing replace_genesis_inspector.sh"
+./replace_genesis_inspector.sh
+echo "✅ Completed replace_genesis_inspector.sh"
