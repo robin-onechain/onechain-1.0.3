@@ -31,6 +31,14 @@ if [ -f "../crates/sui-framework/packages_compiled/sui-system" ]; then
     echo "Renamed packages_compiled/sui-system to packages_compiled/one-system"
 fi
 
+echo "Replacing paths in files..."
+# Replace Sui = { local = ... } pattern with One = { local = ... }
+find .. -type f \( -name "*.toml" -o -name "*.move" \) \
+    -not -path "*/replace_scripts/*" \
+    -not -path "*/target/*" \
+    -exec gsed -i 's|Sui = { local = "\(.*\)/crates/sui-framework/packages/sui-framework" }|One = { local = "\1/crates/sui-framework/packages/one-framework" }|g' {} \;
+echo "Replaced Sui = { local = .../sui-framework } with One = { local = .../one-framework }"
+
 # File renames
 echo "Renaming files..."
 if [ -f "../crates/sui-framework/packages/one-system/sources/sui_system.move" ]; then
