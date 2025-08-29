@@ -21,7 +21,7 @@ module sui::sui {
 
     #[allow(unused_const)]
     /// The total supply of Sui denominated in whole Sui tokens (10 Billion)
-    const TOTAL_SUPPLY_SUI: u64 = 10_000_000_000;
+    const TOTAL_SUPPLY_OCT: u64 = 10_000_000_000;
 
     /// The total supply of Sui denominated in Mist (10 Billion * 10^9)
     const TOTAL_SUPPLY_MIST: u64 = 10_000_000_000_000_000_000;

@@ -44,7 +44,7 @@ pub fn verify_module(
     // framework code and thus deemed correct.
     let self_id = module.self_id();
 
-    if ModuleId::new(SUI_FRAMEWORK_ADDRESS, ident_str!("sui").to_owned()) == self_id {
+    if ModuleId::new(SUI_FRAMEWORK_ADDRESS, ident_str!("oct").to_owned()) == self_id {
         return Ok(());
     }
 

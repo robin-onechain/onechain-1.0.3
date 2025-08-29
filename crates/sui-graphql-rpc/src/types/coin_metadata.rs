@@ -23,7 +23,7 @@ use crate::error::Error;
 use async_graphql::connection::Connection;
 use async_graphql::*;
 use sui_types::coin::{CoinMetadata as NativeCoinMetadata, TreasuryCap};
-use sui_types::gas_coin::{GAS, TOTAL_SUPPLY_SUI};
+use sui_types::gas_coin::{GAS, TOTAL_SUPPLY_OCT};
 use sui_types::TypeTag;
 
 pub(crate) struct CoinMetadata {
@@ -391,7 +391,7 @@ impl CoinMetadata {
         };
 
         Ok(Some(if GAS::is_gas(coin_struct.as_ref()) {
-            TOTAL_SUPPLY_SUI
+            TOTAL_SUPPLY_OCT
         } else {
             let cap_type = TreasuryCap::type_(*coin_struct);
             let Some(object) = Object::query_singleton(db, cap_type, checkpoint_viewed_at).await?

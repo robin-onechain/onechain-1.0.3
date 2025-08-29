@@ -24,14 +24,14 @@ use crate::{
 pub const MIST_PER_OCT: u64 = 1_000_000_000;
 
 /// Total supply denominated in Sui
-pub const TOTAL_SUPPLY_SUI: u64 = 10_000_000_000;
+pub const TOTAL_SUPPLY_OCT: u64 = 10_000_000_000;
 
 // Note: cannot use checked arithmetic here since `const unwrap` is still unstable.
 /// Total supply denominated in Mist
-pub const TOTAL_SUPPLY_MIST: u64 = TOTAL_SUPPLY_SUI * MIST_PER_OCT;
+pub const TOTAL_SUPPLY_MIST: u64 = TOTAL_SUPPLY_OCT * MIST_PER_OCT;
 
-pub const GAS_MODULE_NAME: &IdentStr = ident_str!("sui");
-pub const GAS_STRUCT_NAME: &IdentStr = ident_str!("SUI");
+pub const GAS_MODULE_NAME: &IdentStr = ident_str!("oct");
+pub const GAS_STRUCT_NAME: &IdentStr = ident_str!("OCT");
 
 pub use checked::*;
 
@@ -66,7 +66,7 @@ mod checked {
         }
     }
 
-    /// Rust version of the Move one::coin::Coin<Sui::sui::SUI> type
+    /// Rust version of the Move one::coin::Coin<Sui::oct::OCT> type
     #[derive(Clone, Debug, Serialize, Deserialize)]
     pub struct GasCoin(pub Coin);
 
