@@ -373,14 +373,14 @@ async fn test_get_coins() -> Result<(), anyhow::Error> {
     assert_eq!(0, result.data.len());
 
     let result: CoinPage = http_client
-        .get_coins(address, Some("0x2::sui::SUI".into()), None, None)
+        .get_coins(address, Some("0x2::oct::OCT".into()), None, None)
         .await?;
     assert_eq!(5, result.data.len());
     assert!(!result.has_next_page);
 
     // Test paging
     let result: CoinPage = http_client
-        .get_coins(address, Some("0x2::sui::SUI".into()), None, Some(3))
+        .get_coins(address, Some("0x2::oct::OCT".into()), None, Some(3))
         .await?;
     assert_eq!(3, result.data.len());
     assert!(result.has_next_page);
@@ -388,7 +388,7 @@ async fn test_get_coins() -> Result<(), anyhow::Error> {
     let result: CoinPage = http_client
         .get_coins(
             address,
-            Some("0x2::sui::SUI".into()),
+            Some("0x2::oct::OCT".into()),
             result.next_cursor,
             Some(3),
         )
@@ -446,7 +446,7 @@ async fn test_get_balance() -> Result<(), anyhow::Error> {
     let address = cluster.get_address_0();
 
     let result: Balance = http_client.get_balance(address, None).await?;
-    assert_eq!("0x2::sui::SUI", result.coin_type);
+    assert_eq!("0x2::oct::OCT", result.coin_type);
     assert_eq!(
         (DEFAULT_NUMBER_OF_OBJECT_PER_ACCOUNT as u64 * DEFAULT_GAS_AMOUNT) as u128,
         result.total_balance
@@ -704,9 +704,9 @@ async fn test_staking() -> Result<(), anyhow::Error> {
         .await?;
     assert_eq!(5, objects.data.len());
 
-    // Check StakedSui object before test
-    let staked_sui: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
-    assert!(staked_sui.is_empty());
+    // Check StakedOct object before test
+    let staked_oct: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
+    assert!(staked_oct.is_empty());
 
     let validator = http_client
         .get_latest_sui_system_state()
@@ -742,19 +742,19 @@ async fn test_staking() -> Result<(), anyhow::Error> {
         .await?;
 
     // Check DelegatedStake object
-    let staked_sui: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
-    assert_eq!(1, staked_sui.len());
-    assert_eq!(1000000000, staked_sui[0].stakes[0].principal);
+    let staked_oct: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
+    assert_eq!(1, staked_oct.len());
+    assert_eq!(1000000000, staked_oct[0].stakes[0].principal);
     assert!(matches!(
-        staked_sui[0].stakes[0].status,
+        staked_oct[0].stakes[0].status,
         StakeStatus::Pending
     ));
-    let staked_sui_copy = http_client
-        .get_stakes_by_ids(vec![staked_sui[0].stakes[0].staked_sui_id])
+    let staked_oct_copy = http_client
+        .get_stakes_by_ids(vec![staked_oct[0].stakes[0].staked_oct_id])
         .await?;
     assert_eq!(
-        staked_sui[0].stakes[0].staked_sui_id,
-        staked_sui_copy[0].stakes[0].staked_sui_id
+        staked_oct[0].stakes[0].staked_oct_id,
+        staked_oct_copy[0].stakes[0].staked_oct_id
     );
     Ok(())
 }
@@ -773,9 +773,9 @@ async fn test_unstaking() -> Result<(), anyhow::Error> {
     let coins: CoinPage = http_client.get_coins(address, None, None, None).await?;
     assert_eq!(5, coins.data.len());
 
-    // Check StakedSui object before test
-    let staked_sui: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
-    assert!(staked_sui.is_empty());
+    // Check StakedOct object before test
+    let staked_oct: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
+    assert!(staked_oct.is_empty());
 
     let validator = http_client
         .get_latest_sui_system_state()
@@ -811,34 +811,34 @@ async fn test_unstaking() -> Result<(), anyhow::Error> {
             .await?;
     }
     // Check DelegatedStake object
-    let staked_sui: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
-    assert_eq!(1, staked_sui.len());
-    assert_eq!(1000000000, staked_sui[0].stakes[0].principal);
+    let staked_oct: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
+    assert_eq!(1, staked_oct.len());
+    assert_eq!(1000000000, staked_oct[0].stakes[0].principal);
 
     sleep(Duration::from_millis(10000)).await;
 
-    let staked_sui_copy = http_client
+    let staked_oct_copy = http_client
         .get_stakes_by_ids(vec![
-            staked_sui[0].stakes[0].staked_sui_id,
-            staked_sui[0].stakes[1].staked_sui_id,
-            staked_sui[0].stakes[2].staked_sui_id,
+            staked_oct[0].stakes[0].staked_oct_id,
+            staked_oct[0].stakes[1].staked_oct_id,
+            staked_oct[0].stakes[2].staked_oct_id,
         ])
         .await?;
 
     assert!(matches!(
-        &staked_sui_copy[0].stakes[0].status,
+        &staked_oct_copy[0].stakes[0].status,
         StakeStatus::Active {
             estimated_reward: _
         }
     ));
     assert!(matches!(
-        &staked_sui_copy[0].stakes[1].status,
+        &staked_oct_copy[0].stakes[1].status,
         StakeStatus::Active {
             estimated_reward: _
         }
     ));
     assert!(matches!(
-        &staked_sui_copy[0].stakes[2].status,
+        &staked_oct_copy[0].stakes[2].status,
         StakeStatus::Active {
             estimated_reward: _
         }
@@ -847,7 +847,7 @@ async fn test_unstaking() -> Result<(), anyhow::Error> {
     let transaction_bytes: TransactionBlockBytes = http_client
         .request_withdraw_stake(
             address,
-            staked_sui_copy[0].stakes[2].staked_sui_id,
+            staked_oct_copy[0].stakes[2].staked_oct_id,
             None,
             1_000_000.into(),
         )
@@ -869,28 +869,28 @@ async fn test_unstaking() -> Result<(), anyhow::Error> {
 
     sleep(Duration::from_millis(20000)).await;
 
-    let staked_sui_copy = http_client
+    let staked_oct_copy = http_client
         .get_stakes_by_ids(vec![
-            staked_sui[0].stakes[0].staked_sui_id,
-            staked_sui[0].stakes[1].staked_sui_id,
-            staked_sui[0].stakes[2].staked_sui_id,
+            staked_oct[0].stakes[0].staked_oct_id,
+            staked_oct[0].stakes[1].staked_oct_id,
+            staked_oct[0].stakes[2].staked_oct_id,
         ])
         .await?;
 
     assert!(matches!(
-        &staked_sui_copy[0].stakes[0].status,
+        &staked_oct_copy[0].stakes[0].status,
         StakeStatus::Active {
             estimated_reward: _
         }
     ));
     assert!(matches!(
-        &staked_sui_copy[0].stakes[1].status,
+        &staked_oct_copy[0].stakes[1].status,
         StakeStatus::Active {
             estimated_reward: _
         }
     ));
     assert!(matches!(
-        &staked_sui_copy[0].stakes[2].status,
+        &staked_oct_copy[0].stakes[2].status,
         StakeStatus::Unstaked
     ));
     Ok(())
@@ -908,9 +908,9 @@ async fn test_staking_multiple_coins() -> Result<(), anyhow::Error> {
 
     let genesis_coin_amount = coins.data[0].balance;
 
-    // Check StakedSui object before test
-    let staked_sui: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
-    assert!(staked_sui.is_empty());
+    // Check StakedOct object before test
+    let staked_oct: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
+    assert!(staked_oct.is_empty());
 
     let validator = http_client
         .get_latest_sui_system_state()
@@ -968,11 +968,11 @@ async fn test_staking_multiple_coins() -> Result<(), anyhow::Error> {
     );
 
     // Check DelegatedStake object
-    let staked_sui: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
-    assert_eq!(1, staked_sui.len());
-    assert_eq!(1000000000, staked_sui[0].stakes[0].principal);
+    let staked_oct: Vec<DelegatedStake> = http_client.get_stakes(address).await?;
+    assert_eq!(1, staked_oct.len());
+    assert_eq!(1000000000, staked_oct[0].stakes[0].principal);
     assert!(matches!(
-        staked_sui[0].stakes[0].status,
+        staked_oct[0].stakes[0].status,
         StakeStatus::Pending
     ));
 
@@ -1017,7 +1017,7 @@ async fn test_zklogin_verify() -> Result<(), anyhow::Error> {
         .fund_address_and_return_gas(rgp, Some(20000000000), zklogin_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(zklogin_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let eph_sig = Signature::new_secure(&msg, kp);

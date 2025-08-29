@@ -21,8 +21,8 @@ title: Module `sui_system::validator_set`
 -  [Function `request_remove_validator`](#sui_system_validator_set_request_remove_validator)
 -  [Function `request_add_stake`](#sui_system_validator_set_request_add_stake)
 -  [Function `request_withdraw_stake`](#sui_system_validator_set_request_withdraw_stake)
--  [Function `convert_to_fungible_staked_sui`](#sui_system_validator_set_convert_to_fungible_staked_sui)
--  [Function `redeem_fungible_staked_sui`](#sui_system_validator_set_redeem_fungible_staked_sui)
+-  [Function `convert_to_fungible_staked_oct`](#sui_system_validator_set_convert_to_fungible_staked_oct)
+-  [Function `redeem_fungible_staked_oct`](#sui_system_validator_set_redeem_fungible_staked_oct)
 -  [Function `request_set_commission_rate`](#sui_system_validator_set_request_set_commission_rate)
 -  [Function `advance_epoch`](#sui_system_validator_set_advance_epoch)
 -  [Function `update_validator_positions_and_calculate_total_stake`](#sui_system_validator_set_update_validator_positions_and_calculate_total_stake)
@@ -956,7 +956,7 @@ of the epoch.
 Aborts in case the staking amount is smaller than MIN_STAKING_THRESHOLD
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_request_add_stake">request_add_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, validator_address: <b>address</b>, stake: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedSui">sui_system::staking_pool::StakedSui</a>
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_request_add_stake">request_add_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, validator_address: <b>address</b>, stake: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedOct">sui_system::staking_pool::StakedOct</a>
 </code></pre>
 
 
@@ -970,7 +970,7 @@ Aborts in case the staking amount is smaller than MIN_STAKING_THRESHOLD
     validator_address: <b>address</b>,
     stake: Balance&lt;SUI&gt;,
     ctx: &<b>mut</b> TxContext,
-): StakedSui {
+): StakedOct {
     <b>let</b> sui_amount = stake.value();
     <b>assert</b>!(sui_amount &gt;= <a href="../sui_system/validator_set.md#sui_system_validator_set_MIN_STAKING_THRESHOLD">MIN_STAKING_THRESHOLD</a>, <a href="../sui_system/validator_set.md#sui_system_validator_set_EStakingBelowThreshold">EStakingBelowThreshold</a>);
     self
@@ -989,13 +989,13 @@ Aborts in case the staking amount is smaller than MIN_STAKING_THRESHOLD
 
 Called by <code><a href="../sui_system/sui_system.md#sui_system_sui_system">sui_system</a></code>, to withdraw some share of a stake from the validator. The share to withdraw
 is denoted by <code>principal_withdraw_amount</code>. One of two things occurs in this function:
-1. If the <code>staked_sui</code> is staked with an active validator, the request is added to the validator's
+1. If the <code>staked_oct</code> is staked with an active validator, the request is added to the validator's
 staking pool's pending stake withdraw entries, processed at the end of the epoch.
-2. If the <code>staked_sui</code> was staked with a validator that is no longer active,
+2. If the <code>staked_oct</code> was staked with a validator that is no longer active,
 the stake and any rewards corresponding to it will be immediately processed.
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_request_withdraw_stake">request_withdraw_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, staked_sui: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedSui">sui_system::staking_pool::StakedSui</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_request_withdraw_stake">request_withdraw_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, staked_oct: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedOct">sui_system::staking_pool::StakedOct</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;
 </code></pre>
 
 
@@ -1006,20 +1006,20 @@ the stake and any rewards corresponding to it will be immediately processed.
 
 <pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_request_withdraw_stake">request_withdraw_stake</a>(
     self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">ValidatorSet</a>,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &TxContext,
 ): Balance&lt;SUI&gt; {
-    <b>let</b> staking_pool_id = staked_sui.pool_id();
+    <b>let</b> staking_pool_id = staked_oct.pool_id();
     <b>let</b> <a href="../sui_system/validator.md#sui_system_validator">validator</a> = <b>if</b> (self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>.contains(staking_pool_id)) {
         // This is an active <a href="../sui_system/validator.md#sui_system_validator">validator</a>.
-        <b>let</b> validator_address = self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>[staked_sui.pool_id()];
+        <b>let</b> validator_address = self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>[staked_oct.pool_id()];
         self.<a href="../sui_system/validator_set.md#sui_system_validator_set_get_candidate_or_active_validator_mut">get_candidate_or_active_validator_mut</a>(validator_address)
     } <b>else</b> {
         // This is an inactive pool.
         <b>assert</b>!(self.inactive_validators.contains(staking_pool_id), <a href="../sui_system/validator_set.md#sui_system_validator_set_ENoPoolFound">ENoPoolFound</a>);
         self.inactive_validators[staking_pool_id].load_validator_maybe_upgrade()
     };
-    <a href="../sui_system/validator.md#sui_system_validator">validator</a>.<a href="../sui_system/validator_set.md#sui_system_validator_set_request_withdraw_stake">request_withdraw_stake</a>(staked_sui, ctx)
+    <a href="../sui_system/validator.md#sui_system_validator">validator</a>.<a href="../sui_system/validator_set.md#sui_system_validator_set_request_withdraw_stake">request_withdraw_stake</a>(staked_oct, ctx)
 }
 </code></pre>
 
@@ -1027,13 +1027,13 @@ the stake and any rewards corresponding to it will be immediately processed.
 
 </details>
 
-<a name="sui_system_validator_set_convert_to_fungible_staked_sui"></a>
+<a name="sui_system_validator_set_convert_to_fungible_staked_oct"></a>
 
-## Function `convert_to_fungible_staked_sui`
+## Function `convert_to_fungible_staked_oct`
 
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_convert_to_fungible_staked_sui">convert_to_fungible_staked_sui</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, staked_sui: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedSui">sui_system::staking_pool::StakedSui</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedSui">sui_system::staking_pool::FungibleStakedSui</a>
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_convert_to_fungible_staked_oct">convert_to_fungible_staked_oct</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, staked_oct: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedOct">sui_system::staking_pool::StakedOct</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedOct">sui_system::staking_pool::FungibleStakedOct</a>
 </code></pre>
 
 
@@ -1042,12 +1042,12 @@ the stake and any rewards corresponding to it will be immediately processed.
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_convert_to_fungible_staked_sui">convert_to_fungible_staked_sui</a>(
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_convert_to_fungible_staked_oct">convert_to_fungible_staked_oct</a>(
     self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">ValidatorSet</a>,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &<b>mut</b> TxContext,
-): FungibleStakedSui {
-    <b>let</b> staking_pool_id = staked_sui.pool_id();
+): FungibleStakedOct {
+    <b>let</b> staking_pool_id = staked_oct.pool_id();
     <b>let</b> <a href="../sui_system/validator.md#sui_system_validator">validator</a> = <b>if</b> (self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>.contains(staking_pool_id)) {
         // This is an active <a href="../sui_system/validator.md#sui_system_validator">validator</a>.
         <b>let</b> validator_address = self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>[staking_pool_id];
@@ -1057,7 +1057,7 @@ the stake and any rewards corresponding to it will be immediately processed.
         <b>assert</b>!(self.inactive_validators.contains(staking_pool_id), <a href="../sui_system/validator_set.md#sui_system_validator_set_ENoPoolFound">ENoPoolFound</a>);
         self.inactive_validators[staking_pool_id].load_validator_maybe_upgrade()
     };
-    <a href="../sui_system/validator.md#sui_system_validator">validator</a>.<a href="../sui_system/validator_set.md#sui_system_validator_set_convert_to_fungible_staked_sui">convert_to_fungible_staked_sui</a>(staked_sui, ctx)
+    <a href="../sui_system/validator.md#sui_system_validator">validator</a>.<a href="../sui_system/validator_set.md#sui_system_validator_set_convert_to_fungible_staked_oct">convert_to_fungible_staked_oct</a>(staked_oct, ctx)
 }
 </code></pre>
 
@@ -1065,13 +1065,13 @@ the stake and any rewards corresponding to it will be immediately processed.
 
 </details>
 
-<a name="sui_system_validator_set_redeem_fungible_staked_sui"></a>
+<a name="sui_system_validator_set_redeem_fungible_staked_oct"></a>
 
-## Function `redeem_fungible_staked_sui`
+## Function `redeem_fungible_staked_oct`
 
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_redeem_fungible_staked_sui">redeem_fungible_staked_sui</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, fungible_staked_sui: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedSui">sui_system::staking_pool::FungibleStakedSui</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_redeem_fungible_staked_oct">redeem_fungible_staked_oct</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, fungible_staked_oct: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedOct">sui_system::staking_pool::FungibleStakedOct</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;
 </code></pre>
 
 
@@ -1080,12 +1080,12 @@ the stake and any rewards corresponding to it will be immediately processed.
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_redeem_fungible_staked_sui">redeem_fungible_staked_sui</a>(
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_redeem_fungible_staked_oct">redeem_fungible_staked_oct</a>(
     self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">ValidatorSet</a>,
-    fungible_staked_sui: FungibleStakedSui,
+    fungible_staked_oct: FungibleStakedOct,
     ctx: &TxContext,
 ): Balance&lt;SUI&gt; {
-    <b>let</b> staking_pool_id = fungible_staked_sui.pool_id();
+    <b>let</b> staking_pool_id = fungible_staked_oct.pool_id();
     <b>let</b> <a href="../sui_system/validator.md#sui_system_validator">validator</a> = <b>if</b> (self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>.contains(staking_pool_id)) {
         // This is an active <a href="../sui_system/validator.md#sui_system_validator">validator</a>.
         <b>let</b> validator_address = self.<a href="../sui_system/validator_set.md#sui_system_validator_set_staking_pool_mappings">staking_pool_mappings</a>[staking_pool_id];
@@ -1095,7 +1095,7 @@ the stake and any rewards corresponding to it will be immediately processed.
         <b>assert</b>!(self.inactive_validators.contains(staking_pool_id), <a href="../sui_system/validator_set.md#sui_system_validator_set_ENoPoolFound">ENoPoolFound</a>);
         self.inactive_validators[staking_pool_id].load_validator_maybe_upgrade()
     };
-    <a href="../sui_system/validator.md#sui_system_validator">validator</a>.<a href="../sui_system/validator_set.md#sui_system_validator_set_redeem_fungible_staked_sui">redeem_fungible_staked_sui</a>(fungible_staked_sui, ctx)
+    <a href="../sui_system/validator.md#sui_system_validator">validator</a>.<a href="../sui_system/validator_set.md#sui_system_validator_set_redeem_fungible_staked_oct">redeem_fungible_staked_oct</a>(fungible_staked_oct, ctx)
 }
 </code></pre>
 
@@ -1146,7 +1146,7 @@ It does the following things:
 5. At the end, we calculate the total stake for the new epoch.
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_advance_epoch">advance_epoch</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, computation_reward: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, storage_fund_reward: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, validator_report_records: &<b>mut</b> <a href="../sui/vec_map.md#sui_vec_map_VecMap">sui::vec_map::VecMap</a>&lt;<b>address</b>, <a href="../sui/vec_set.md#sui_vec_set_VecSet">sui::vec_set::VecSet</a>&lt;<b>address</b>&gt;&gt;, reward_slashing_rate: u64, low_stake_grace_period: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_advance_epoch">advance_epoch</a>(self: &<b>mut</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_ValidatorSet">sui_system::validator_set::ValidatorSet</a>, computation_reward: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, storage_fund_reward: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, validator_report_records: &<b>mut</b> <a href="../sui/vec_map.md#sui_vec_map_VecMap">sui::vec_map::VecMap</a>&lt;<b>address</b>, <a href="../sui/vec_set.md#sui_vec_set_VecSet">sui::vec_set::VecSet</a>&lt;<b>address</b>&gt;&gt;, reward_slashing_rate: u64, low_stake_grace_period: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
 </code></pre>
 
 
@@ -2853,7 +2853,7 @@ The staking rewards are shared with the stakers while the storage fund ones are 
 
 
 
-<pre><code><b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_distribute_reward">distribute_reward</a>(validators: &<b>mut</b> vector&lt;<a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>&gt;, adjusted_staking_reward_amounts: &vector&lt;u64&gt;, adjusted_storage_fund_reward_amounts: &vector&lt;u64&gt;, staking_rewards: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, storage_fund_reward: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
+<pre><code><b>fun</b> <a href="../sui_system/validator_set.md#sui_system_validator_set_distribute_reward">distribute_reward</a>(validators: &<b>mut</b> vector&lt;<a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>&gt;, adjusted_staking_reward_amounts: &vector&lt;u64&gt;, adjusted_storage_fund_reward_amounts: &vector&lt;u64&gt;, staking_rewards: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, storage_fund_reward: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
 </code></pre>
 
 

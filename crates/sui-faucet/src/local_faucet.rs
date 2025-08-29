@@ -81,7 +81,7 @@ impl LocalFaucet {
         let mut ptb = ProgrammableTransactionBuilder::new();
         let recipients = vec![recipient; self.num_coins];
         let amounts = vec![self.coin_amount; self.num_coins];
-        ptb.pay_sui(recipients, amounts)
+        ptb.pay_oct(recipients, amounts)
             .map_err(FaucetError::internal)?;
 
         let ptb = ptb.finish();
@@ -149,7 +149,7 @@ impl LocalFaucet {
             .await
             .map_err(|e| {
                 FaucetError::internal(format!(
-                    "Failed to execute PaySui transaction for coin {:?}, with err {:?}",
+                    "Failed to execute PayOct transaction for coin {:?}, with err {:?}",
                     coin_id, e
                 ))
             })?)

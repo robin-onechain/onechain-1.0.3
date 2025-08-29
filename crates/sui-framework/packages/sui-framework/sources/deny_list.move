@@ -19,7 +19,7 @@ const ENotDenied: u64 = 1;
 /// The specified address cannot be added to the deny list.
 const EInvalidAddress: u64 = 1;
 
-/// The index into the deny list vector for the `sui::coin::Coin` type.
+/// The index into the deny list vector for the `one::coin::Coin` type.
 const COIN_INDEX: u64 = 0;
 
 /// These addresses are reserved and cannot be added to the deny list.
@@ -299,7 +299,7 @@ public struct PerTypeList has key, store {
     /// Used to quickly skip checks for most addresses.
     denied_count: Table<address, u64>,
     /// Set of addresses that are banned for a given type.
-    /// For example with `sui::coin::Coin`: If addresses A and B are banned from using
+    /// For example with `one::coin::Coin`: If addresses A and B are banned from using
     /// "0...0123::my_coin::MY_COIN", this will be "0...0123::my_coin::MY_COIN" -> {A, B}.
     denied_addresses: Table<vector<u8>, VecSet<address>>,
 }

@@ -8,16 +8,16 @@ module sui_system::test_runner;
 
 use sui::balance::{Self, Balance};
 use sui::coin::{Self, Coin};
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::test_scenario::{Self, Scenario};
 use sui_system::stake_subsidy;
-use sui_system::staking_pool::StakedSui;
+use sui_system::staking_pool::StakedOct;
 use sui_system::sui_system::{Self, SuiSystemState};
 use sui_system::sui_system_state_inner;
 use sui_system::validator::Validator;
 use sui_system::validator_builder::{Self, ValidatorBuilder};
 
-const MIST_PER_SUI: u64 = 1_000_000_000;
+const MIST_PER_OCT: u64 = 1_000_000_000;
 
 // === Test Runner Builder ===
 
@@ -88,7 +88,7 @@ public fun build(builder: TestRunnerBuilder): TestRunner {
 
     // create stake subsidy
     let stake_subsidy = stake_subsidy::create(
-        balance::create_for_testing<SUI>(sui_supply_amount.destroy_or!(1000) * MIST_PER_SUI), // sui_supply
+        balance::create_for_testing<SUI>(sui_supply_amount.destroy_or!(1000) * MIST_PER_OCT), // sui_supply
         0, // stake subsidy initial distribution amount
         10, // stake_subsidy_period_length
         0, // stake_subsidy_decrease_rate
@@ -107,7 +107,7 @@ public fun build(builder: TestRunnerBuilder): TestRunner {
     sui_system::create(
         object::new(scenario.ctx()), // it doesn't matter what ID sui system state has in tests
         validators,
-        balance::create_for_testing<SUI>(storage_fund_amount.destroy_or!(0) * MIST_PER_SUI), // storage_fund
+        balance::create_for_testing<SUI>(storage_fund_amount.destroy_or!(0) * MIST_PER_OCT), // storage_fund
         protocol_version.destroy_or!(1), // protocol version
         0, // chain_start_timestamp_ms
         system_parameters,
@@ -327,8 +327,8 @@ public fun keep<T: key + store>(runner: &TestRunner, object: T) {
 public fun sender(runner: &mut TestRunner): address { runner.sender }
 
 /// Mint a SUI balance for testing.
-public fun mint(amount: u64): Balance<SUI> {
-    balance::create_for_testing(amount * MIST_PER_SUI)
+public fun mint(amount: u64): Balance<OCT> {
+    balance::create_for_testing(amount * MIST_PER_OCT)
 }
 
 /// Destroy an object.
@@ -399,7 +399,7 @@ public macro fun system_tx(
 public fun advance_epoch(
     runner: &mut TestRunner,
     options: Option<AdvanceEpochOptions>,
-): Balance<SUI> {
+): Balance<OCT> {
     let sender = runner.sender;
     runner.set_sender(@0);
     let storage_rebate_balance;
@@ -422,8 +422,8 @@ public fun advance_epoch(
             system.advance_epoch_for_testing(
                 new_epoch,
                 protocol_version.destroy_or!(1),
-                storage_charge.destroy_or!(0) * MIST_PER_SUI,
-                computation_charge.destroy_or!(0) * MIST_PER_SUI,
+                storage_charge.destroy_or!(0) * MIST_PER_OCT,
+                computation_charge.destroy_or!(0) * MIST_PER_OCT,
                 storage_rebate.destroy_or!(0),
                 non_refundable_storage_fee.destroy_or!(0),
                 storage_fund_reinvest_rate.destroy_or!(0),
@@ -456,7 +456,7 @@ public fun stake_with(runner: &mut TestRunner, validator: address, amount: u64) 
     scenario.next_tx(*sender);
     runner.system_tx!(|system, ctx| {
         system.request_add_stake(
-            coin::mint_for_testing(amount * MIST_PER_SUI, ctx),
+            coin::mint_for_testing(amount * MIST_PER_OCT, ctx),
             validator,
             ctx,
         );
@@ -468,30 +468,30 @@ public fun stake_with_and_take(
     runner: &mut TestRunner,
     validator: address,
     amount: u64,
-): StakedSui {
+): StakedOct {
     let TestRunner { scenario, sender, .. } = runner;
-    let staked_sui;
+    let staked_oct;
     scenario.next_tx(*sender);
     runner.system_tx!(|system, ctx| {
-        staked_sui =
+        staked_oct =
             system.request_add_stake_non_entry(
-                coin::mint_for_testing(amount * MIST_PER_SUI, ctx),
+                coin::mint_for_testing(amount * MIST_PER_OCT, ctx),
                 validator,
                 ctx,
             );
     });
 
-    staked_sui
+    staked_oct
 }
 
 /// Call the `request_withdraw_stake` function on the system state.
-public fun unstake(runner: &mut TestRunner, staked_sui_idx: u64) {
+public fun unstake(runner: &mut TestRunner, staked_oct_idx: u64) {
     let sender = runner.sender;
     runner.set_sender(sender);
-    let stake_sui_ids = runner.scenario.ids_for_sender<StakedSui>();
-    let staked_sui = runner.scenario.take_from_sender_by_id(stake_sui_ids[staked_sui_idx]);
+    let stake_sui_ids = runner.scenario.ids_for_sender<StakedOct>();
+    let staked_oct = runner.scenario.take_from_sender_by_id(stake_sui_ids[staked_oct_idx]);
     runner.system_tx!(|system, ctx| {
-        system.request_withdraw_stake(staked_sui, ctx);
+        system.request_withdraw_stake(staked_oct, ctx);
     });
 }
 
@@ -564,27 +564,27 @@ public fun sui_balance(runner: &mut TestRunner): u64 {
     let sender = runner.sender;
     let scenario = runner.scenario_mut();
     scenario.next_tx(sender);
-    scenario.ids_for_sender<Coin<SUI>>().fold!(0, |mut sum, coin_id| {
-        let coin = scenario.take_from_sender_by_id<Coin<SUI>>(coin_id);
+    scenario.ids_for_sender<Coin<OCT>>().fold!(0, |mut sum, coin_id| {
+        let coin = scenario.take_from_sender_by_id<Coin<OCT>>(coin_id);
         sum = sum + coin.value();
         scenario.return_to_sender(coin);
         sum
     })
 }
 
-/// Get the sum of the StakedSui objects' principal and the rewards for these objects.
+/// Get the sum of the StakedOct objects' principal and the rewards for these objects.
 public fun staking_rewards_balance(runner: &mut TestRunner): u64 {
     let sender = runner.sender;
     let scenario = runner.scenario_mut();
     let mut system = scenario.take_shared<SuiSystemState>();
 
     scenario.next_tx(sender);
-    let total_balance = scenario.ids_for_sender<StakedSui>().fold!(0, |mut sum, staked_sui_id| {
-        let staked_sui = scenario.take_from_sender_by_id<StakedSui>(staked_sui_id);
-        let rewards = system.calculate_rewards(&staked_sui, scenario.ctx());
+    let total_balance = scenario.ids_for_sender<StakedOct>().fold!(0, |mut sum, staked_oct_id| {
+        let staked_oct = scenario.take_from_sender_by_id<StakedOct>(staked_oct_id);
+        let rewards = system.calculate_rewards(&staked_oct, scenario.ctx());
 
-        sum = sum + rewards + staked_sui.amount();
-        scenario.return_to_sender(staked_sui);
+        sum = sum + rewards + staked_oct.amount();
+        scenario.return_to_sender(staked_oct);
         sum
     });
 

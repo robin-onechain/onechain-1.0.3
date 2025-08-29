@@ -156,7 +156,7 @@ async fn create_credential_and_sign_test_tx_with_passkey_multisig(
         .fund_address_and_return_gas(rgp, Some(20000000000), sender)
         .await;
     let tx_data = TestTransactionBuilder::new(sender, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
 
@@ -241,7 +241,7 @@ async fn construct_simple_zklogin_multisig_tx(
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig_4: GenericSignature = ZkLoginAuthenticator::new(
@@ -343,7 +343,7 @@ async fn test_multisig_e2e() {
 
     // 1. sign with key 0 and 1 executes successfully.
     let tx1 = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(multisig_pk.clone(), &[&keys[0], &keys[1]], 0b011);
     let res = context.execute_transaction_must_succeed(tx1).await;
     assert!(res.status_ok().unwrap());
@@ -353,7 +353,7 @@ async fn test_multisig_e2e() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx2 = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(multisig_pk.clone(), &[&keys[1], &keys[2]], 0b110);
     let res = context.execute_transaction_must_succeed(tx2).await;
     assert!(res.status_ok().unwrap());
@@ -363,7 +363,7 @@ async fn test_multisig_e2e() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx3 = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(multisig_pk.clone(), &[&keys[2], &keys[1]], 0b110);
     let res = context.execute_transaction_may_fail(tx3).await;
     assert!(res
@@ -373,7 +373,7 @@ async fn test_multisig_e2e() {
 
     // 4. sign with key 0 only is below threshold, fails to execute.
     let tx4 = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(multisig_pk.clone(), &[&keys[0]], 0b001);
     let res = context.execute_transaction_may_fail(tx4).await;
     assert!(res
@@ -383,7 +383,7 @@ async fn test_multisig_e2e() {
 
     // 5. multisig with no single sig fails to execute.
     let tx5 = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(multisig_pk.clone(), &[], 0b001);
     let res = context.execute_transaction_may_fail(tx5).await;
     assert!(res
@@ -393,7 +393,7 @@ async fn test_multisig_e2e() {
 
     // 6. multisig two dup sigs fails to execute.
     let tx6 = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(multisig_pk.clone(), &[&keys[0], &keys[0]], 0b011);
     let res = context.execute_transaction_may_fail(tx6).await;
     assert!(res
@@ -421,7 +421,7 @@ async fn test_multisig_e2e() {
         .fund_address_and_return_gas(rgp, Some(20000000000), wrong_sender)
         .await;
     let tx7 = TestTransactionBuilder::new(wrong_sender, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build_and_sign_multisig(wrong_multisig_pk.clone(), &[&keys[0], &keys[2]], 0b101);
     let res = context.execute_transaction_may_fail(tx7).await;
     assert!(res
@@ -478,7 +478,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let wrong_intent_msg = IntentMessage::new(Intent::personal_message(), tx_data.clone());
@@ -585,7 +585,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), wrong_multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(wrong_multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig_4: GenericSignature = ZkLoginAuthenticator::new(
@@ -613,7 +613,7 @@ async fn test_multisig_with_zklogin_scenerios() {
     ));
     let sender = SuiAddress::try_from(&multisig).unwrap();
     let tx_data = TestTransactionBuilder::new(sender, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
 
     let tx_7 = Transaction::from_generic_sig_data(tx_data.clone(), vec![multisig]);
@@ -629,7 +629,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig_0: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -643,7 +643,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig_1: GenericSignature = Signature::new_secure(&intent_msg, &keys[1]).into();
@@ -657,7 +657,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig_2: GenericSignature = Signature::new_secure(&intent_msg, &keys[2]).into();
@@ -671,7 +671,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig_4: GenericSignature = ZkLoginAuthenticator::new(
@@ -690,7 +690,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -711,7 +711,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -756,7 +756,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -782,7 +782,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr_2)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr_2, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
     let multisig = GenericSignature::MultiSig(MultiSig::insecure_new(
@@ -804,7 +804,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr_3)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr_3, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -828,7 +828,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr_4)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr_4, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -851,7 +851,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr_11)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr_11, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -875,7 +875,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -898,7 +898,7 @@ async fn test_multisig_with_zklogin_scenerios() {
         .fund_address_and_return_gas(rgp, Some(20000000000), bad_multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(bad_multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let sig: GenericSignature = Signature::new_secure(&intent_msg, &keys[0]).into();
@@ -999,7 +999,7 @@ async fn test_random_zklogin_in_multisig() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let mut zklogin_sigs = vec![];
@@ -1056,7 +1056,7 @@ async fn test_multisig_legacy_works() {
         .fund_address_and_return_gas(rgp, Some(20000000000), multisig_addr)
         .await;
     let transfer_from_multisig = TestTransactionBuilder::new(multisig_addr, gas, rgp)
-        .transfer_sui(Some(1000000), SuiAddress::ZERO)
+        .transfer_oct(Some(1000000), SuiAddress::ZERO)
         .build_and_sign_multisig_legacy(multisig_pk_legacy, &[&keys[0], &keys[1]]);
 
     context

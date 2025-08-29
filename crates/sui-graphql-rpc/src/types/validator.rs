@@ -251,9 +251,9 @@ impl Validator {
     }
 
     /// The total number of SUI tokens in this pool.
-    async fn staking_pool_sui_balance(&self) -> Option<BigInt> {
+    async fn staking_pool_oct_balance(&self) -> Option<BigInt> {
         Some(BigInt::from(
-            self.validator_summary.staking_pool_sui_balance,
+            self.validator_summary.staking_pool_oct_balance,
         ))
     }
 
@@ -273,9 +273,9 @@ impl Validator {
     }
 
     /// Pending stake withdrawn during the current epoch, emptied at epoch boundaries.
-    async fn pending_total_sui_withdraw(&self) -> Option<BigInt> {
+    async fn pending_total_oct_withdraw(&self) -> Option<BigInt> {
         Some(BigInt::from(
-            self.validator_summary.pending_total_sui_withdraw,
+            self.validator_summary.pending_total_oct_withdraw,
         ))
     }
 

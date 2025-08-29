@@ -6,7 +6,7 @@ module vesting::backloaded_tests;
 
 use sui::clock;
 use sui::coin;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::test_scenario as ts;
 use vesting::backloaded::{Self, new_wallet, Wallet};
 

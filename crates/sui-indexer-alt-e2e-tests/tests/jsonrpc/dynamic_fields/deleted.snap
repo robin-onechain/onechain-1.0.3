@@ -126,7 +126,7 @@ Response: {
 task 13, lines 57-59:
 //# programmable --sender A --inputs object(10,0) 43
 //> 0: SplitCoins(Gas, [Input(1)]);
-//> 1: sui::object_bag::add<u64, sui::coin::Coin<sui::sui::SUI>>(Input(0), Input(1), Result(0))
+//> 1: sui::object_bag::add<u64, one::coin::Coin<one::oct::OCT>>(Input(0), Input(1), Result(0))
 created: object(13,0), object(13,1)
 mutated: object(0,0), object(10,0)
 gas summary: computation_cost: 1000000, storage_cost: 5829200,  storage_rebate: 2362536, non_refundable_storage_fee: 23864
@@ -145,7 +145,7 @@ Response: {
       "objectId": "0x3ea375e25bbb343aff51cc660831991fa8439ba13b7f8f3c66f03d753e4781f7",
       "version": "6",
       "digest": "9umLoT7xLRAdnVEepn7UEfnu749rHtdg1M5sfAVUG4gZ",
-      "type": "0x2::coin::Coin<0x2::sui::SUI>",
+      "type": "0x2::coin::Coin<0x2::oct::OCT>",
       "owner": {
         "ObjectOwner": "0xc80cc03828dd161e38345cc2d379e8ed93fb0c01833ab546735549e61a71efed"
       },
@@ -153,7 +153,7 @@ Response: {
       "storageRebate": "988000",
       "content": {
         "dataType": "moveObject",
-        "type": "0x2::coin::Coin<0x2::sui::SUI>",
+        "type": "0x2::coin::Coin<0x2::oct::OCT>",
         "hasPublicTransfer": true,
         "fields": {
           "balance": "43",
@@ -168,7 +168,7 @@ Response: {
 
 task 16, lines 69-71:
 //# programmable --sender A --inputs object(10,0) 43
-//> 0: sui::object_bag::remove<u64, sui::coin::Coin<sui::sui::SUI>>(Input(0), Input(1));
+//> 0: sui::object_bag::remove<u64, one::coin::Coin<one::oct::OCT>>(Input(0), Input(1));
 //> 1: MergeCoins(Gas, [Result(0)])
 mutated: object(0,0), object(10,0)
 deleted: object(13,0), object(13,1)

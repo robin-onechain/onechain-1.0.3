@@ -329,7 +329,7 @@ mod tests {
     fn instance_signature() {
         let signature = OpenMoveTypeSignature::from(S::Datatype(
             struct_key("0x2::coin::Coin"),
-            vec![S::Datatype(struct_key("0x2::sui::SUI"), vec![])],
+            vec![S::Datatype(struct_key("0x2::oct::OCT"), vec![])],
         ));
 
         let expect = expect![[r#"
@@ -367,10 +367,10 @@ mod tests {
     fn instance_signature_repr() {
         let signature = OpenMoveTypeSignature::from(S::Datatype(
             struct_key("0x2::coin::Coin"),
-            vec![S::Datatype(struct_key("0x2::sui::SUI"), vec![])],
+            vec![S::Datatype(struct_key("0x2::oct::OCT"), vec![])],
         ));
 
-        let expect = expect!["0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>"];
+        let expect = expect!["0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::oct::OCT>"];
         expect.assert_eq(&format!("{signature}"));
     }
 }

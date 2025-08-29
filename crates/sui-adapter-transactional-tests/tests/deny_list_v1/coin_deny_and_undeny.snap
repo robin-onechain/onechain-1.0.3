@@ -21,7 +21,7 @@ task 3, line 39:
 //# view-object 1,1
 Owner: Account Address ( A )
 Version: 2
-Contents: sui::coin::Coin<test::regulated_coin::REGULATED_COIN> {
+Contents: one::coin::Coin<test::regulated_coin::REGULATED_COIN> {
     id: sui::object::UID {
         id: sui::object::ID {
             bytes: fake(1,1),

@@ -20,6 +20,6 @@ sui client ptb \
     --split-coins coin "[100,100,100,100,100]" \
     --assign new_coins \
     --merge-coins new_coins.0 "[new_coins.1,new_coins.2]" \
-    --make-move-vec "<sui::coin::Coin<$PKG_ID::my_coin::MY_COIN>>" "[coin,new_coins.0,new_coins.3,new_coins.4]" \
+    --make-move-vec "<one::coin::Coin<$PKG_ID::my_coin::MY_COIN>>" "[coin,new_coins.0,new_coins.3,new_coins.4]" \
     --assign coins_to_burn \
     --move-call $PKG_ID::my_coin::burn @$T_CAP coins_to_burn

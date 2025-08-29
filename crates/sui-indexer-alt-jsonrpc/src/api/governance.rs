@@ -51,7 +51,7 @@ trait DelegationGovernanceApi {
     #[method(name = "getStakesByIds")]
     async fn get_stakes_by_ids(
         &self,
-        staked_sui_ids: Vec<ObjectID>,
+        staked_oct_ids: Vec<ObjectID>,
     ) -> RpcResult<Vec<DelegatedStake>>;
 
     /// Return all [DelegatedStake].
@@ -88,12 +88,12 @@ impl GovernanceApiServer for Governance {
 impl DelegationGovernanceApiServer for DelegationGovernance {
     async fn get_stakes_by_ids(
         &self,
-        staked_sui_ids: Vec<ObjectID>,
+        staked_oct_ids: Vec<ObjectID>,
     ) -> RpcResult<Vec<DelegatedStake>> {
         let Self(client) = self;
 
         client
-            .get_stakes_by_ids(staked_sui_ids)
+            .get_stakes_by_ids(staked_oct_ids)
             .await
             .map_err(client_error_to_error_object)
     }

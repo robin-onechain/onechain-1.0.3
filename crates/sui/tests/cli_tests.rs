@@ -3466,9 +3466,9 @@ async fn test_serialize_tx() -> Result<(), anyhow::Error> {
         .data;
     let coin = object_refs.get(1).unwrap().object().unwrap().object_id;
 
-    SuiClientCommands::TransferSui {
+    SuiClientCommands::TransferOct {
         to: KeyIdentity::Address(address1),
-        sui_coin_object_id: coin,
+        oct_coin_object_id: coin,
         amount: Some(1),
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -3482,9 +3482,9 @@ async fn test_serialize_tx() -> Result<(), anyhow::Error> {
     .execute(context)
     .await?;
 
-    SuiClientCommands::TransferSui {
+    SuiClientCommands::TransferOct {
         to: KeyIdentity::Address(address1),
-        sui_coin_object_id: coin,
+        oct_coin_object_id: coin,
         amount: Some(1),
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -3499,9 +3499,9 @@ async fn test_serialize_tx() -> Result<(), anyhow::Error> {
     .await?;
 
     // use alias for transfer
-    SuiClientCommands::TransferSui {
+    SuiClientCommands::TransferOct {
         to: KeyIdentity::Alias(alias1),
-        sui_coin_object_id: coin,
+        oct_coin_object_id: coin,
         amount: Some(1),
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -3857,9 +3857,9 @@ async fn test_dry_run() -> Result<(), anyhow::Error> {
     assert_dry_run(transfer_dry_run, object_id, "Transfer");
 
     // === TRANSFER SUI === //
-    let transfer_sui_dry_run = SuiClientCommands::TransferSui {
+    let transfer_sui_dry_run = SuiClientCommands::TransferOct {
         to: KeyIdentity::Address(SuiAddress::random_for_testing_only()),
-        sui_coin_object_id: object_to_send,
+        oct_coin_object_id: object_to_send,
         amount: Some(1),
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -3873,7 +3873,7 @@ async fn test_dry_run() -> Result<(), anyhow::Error> {
     .execute(context)
     .await?;
 
-    assert_dry_run(transfer_sui_dry_run, object_to_send, "TransferSui");
+    assert_dry_run(transfer_sui_dry_run, object_to_send, "TransferOct");
 
     // === PAY === //
     let pay_dry_run = SuiClientCommands::Pay {
@@ -3924,7 +3924,7 @@ async fn test_dry_run() -> Result<(), anyhow::Error> {
     assert_dry_run(pay_dry_run, gas_coin_id, "Pay");
 
     // === PAY SUI === //
-    let pay_sui_dry_run = SuiClientCommands::PaySui {
+    let pay_sui_dry_run = SuiClientCommands::PayOct {
         input_coins: vec![object_id],
         recipients: vec![KeyIdentity::Address(SuiAddress::random_for_testing_only())],
         amounts: vec![1],
@@ -3940,10 +3940,10 @@ async fn test_dry_run() -> Result<(), anyhow::Error> {
     .execute(context)
     .await?;
 
-    assert_dry_run(pay_sui_dry_run, object_id, "PaySui");
+    assert_dry_run(pay_sui_dry_run, object_id, "PayOct");
 
     // === PAY ALL SUI === //
-    let pay_all_sui_dry_run = SuiClientCommands::PayAllSui {
+    let pay_all_sui_dry_run = SuiClientCommands::PayAllOct {
         input_coins: vec![object_id],
         recipient: KeyIdentity::Address(SuiAddress::random_for_testing_only()),
         gas_data: GasDataArgs {
@@ -3958,7 +3958,7 @@ async fn test_dry_run() -> Result<(), anyhow::Error> {
     .execute(context)
     .await?;
 
-    assert_dry_run(pay_all_sui_dry_run, object_id, "PayAllSui");
+    assert_dry_run(pay_all_sui_dry_run, object_id, "PayAllOct");
 
     Ok(())
 }
@@ -4128,7 +4128,7 @@ async fn test_pay_sui() -> Result<(), anyhow::Error> {
     let (address2, address3) = (addresses[0], addresses[1]);
     let context = &mut test_cluster.wallet;
     let amounts = [1000, 5000];
-    let pay_sui = SuiClientCommands::PaySui {
+    let pay_oct = SuiClientCommands::PayOct {
         input_coins: vec![object_id1, object_id2],
         recipients: vec![recipient1.clone(), recipient2.clone()],
         amounts: amounts.into(),
@@ -4146,7 +4146,7 @@ async fn test_pay_sui() -> Result<(), anyhow::Error> {
     // check if each recipient has one object, if the tx status is success,
     // and if the gas object used was the first object in the input coins
     // we also check if the balances of each recipient are right!
-    if let SuiClientCommandResult::TransactionBlock(response) = pay_sui {
+    if let SuiClientCommandResult::TransactionBlock(response) = pay_oct {
         assert!(response.status_ok().unwrap());
         // check gas coin used
         assert_eq!(
@@ -4197,7 +4197,7 @@ async fn test_pay_sui() -> Result<(), anyhow::Error> {
             amounts[1] as u128
         );
     } else {
-        panic!("PaySui test failed");
+        panic!("PayOct test failed");
     }
     Ok(())
 }
@@ -4210,7 +4210,7 @@ async fn test_pay_all_sui() -> Result<(), anyhow::Error> {
     let recipient1 = &recipients[0];
     let address2 = addresses[0];
     let context = &mut test_cluster.wallet;
-    let pay_all_sui = SuiClientCommands::PayAllSui {
+    let pay_all_oct = SuiClientCommands::PayAllOct {
         input_coins: vec![object_id1, object_id2],
         recipient: recipient1.clone(),
         gas_data: GasDataArgs {
@@ -4225,7 +4225,7 @@ async fn test_pay_all_sui() -> Result<(), anyhow::Error> {
     // pay all sui will take the input coins and smash them into one coin and transfer that coin to
     // the recipient, so we check that the recipient has one object, if the tx status is success,
     // and if the gas object used was the first object in the input coins
-    if let SuiClientCommandResult::TransactionBlock(response) = pay_all_sui {
+    if let SuiClientCommandResult::TransactionBlock(response) = pay_all_oct {
         let objs_refs = client
             .read_api()
             .get_owned_objects(
@@ -4245,7 +4245,7 @@ async fn test_pay_all_sui() -> Result<(), anyhow::Error> {
             object_id1
         );
     } else {
-        panic!("PayAllSui test failed");
+        panic!("PayAllOct test failed");
     }
 
     Ok(())
@@ -4329,9 +4329,9 @@ async fn test_transfer_sui() -> Result<(), anyhow::Error> {
     let address2 = addresses[0];
     let context = &mut test_cluster.wallet;
     let amount = 1000;
-    let transfer_sui = SuiClientCommands::TransferSui {
+    let transfer_oct = SuiClientCommands::TransferOct {
         to: KeyIdentity::Address(address2),
-        sui_coin_object_id: object_id1,
+        oct_coin_object_id: object_id1,
         amount: Some(amount),
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -4345,7 +4345,7 @@ async fn test_transfer_sui() -> Result<(), anyhow::Error> {
     // transfer sui will transfer the amount from object_id1 to address2, and use the same object
     // as gas, and we check if the recipient address received the object, and the expected balance
     // is correct
-    if let SuiClientCommandResult::TransactionBlock(response) = transfer_sui {
+    if let SuiClientCommandResult::TransactionBlock(response) = transfer_oct {
         assert!(response.status_ok().unwrap());
         assert_eq!(
             response.effects.as_ref().unwrap().gas_object().object_id(),
@@ -4371,12 +4371,12 @@ async fn test_transfer_sui() -> Result<(), anyhow::Error> {
             .total_balance;
         assert_eq!(balance, amount as u128);
     } else {
-        panic!("TransferSui test failed");
+        panic!("TransferOct test failed");
     }
     // transfer the whole object by not passing an amount
-    let transfer_sui = SuiClientCommands::TransferSui {
+    let transfer_oct = SuiClientCommands::TransferOct {
         to: recipient1.clone(),
-        sui_coin_object_id: object_id1,
+        oct_coin_object_id: object_id1,
         amount: None,
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -4386,7 +4386,7 @@ async fn test_transfer_sui() -> Result<(), anyhow::Error> {
     }
     .execute(context)
     .await?;
-    if let SuiClientCommandResult::TransactionBlock(response) = transfer_sui {
+    if let SuiClientCommandResult::TransactionBlock(response) = transfer_oct {
         assert!(response.status_ok().unwrap());
         assert_eq!(
             response.effects.as_ref().unwrap().gas_object().object_id(),
@@ -4414,7 +4414,7 @@ async fn test_transfer_sui() -> Result<(), anyhow::Error> {
             .iter()
             .any(|x| x.object().unwrap().object_id == object_id1));
     } else {
-        panic!("TransferSui test failed");
+        panic!("TransferOct test failed");
     }
     Ok(())
 }
@@ -4502,9 +4502,9 @@ async fn test_transfer_sponsored() -> Result<(), anyhow::Error> {
     let context = &mut cluster.wallet;
 
     // A0 sends O1 to A1
-    let transfer = SuiClientCommands::TransferSui {
+    let transfer = SuiClientCommands::TransferOct {
         to: KeyIdentity::Address(a1),
-        sui_coin_object_id: o[1],
+        oct_coin_object_id: o[1],
         amount: None,
         gas_data: GasDataArgs {
             gas_budget: Some(rgp * TEST_ONLY_GAS_UNIT_FOR_TRANSFER),
@@ -4688,9 +4688,9 @@ async fn test_gas_estimation() -> Result<(), anyhow::Error> {
     let gas_estimate = estimate_gas_budget(context, sender, tx_kind, rgp, vec![], None).await;
     assert!(gas_estimate.is_ok());
 
-    let transfer_sui_cmd = SuiClientCommands::TransferSui {
+    let transfer_sui_cmd = SuiClientCommands::TransferOct {
         to: KeyIdentity::Address(address2),
-        sui_coin_object_id: object_id1,
+        oct_coin_object_id: object_id1,
         amount: Some(amount),
         gas_data: GasDataArgs::default(),
         processing: TxProcessingArgs::default(),
@@ -4712,7 +4712,7 @@ async fn test_gas_estimation() -> Result<(), anyhow::Error> {
                 <= gas_estimate.unwrap()
         );
     } else {
-        panic!("TransferSui test failed");
+        panic!("TransferOct test failed");
     }
     Ok(())
 }

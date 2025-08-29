@@ -363,7 +363,7 @@ async fn test_transfers() {
 
     // Split off some of A's gas and transfer it to B
     let mut builder = ProgrammableTransactionBuilder::new();
-    builder.transfer_sui(b, Some(1000));
+    builder.transfer_oct(b, Some(1000));
 
     let data = TransactionData::new_programmable(
         a,
@@ -423,7 +423,7 @@ async fn test_transfers() {
 
     // Send the gas coin from A to B
     let mut builder = ProgrammableTransactionBuilder::new();
-    builder.transfer_sui(b, None);
+    builder.transfer_oct(b, None);
 
     let data = TransactionData::new_programmable(
         a,
@@ -688,7 +688,7 @@ fn create_coin(cluster: &mut FullCluster, owner: SuiAddress, amount: u64) -> Obj
         .expect("Failed to fund account");
 
     let mut builder = ProgrammableTransactionBuilder::new();
-    builder.transfer_sui(owner, Some(amount));
+    builder.transfer_oct(owner, Some(amount));
 
     let data = TransactionData::new_programmable(
         sender,

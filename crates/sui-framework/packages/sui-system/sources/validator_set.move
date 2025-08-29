@@ -7,17 +7,17 @@ use sui::bag::{Self, Bag};
 use sui::balance::Balance;
 use sui::event;
 use sui::priority_queue as pq;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::table::{Self, Table};
 use sui::table_vec::{Self, TableVec};
 use sui::vec_map::{Self, VecMap};
 use sui::vec_set::VecSet;
 use sui_system::staking_pool::{
     PoolTokenExchangeRate,
-    StakedSui,
+    StakedOct,
     pool_id,
-    FungibleStakedSui,
-    fungible_staked_sui_pool_id
+    FungibleStakedOct,
+    fungible_staked_oct_pool_id
 };
 use sui_system::validator::{Validator, staking_pool_id, sui_address};
 use sui_system::validator_cap::{UnverifiedValidatorOperationCap, ValidatorOperationCap};
@@ -287,9 +287,9 @@ public(package) fun request_remove_validator(self: &mut ValidatorSet, ctx: &TxCo
 public(package) fun request_add_stake(
     self: &mut ValidatorSet,
     validator_address: address,
-    stake: Balance<SUI>,
+    stake: Balance<OCT>,
     ctx: &mut TxContext,
-): StakedSui {
+): StakedOct {
     let sui_amount = stake.value();
     assert!(sui_amount >= MIN_STAKING_THRESHOLD, EStakingBelowThreshold);
     self
@@ -299,34 +299,34 @@ public(package) fun request_add_stake(
 
 /// Called by `sui_system`, to withdraw some share of a stake from the validator. The share to withdraw
 /// is denoted by `principal_withdraw_amount`. One of two things occurs in this function:
-/// 1. If the `staked_sui` is staked with an active validator, the request is added to the validator's
+/// 1. If the `staked_oct` is staked with an active validator, the request is added to the validator's
 ///    staking pool's pending stake withdraw entries, processed at the end of the epoch.
-/// 2. If the `staked_sui` was staked with a validator that is no longer active,
+/// 2. If the `staked_oct` was staked with a validator that is no longer active,
 ///    the stake and any rewards corresponding to it will be immediately processed.
 public(package) fun request_withdraw_stake(
     self: &mut ValidatorSet,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &TxContext,
-): Balance<SUI> {
-    let staking_pool_id = staked_sui.pool_id();
+): Balance<OCT> {
+    let staking_pool_id = staked_oct.pool_id();
     let validator = if (self.staking_pool_mappings.contains(staking_pool_id)) {
         // This is an active validator.
-        let validator_address = self.staking_pool_mappings[staked_sui.pool_id()];
+        let validator_address = self.staking_pool_mappings[staked_oct.pool_id()];
         self.get_candidate_or_active_validator_mut(validator_address)
     } else {
         // This is an inactive pool.
         assert!(self.inactive_validators.contains(staking_pool_id), ENoPoolFound);
         self.inactive_validators[staking_pool_id].load_validator_maybe_upgrade()
     };
-    validator.request_withdraw_stake(staked_sui, ctx)
+    validator.request_withdraw_stake(staked_oct, ctx)
 }
 
-public(package) fun convert_to_fungible_staked_sui(
+public(package) fun convert_to_fungible_staked_oct(
     self: &mut ValidatorSet,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &mut TxContext,
-): FungibleStakedSui {
-    let staking_pool_id = staked_sui.pool_id();
+): FungibleStakedOct {
+    let staking_pool_id = staked_oct.pool_id();
     let validator = if (self.staking_pool_mappings.contains(staking_pool_id)) {
         // This is an active validator.
         let validator_address = self.staking_pool_mappings[staking_pool_id];
@@ -337,15 +337,15 @@ public(package) fun convert_to_fungible_staked_sui(
         self.inactive_validators[staking_pool_id].load_validator_maybe_upgrade()
     };
 
-    validator.convert_to_fungible_staked_sui(staked_sui, ctx)
+    validator.convert_to_fungible_staked_oct(staked_oct, ctx)
 }
 
-public(package) fun redeem_fungible_staked_sui(
+public(package) fun redeem_fungible_staked_oct(
     self: &mut ValidatorSet,
-    fungible_staked_sui: FungibleStakedSui,
+    fungible_staked_oct: FungibleStakedOct,
     ctx: &TxContext,
-): Balance<SUI> {
-    let staking_pool_id = fungible_staked_sui.pool_id();
+): Balance<OCT> {
+    let staking_pool_id = fungible_staked_oct.pool_id();
 
     let validator = if (self.staking_pool_mappings.contains(staking_pool_id)) {
         // This is an active validator.
@@ -357,7 +357,7 @@ public(package) fun redeem_fungible_staked_sui(
         self.inactive_validators[staking_pool_id].load_validator_maybe_upgrade()
     };
 
-    validator.redeem_fungible_staked_sui(fungible_staked_sui, ctx)
+    validator.redeem_fungible_staked_oct(fungible_staked_oct, ctx)
 }
 
 // ==== validator config setting functions ====
@@ -383,8 +383,8 @@ public(package) fun request_set_commission_rate(
 ///   5. At the end, we calculate the total stake for the new epoch.
 public(package) fun advance_epoch(
     self: &mut ValidatorSet,
-    computation_reward: &mut Balance<SUI>,
-    storage_fund_reward: &mut Balance<SUI>,
+    computation_reward: &mut Balance<OCT>,
+    storage_fund_reward: &mut Balance<OCT>,
     validator_report_records: &mut VecMap<address, VecSet<address>>,
     reward_slashing_rate: u64,
     low_stake_grace_period: u64,
@@ -1258,8 +1258,8 @@ fun distribute_reward(
     validators: &mut vector<Validator>,
     adjusted_staking_reward_amounts: &vector<u64>,
     adjusted_storage_fund_reward_amounts: &vector<u64>,
-    staking_rewards: &mut Balance<SUI>,
-    storage_fund_reward: &mut Balance<SUI>,
+    staking_rewards: &mut Balance<OCT>,
+    storage_fund_reward: &mut Balance<OCT>,
     ctx: &mut TxContext,
 ) {
     let length = validators.length();

@@ -4,7 +4,7 @@
 module sui_system::genesis;
 
 use sui::balance::{Self, Balance};
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui_system::stake_subsidy;
 use sui_system::sui_system;
 use sui_system::sui_system_state_inner;
@@ -70,7 +70,7 @@ const EDuplicateValidator: u64 = 1;
 /// all the information we need in the system.
 fun create(
     sui_system_state_id: UID,
-    mut sui_supply: Balance<SUI>,
+    mut sui_supply: Balance<OCT>,
     genesis_chain_parameters: GenesisChainParameters,
     genesis_validators: vector<GenesisValidatorMetadata>,
     token_distribution_schedule: TokenDistributionSchedule,
@@ -175,7 +175,7 @@ fun create(
 }
 
 fun allocate_tokens(
-    mut sui_supply: Balance<SUI>,
+    mut sui_supply: Balance<OCT>,
     allocations: vector<TokenAllocation>,
     validators: &mut vector<Validator>,
     ctx: &mut TxContext,

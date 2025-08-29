@@ -164,7 +164,7 @@ public fun update_fee<T>(self: &mut FlashLender<T>, admin: &AdminCap, new_fee: u
 
 // === Tests ===
 #[test_only]
-use sui::sui::SUI;
+use one::oct::OCT;
 #[test_only]
 use sui::test_scenario as ts;
 

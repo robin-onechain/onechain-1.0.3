@@ -7,7 +7,7 @@ module sui::coin_balance_tests;
 use sui::balance;
 use sui::coin;
 use sui::pay;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::test_scenario;
 use sui::test_utils;
 

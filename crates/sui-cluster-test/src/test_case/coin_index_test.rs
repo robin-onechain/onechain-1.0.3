@@ -146,7 +146,7 @@ impl TestCaseImpl for CoinIndexTest {
             "token package published, package: {:?}, cap: {:?}",
             package, cap
         );
-        let sui_type_str = "0x2::sui::SUI";
+        let sui_type_str = "0x2::oct::OCT";
         let coin_type_str = format!("{}::managed::MANAGED", package.0);
         info!("coin type: {}", coin_type_str);
 

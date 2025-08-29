@@ -31,8 +31,8 @@ Looking closer at the two main components:
 - The `inputs` value is a vector of arguments, `[Input]`. These arguments are either objects or pure values that you can use in the commands. The objects are either owned by the sender or are shared/immutable objects. The pure values represent simple Move values, such as `u64` or `String` values, which you can be construct purely from their bytes. For historical reasons, `Input` is `CallArg` in the Rust implementation.
 - The `commands` value is a vector of commands, `[Command]`. The possible commands are:
   - `TransferObjects` sends multiple (one or more) objects to a specified address.
-  - `SplitCoins` splits off multiple (one or more) coins from a single coin. It can be any `sui::coin::Coin<_>` object.
-  - `MergeCoins` merges multiple (one or more) coins into a single coin. Any `sui::coin::Coin<_>` objects can be merged, as long as they are all of the same type.
+  - `SplitCoins` splits off multiple (one or more) coins from a single coin. It can be any `one::coin::Coin<_>` object.
+  - `MergeCoins` merges multiple (one or more) coins into a single coin. Any `one::coin::Coin<_>` objects can be merged, as long as they are all of the same type.
   - `MakeMoveVec` creates a vector (potentially empty) of Move values. This is used primarily to construct vectors of Move values to be used as arguments to `MoveCall`.
   - `MoveCall` invokes either an `entry` or a `public` Move function in a published package.
   - `Publish` creates a new package and calls the `init` function of each module in the package.
@@ -79,7 +79,7 @@ Interestingly, the bytes are not validated until the type is specified in a comm
 Each transaction command produces a (possibly empty) array of values. The type of the value can be any arbitrary Move type, so unlike inputs, the values are not limited to objects or pure values. The number of results generated and their types are specific to each transaction command. The specifics for each command can be found in the section for that command, but in summary:
 
 - `MoveCall`: the number of results and their types are determined by the Move function being called. Move functions that return references are not supported at this time.
-- `SplitCoins`: produces (one or more) coins from a single coin. The type of each coin is `sui::coin::Coin<T>` where the specific coin type `T` matches the coin being split.
+- `SplitCoins`: produces (one or more) coins from a single coin. The type of each coin is `one::coin::Coin<T>` where the specific coin type `T` matches the coin being split.
 - `Publish`: returns the upgrade capability, `sui::package::UpgradeCap`, for the newly published package.
 - `Upgrade`: returns the upgrade receipt, `sui::package::UpgradeReceipt`, for the upgraded package.
 - `TransferObjects` and `MergeCoins` do not produce any results (an empty result vector).
@@ -158,24 +158,24 @@ The command has the form `TransferObjects(ObjectArgs, AddressArg)` where `Object
 The command has the form `SplitCoins(CoinArg, AmountArgs)` where `CoinArg` is the coin being split and `AmountArgs` is a vector of amounts to split off.
 
 - When the transaction is signed, the network verifies that the `AmountArgs` is non-empty.
-- The coin argument `CoinArg: Argument` must be a coin of type `sui::coin::Coin<T>` where `T` is the type of the coin being split. It can be any coin type and is not limited to `SUI` coins.
+- The coin argument `CoinArg: Argument` must be a coin of type `one::coin::Coin<T>` where `T` is the type of the coin being split. It can be any coin type and is not limited to `SUI` coins.
 - The amount arguments `AmountArgs: [Argument]` must be `u64` values, which could come from a `Pure` input or a result.
 - The coin argument `CoinArg` is taken by mutable reference.
 - The amount arguments `AmountArgs` are taken by value (copied).
-- The result of the command is a vector of coins, `sui::coin::Coin<T>`. The coin type `T` is the same as the coin being split, and the number of results matches the number of arguments
-- For a rough signature expressed in Move, it is similar to a function `<T: key + store>(coin: &mut sui::coin::Coin<T>, amounts: vector<u64>): vector<sui::coin::Coin<T>>` where the result `vector` is guaranteed to have the same length as the `amounts` vector.
+- The result of the command is a vector of coins, `one::coin::Coin<T>`. The coin type `T` is the same as the coin being split, and the number of results matches the number of arguments
+- For a rough signature expressed in Move, it is similar to a function `<T: key + store>(coin: &mut one::coin::Coin<T>, amounts: vector<u64>): vector<one::coin::Coin<T>>` where the result `vector` is guaranteed to have the same length as the `amounts` vector.
 
 #### `MergeCoins`
 
 The command has the form `MergeCoins(CoinArg, ToMergeArgs)` where the `CoinArg` is the target coin in which the `ToMergeArgs` coins are merged into. In other words, you merge multiple coins (`ToMergeArgs`) into a single coin (`CoinArg`).
 
 - When the transaction is signed, the network verifies that the `ToMergeArgs` is non-empty.
-- The coin argument `CoinArg: Argument` must be a coin of type `sui::coin::Coin<T>` where `T` is the type of the coin being merged. It can be any coin type and is not limited to `SUI` coins.
-- The coin arguments `ToMergeArgs: [Argument]` must be `sui::coin::Coin<T>` values where the `T` is the same type as the `CoinArg`.
+- The coin argument `CoinArg: Argument` must be a coin of type `one::coin::Coin<T>` where `T` is the type of the coin being merged. It can be any coin type and is not limited to `SUI` coins.
+- The coin arguments `ToMergeArgs: [Argument]` must be `one::coin::Coin<T>` values where the `T` is the same type as the `CoinArg`.
 - The coin argument `CoinArg` is taken by mutable reference.
 - The merge arguments `ToMergeArgs` are taken by value (moved).
 - The command does not produce any results (an empty result vector).
-- For a rough signature expressed in Move, it is similar to a function `<T: key + store>(coin: &mut sui::coin::Coin<T>, to_merge: vector<sui::coin::Coin<T>>): ()`
+- For a rough signature expressed in Move, it is similar to a function `<T: key + store>(coin: &mut one::coin::Coin<T>, to_merge: vector<one::coin::Coin<T>>): ()`
 
 #### `MakeMoveVec`
 
@@ -274,7 +274,7 @@ The inputs include the friend's address, the marketplace object, and the value f
 To walk through this, first look at the memory locations, for the gas object, inputs, and results
 
 ```rust
-Gas Coin: sui::coin::Coin<SUI> { id: gas_coin, balance: sui::balance::Balance<SUI> { value: 1_000_000u64 } }
+Gas Coin: one::coin::Coin<OCT> { id: gas_coin, balance: sui::balance::Balance<OCT> { value: 1_000_000u64 } }
 Inputs: [
   Pure(/* @0x808 BCS bytes */ ...),
   some_package::some_marketplace::Marketplace { id: market_id, ... },
@@ -292,7 +292,7 @@ Note that while gas is deducted at each command, that aspect of execution is not
 Before execution, remove the gas budget from the gas coin. Assume a gas budget of `500_000` so the gas coin now has a value of `500_000u64`.
 
 ```rust
-Gas Coin: Coin<SUI> { id: gas_coin, ... value: 500_000u64 ... } // The maximum gas is deducted
+Gas Coin: Coin<OCT> { id: gas_coin, ... value: 500_000u64 ... } // The maximum gas is deducted
 Inputs: [
   Pure(/* @0x808 BCS bytes */ ...),
   Marketplace { id: market_id, ... },
@@ -312,14 +312,14 @@ For the result, a new coin object is made.
 This gives us updated memory locations of
 
 ```rust
-Gas Coin: Coin<SUI> { id: gas_coin, ... value: 499_900u64 ... }
+Gas Coin: Coin<OCT> { id: gas_coin, ... value: 499_900u64 ... }
 Inputs: [
   Pure(/* @0x808 BCS bytes */ ...),
   Marketplace { id: market_id, ... },
   Pure(/* 100u64 BCS bytes */ ...),
 ]
 Results: [
-  [Coin<SUI> { id: new_coin, value: 100u64 ... }], // The result of SplitCoins
+  [Coin<OCT> { id: new_coin, value: 100u64 ... }], // The result of SplitCoins
 ],
 ```
 
@@ -342,7 +342,7 @@ Since the `marketplace` parameter has type `&mut Marketplace`, use `Input(1)` by
 This gives updated memory locations, where `_` indicates the object has been moved.
 
 ```rust
-Gas Coin: Coin<SUI> { id: gas_coin, ... value: 499_900u64 ... }
+Gas Coin: Coin<OCT> { id: gas_coin, ... value: 499_900u64 ... }
 Inputs: [
   Pure(/* @0x808 BCS bytes */ ...),
   Marketplace { id: market_id, ...  }, // Any mutations are applied
@@ -354,7 +354,7 @@ Results: [
 ],
 ```
 
-Assume that `buy_two` deletes its `Coin<SUI>` object argument and transfers the `Balance<SUI>` into the `Marketplace` object.
+Assume that `buy_two` deletes its `Coin<OCT>` object argument and transfers the `Balance<OCT>` into the `Marketplace` object.
 
 ### Command 2: `TransferObjects`
 

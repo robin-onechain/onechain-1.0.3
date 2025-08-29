@@ -9,7 +9,7 @@
 #[allow(deprecated_usage)]
 module test::regulated_coin {
     use sui::coin;
-    use sui::coin::Coin;
+    use one::coin::Coin;
     use sui::transfer::Receiving;
 
     public struct REGULATED_COIN has drop {}

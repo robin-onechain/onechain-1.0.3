@@ -8,7 +8,7 @@ use std::unit_test::assert_eq;
 use sui::balance;
 use sui::test_utils;
 use sui::url;
-use sui_system::staking_pool::StakedSui;
+use sui_system::staking_pool::StakedOct;
 use sui_system::test_runner;
 use sui_system::validator_builder;
 
@@ -35,7 +35,7 @@ fun validator_owner_flow() {
     assert_eq!(validator.sui_address(), @2);
     test_runner::destroy(validator);
 
-    runner.owned_tx!<StakedSui>(|stake| {
+    runner.owned_tx!<StakedOct>(|stake| {
         assert_eq!(stake.amount(), initial_stake);
         assert_eq!(stake.pool_id(), pool_id);
         assert_eq!(stake.stake_activation_epoch(), 0);
@@ -71,9 +71,9 @@ fun pending_validator_flow() {
     assert_eq!(validator.pending_stake_amount(), added_stake);
 
     // take initial stake out of inventory
-    runner.owned_tx!<StakedSui>(|staked_sui| {
+    runner.owned_tx!<StakedOct>(|staked_oct| {
         let withdrawn_balance = validator
-            .request_withdraw_stake(staked_sui, runner.ctx())
+            .request_withdraw_stake(staked_oct, runner.ctx())
             .destroy_for_testing();
 
         assert_eq!(withdrawn_balance, initial_stake);

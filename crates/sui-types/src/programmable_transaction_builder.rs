@@ -260,7 +260,7 @@ impl ProgrammableTransactionBuilder {
         Ok(())
     }
 
-    pub fn transfer_sui(&mut self, recipient: SuiAddress, amount: Option<u64>) {
+    pub fn transfer_oct(&mut self, recipient: SuiAddress, amount: Option<u64>) {
         let rec_arg = self.pure(recipient).unwrap();
         let coin_arg = if let Some(amount) = amount {
             let amt_arg = self.pure(amount).unwrap();
@@ -271,13 +271,13 @@ impl ProgrammableTransactionBuilder {
         self.command(Command::TransferObjects(vec![coin_arg], rec_arg));
     }
 
-    pub fn pay_all_sui(&mut self, recipient: SuiAddress) {
+    pub fn pay_all_oct(&mut self, recipient: SuiAddress) {
         let rec_arg = self.pure(recipient).unwrap();
         self.command(Command::TransferObjects(vec![Argument::GasCoin], rec_arg));
     }
 
     /// Will fail to generate if recipients and amounts do not have the same lengths
-    pub fn pay_sui(
+    pub fn pay_oct(
         &mut self,
         recipients: Vec<SuiAddress>,
         amounts: Vec<u64>,

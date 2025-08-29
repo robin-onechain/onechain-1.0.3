@@ -13,7 +13,7 @@ use super::move_type::MoveType;
 use super::move_value::MoveValue;
 use super::object::{self, ObjectFilter, ObjectImpl, ObjectLookup, ObjectOwner, ObjectStatus};
 use super::owner::OwnerImpl;
-use super::stake::StakedSuiDowncastError;
+use super::stake::StakedOctDowncastError;
 use super::sui_address::SuiAddress;
 use super::suins_registration::{DomainFormat, SuinsRegistration, SuinsRegistrationDowncastError};
 use super::transaction_block::{self, TransactionBlock, TransactionBlockFilter};
@@ -23,7 +23,7 @@ use super::{coin::Coin, object::Object};
 use crate::connection::ScanConnection;
 use crate::data::Db;
 use crate::error::Error;
-use crate::types::stake::StakedSui;
+use crate::types::stake::StakedOct;
 use async_graphql::connection::Connection;
 use async_graphql::*;
 use sui_name_service::NameServiceConfig;
@@ -113,7 +113,7 @@ pub(crate) enum IMoveObject {
     MoveObject(MoveObject),
     Coin(Coin),
     CoinMetadata(CoinMetadata),
-    StakedSui(StakedSui),
+    StakedOct(StakedOct),
     SuinsRegistration(SuinsRegistration),
 }
 
@@ -141,7 +141,7 @@ impl MoveObject {
     }
 
     /// Total balance of all coins with marker type owned by this object. If type is not supplied,
-    /// it defaults to `0x2::sui::SUI`.
+    /// it defaults to `0x2::oct::OCT`.
     pub(crate) async fn balance(
         &self,
         ctx: &Context<'_>,
@@ -166,7 +166,7 @@ impl MoveObject {
 
     /// The coin objects for this object.
     ///
-    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::oct::OCT`.
     pub(crate) async fn coins(
         &self,
         ctx: &Context<'_>,
@@ -181,17 +181,17 @@ impl MoveObject {
             .await
     }
 
-    /// The `0x3::staking_pool::StakedSui` objects owned by this object.
-    pub(crate) async fn staked_suis(
+    /// The `0x3::staking_pool::StakedOct` objects owned by this object.
+    pub(crate) async fn staked_octs(
         &self,
         ctx: &Context<'_>,
         first: Option<u64>,
         after: Option<object::Cursor>,
         last: Option<u64>,
         before: Option<object::Cursor>,
-    ) -> Result<Connection<String, StakedSui>> {
+    ) -> Result<Connection<String, StakedOct>> {
         OwnerImpl::from(&self.super_)
-            .staked_suis(ctx, first, after, last, before)
+            .staked_octs(ctx, first, after, last, before)
             .await
     }
 
@@ -384,13 +384,13 @@ impl MoveObject {
         }
     }
 
-    /// Attempts to convert the Move object into a `0x3::staking_pool::StakedSui`.
-    async fn as_staked_sui(&self) -> Result<Option<StakedSui>> {
-        match StakedSui::try_from(self) {
+    /// Attempts to convert the Move object into a `0x3::staking_pool::StakedOct`.
+    async fn as_staked_oct(&self) -> Result<Option<StakedOct>> {
+        match StakedOct::try_from(self) {
             Ok(coin) => Ok(Some(coin)),
-            Err(StakedSuiDowncastError::NotAStakedSui) => Ok(None),
-            Err(StakedSuiDowncastError::Bcs(e)) => Err(Error::Internal(format!(
-                "Failed to deserialize StakedSui: {e}"
+            Err(StakedOctDowncastError::NotAStakedOct) => Ok(None),
+            Err(StakedOctDowncastError::Bcs(e)) => Err(Error::Internal(format!(
+                "Failed to deserialize StakedOct: {e}"
             )))
             .extend(),
         }

@@ -13,7 +13,7 @@ use sui_system::test_runner;
 use sui_system::validator_builder;
 use sui_system::validator_cap::UnverifiedValidatorOperationCap;
 
-const MIST_PER_SUI: u64 = 1_000_000_000;
+const MIST_PER_OCT: u64 = 1_000_000_000;
 
 #[test]
 // Scenario: perform a series of report and undo report operations on a validator.
@@ -459,7 +459,7 @@ fun withdraw_inactive_stake(stake: u16) {
         let pool = system.active_validator_by_address(@1).get_staking_pool_ref();
         assert_eq!(pool.pending_stake_amount(), 0);
         assert_eq!(pool.pending_stake_withdraw_amount(), 0);
-        assert_eq!(pool.sui_balance(), 100 * MIST_PER_SUI);
+        assert_eq!(pool.sui_balance(), 100 * MIST_PER_OCT);
     });
 
     // Stake 1 SUI.
@@ -468,9 +468,9 @@ fun withdraw_inactive_stake(stake: u16) {
     // Check that pending stake amount is 1 SUI.
     runner.system_tx!(|system, _| {
         let pool = system.active_validator_by_address(@1).get_staking_pool_ref();
-        assert_eq!(pool.pending_stake_amount(), stake_amount * MIST_PER_SUI);
+        assert_eq!(pool.pending_stake_amount(), stake_amount * MIST_PER_OCT);
         assert_eq!(pool.pending_stake_withdraw_amount(), 0);
-        assert_eq!(pool.sui_balance(), 100 * MIST_PER_SUI);
+        assert_eq!(pool.sui_balance(), 100 * MIST_PER_OCT);
     });
 
     // Unstake before activation epoch.
@@ -481,7 +481,7 @@ fun withdraw_inactive_stake(stake: u16) {
         let pool = system.active_validator_by_address(@1).get_staking_pool_ref();
         assert_eq!(pool.pending_stake_amount(), 0);
         assert_eq!(pool.pending_stake_withdraw_amount(), 0);
-        assert_eq!(pool.sui_balance(), 100 * MIST_PER_SUI);
+        assert_eq!(pool.sui_balance(), 100 * MIST_PER_OCT);
     });
 
     runner.finish();
@@ -489,9 +489,9 @@ fun withdraw_inactive_stake(stake: u16) {
 
 #[random_test]
 // Stake random amount of SUI and check that the pending stake amount is correct.
-// Convert to fungible staked SUI and redeem it.
+// Convert to fungible staked OCT and redeem it.
 // Check that the stake amount is correct.
-fun convert_to_fungible_staked_sui_and_redeem(stake: u16) {
+fun convert_to_fungible_staked_oct_and_redeem(stake: u16) {
     let stake_amount = stake as u64;
     let validator = validator_builder::new().sui_address(@1).initial_stake(100);
     let mut runner = test_runner::new().validators(vector[validator]).build();
@@ -501,12 +501,12 @@ fun convert_to_fungible_staked_sui_and_redeem(stake: u16) {
         let pool = system.active_validator_by_address(@1).get_staking_pool_ref();
         assert_eq!(pool.pending_stake_amount(), 0);
         assert_eq!(pool.pending_stake_withdraw_amount(), 0);
-        assert_eq!(pool.sui_balance(), 100 * MIST_PER_SUI);
+        assert_eq!(pool.sui_balance(), 100 * MIST_PER_OCT);
     });
 
-    let staked_sui = runner.set_sender(@5).stake_with_and_take(@1, stake_amount);
+    let staked_oct = runner.set_sender(@5).stake_with_and_take(@1, stake_amount);
 
-    assert_eq!(staked_sui.amount(), stake_amount * MIST_PER_SUI);
+    assert_eq!(staked_oct.amount(), stake_amount * MIST_PER_OCT);
 
     // Stake is now active. Check that the stake amount is correct.
     runner.advance_epoch(option::none()).destroy_for_testing();
@@ -514,30 +514,30 @@ fun convert_to_fungible_staked_sui_and_redeem(stake: u16) {
         let pool = system.active_validator_by_address(@1).get_staking_pool_ref();
         assert_eq!(pool.pending_stake_amount(), 0);
         assert_eq!(pool.pending_stake_withdraw_amount(), 0);
-        assert_eq!(pool.sui_balance(), (100 + stake_amount) * MIST_PER_SUI);
+        assert_eq!(pool.sui_balance(), (100 + stake_amount) * MIST_PER_OCT);
     });
 
-    // Convert to fungible staked SUI.
-    let fungible_staked_sui;
+    // Convert to fungible staked OCT.
+    let fungible_staked_oct;
     runner.system_tx!(|system, ctx| {
-        fungible_staked_sui = system.convert_to_fungible_staked_sui(staked_sui, ctx);
+        fungible_staked_oct = system.convert_to_fungible_staked_oct(staked_oct, ctx);
     });
 
-    assert_eq!(fungible_staked_sui.value(), stake_amount * MIST_PER_SUI);
+    assert_eq!(fungible_staked_oct.value(), stake_amount * MIST_PER_OCT);
 
     let sui;
     runner.system_tx!(|system, ctx| {
-        sui = system.redeem_fungible_staked_sui(fungible_staked_sui, ctx);
+        sui = system.redeem_fungible_staked_oct(fungible_staked_oct, ctx);
     });
 
-    assert_eq!(sui.destroy_for_testing(), stake_amount * MIST_PER_SUI);
+    assert_eq!(sui.destroy_for_testing(), stake_amount * MIST_PER_OCT);
 
     runner.advance_epoch(option::none()).destroy_for_testing();
     runner.system_tx!(|system, _| {
         let pool = system.active_validator_by_address(@1).get_staking_pool_ref();
         assert_eq!(pool.pending_stake_amount(), 0);
         assert_eq!(pool.pending_stake_withdraw_amount(), 0);
-        assert_eq!(pool.sui_balance(), 100 * MIST_PER_SUI);
+        assert_eq!(pool.sui_balance(), 100 * MIST_PER_OCT);
     });
 
     runner.finish();

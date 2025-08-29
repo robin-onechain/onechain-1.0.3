@@ -41,13 +41,13 @@
 module sui_system::sui_system;
 
 use sui::balance::Balance;
-use sui::coin::Coin;
+use one::coin::Coin;
 use sui::dynamic_field;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::table::Table;
 use sui::vec_map::VecMap;
 use sui_system::stake_subsidy::StakeSubsidy;
-use sui_system::staking_pool::{StakedSui, FungibleStakedSui, PoolTokenExchangeRate};
+use sui_system::staking_pool::{StakedOct, FungibleStakedOct, PoolTokenExchangeRate};
 use sui_system::sui_system_state_inner::{
     Self,
     SystemParameters,
@@ -79,7 +79,7 @@ const EWrongInnerVersion: u64 = 1;
 public(package) fun create(
     id: UID,
     validators: vector<Validator>,
-    storage_fund: Balance<SUI>,
+    storage_fund: Balance<OCT>,
     protocol_version: u64,
     epoch_start_timestamp_ms: u64,
     parameters: SystemParameters,
@@ -229,21 +229,21 @@ public entry fun set_candidate_validator_commission_rate(
 /// Add stake to a validator's staking pool.
 public entry fun request_add_stake(
     wrapper: &mut SuiSystemState,
-    stake: Coin<SUI>,
+    stake: Coin<OCT>,
     validator_address: address,
     ctx: &mut TxContext,
 ) {
-    let staked_sui = request_add_stake_non_entry(wrapper, stake, validator_address, ctx);
-    transfer::public_transfer(staked_sui, ctx.sender());
+    let staked_oct = request_add_stake_non_entry(wrapper, stake, validator_address, ctx);
+    transfer::public_transfer(staked_oct, ctx.sender());
 }
 
-/// The non-entry version of `request_add_stake`, which returns the staked SUI instead of transferring it to the sender.
+/// The non-entry version of `request_add_stake`, which returns the staked OCT instead of transferring it to the sender.
 public fun request_add_stake_non_entry(
     wrapper: &mut SuiSystemState,
-    stake: Coin<SUI>,
+    stake: Coin<OCT>,
     validator_address: address,
     ctx: &mut TxContext,
-): StakedSui {
+): StakedOct {
     wrapper.load_system_state_mut().request_add_stake(stake, validator_address, ctx)
 }
 
@@ -251,54 +251,54 @@ public fun request_add_stake_non_entry(
 /// Add stake to a validator's staking pool using multiple coins.
 public entry fun request_add_stake_mul_coin(
     wrapper: &mut SuiSystemState,
-    stakes: vector<Coin<SUI>>,
+    stakes: vector<Coin<OCT>>,
     stake_amount: option::Option<u64>,
     validator_address: address,
     ctx: &mut TxContext,
 ) {
-    let staked_sui = wrapper
+    let staked_oct = wrapper
         .load_system_state_mut()
         .request_add_stake_mul_coin(stakes, stake_amount, validator_address, ctx);
 
-    transfer::public_transfer(staked_sui, ctx.sender());
+    transfer::public_transfer(staked_oct, ctx.sender());
 }
 
 #[allow(lint(public_entry))]
 /// Withdraw stake from a validator's staking pool.
 public entry fun request_withdraw_stake(
     wrapper: &mut SuiSystemState,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &mut TxContext,
 ) {
-    let withdrawn_stake = wrapper.request_withdraw_stake_non_entry(staked_sui, ctx);
+    let withdrawn_stake = wrapper.request_withdraw_stake_non_entry(staked_oct, ctx);
     transfer::public_transfer(withdrawn_stake.into_coin(ctx), ctx.sender());
 }
 
-/// Convert StakedSui into a FungibleStakedSui object.
-public fun convert_to_fungible_staked_sui(
+/// Convert StakedOct into a FungibleStakedOct object.
+public fun convert_to_fungible_staked_oct(
     wrapper: &mut SuiSystemState,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &mut TxContext,
-): FungibleStakedSui {
-    wrapper.load_system_state_mut().convert_to_fungible_staked_sui(staked_sui, ctx)
+): FungibleStakedOct {
+    wrapper.load_system_state_mut().convert_to_fungible_staked_oct(staked_oct, ctx)
 }
 
-/// Convert FungibleStakedSui into a StakedSui object.
-public fun redeem_fungible_staked_sui(
+/// Convert FungibleStakedOct into a StakedOct object.
+public fun redeem_fungible_staked_oct(
     wrapper: &mut SuiSystemState,
-    fungible_staked_sui: FungibleStakedSui,
+    fungible_staked_oct: FungibleStakedOct,
     ctx: &TxContext,
-): Balance<SUI> {
-    wrapper.load_system_state_mut().redeem_fungible_staked_sui(fungible_staked_sui, ctx)
+): Balance<OCT> {
+    wrapper.load_system_state_mut().redeem_fungible_staked_oct(fungible_staked_oct, ctx)
 }
 
 /// Non-entry version of `request_withdraw_stake` that returns the withdrawn SUI instead of transferring it to the sender.
 public fun request_withdraw_stake_non_entry(
     wrapper: &mut SuiSystemState,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &mut TxContext,
-): Balance<SUI> {
-    wrapper.load_system_state_mut().request_withdraw_stake(staked_sui, ctx)
+): Balance<OCT> {
+    wrapper.load_system_state_mut().request_withdraw_stake(staked_oct, ctx)
 }
 
 #[allow(lint(public_entry))]
@@ -558,20 +558,20 @@ public fun active_validator_voting_powers(wrapper: &SuiSystemState): VecMap<addr
     wrapper.load_system_state_ref().active_validator_voting_powers()
 }
 
-/// Calculate the rewards for a given staked SUI object.
+/// Calculate the rewards for a given staked OCT object.
 /// Used in the package, and can be dev-inspected.
 public(package) fun calculate_rewards(
     self: &mut SuiSystemState,
-    staked_sui: &StakedSui,
+    staked_oct: &StakedOct,
     ctx: &TxContext,
 ): u64 {
     let system_state = self.load_system_state_mut();
 
     system_state
         .validators_mut()
-        .validator_by_pool_id(&staked_sui.pool_id())
+        .validator_by_pool_id(&staked_oct.pool_id())
         .get_staking_pool_ref()
-        .calculate_rewards(staked_sui, ctx.epoch())
+        .calculate_rewards(staked_oct, ctx.epoch())
 }
 
 #[allow(unused_function)]
@@ -583,8 +583,8 @@ public(package) fun calculate_rewards(
 /// 3. Distribute computation charge to validator stake.
 /// 4. Update all validators.
 fun advance_epoch(
-    storage_reward: Balance<SUI>,
-    computation_reward: Balance<SUI>,
+    storage_reward: Balance<OCT>,
+    computation_reward: Balance<OCT>,
     wrapper: &mut SuiSystemState,
     new_epoch: u64,
     next_protocol_version: u64,
@@ -595,7 +595,7 @@ fun advance_epoch(
     reward_slashing_rate: u64, // how much rewards are slashed to punish a validator, in bps.
     epoch_start_timestamp_ms: u64, // Timestamp of the epoch start
     ctx: &mut TxContext,
-): Balance<SUI> {
+): Balance<OCT> {
     // Validator will make a special system call with sender set as 0x0.
     assert!(ctx.sender() == @0x0, ENotSystemAddress);
     let storage_rebate = wrapper
@@ -837,7 +837,7 @@ public(package) fun advance_epoch_for_testing(
     reward_slashing_rate: u64,
     epoch_start_timestamp_ms: u64,
     ctx: &mut TxContext,
-): Balance<SUI> {
+): Balance<OCT> {
     let storage_reward = balance::create_for_testing(storage_charge);
     let computation_reward = balance::create_for_testing(computation_charge);
     let storage_rebate = advance_epoch(

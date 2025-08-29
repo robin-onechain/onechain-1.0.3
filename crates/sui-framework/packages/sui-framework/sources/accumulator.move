@@ -69,7 +69,7 @@ public use fun is_zero_u128 as U128.is_zero;
 // === Accumulator address computation ===
 
 /// `Key` is used only for computing the field id of accumulator objects.
-/// `T` is the type of the accumulated value, e.g. `Balance<SUI>`
+/// `T` is the type of the accumulated value, e.g. `Balance<OCT>`
 public struct Key<phantom T> has copy, drop, store {
     address: address,
 }

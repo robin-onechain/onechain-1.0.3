@@ -64,7 +64,7 @@ async fn test_transaction_expiration() {
         .unwrap();
     let rgp = test_cluster.get_reference_gas_price().await;
     let mut data = TestTransactionBuilder::new(sender, gas, rgp)
-        .transfer_sui(Some(1), sender)
+        .transfer_oct(Some(1), sender)
         .build();
     // Expired transaction returns an error
     let mut expired_data = data.clone();
@@ -102,7 +102,7 @@ async fn reconfig_with_revert_end_to_end_test() {
     let gas1 = gas_objects.pop().unwrap();
     let tx = test_cluster.wallet.sign_transaction(
         &TestTransactionBuilder::new(sender, gas1, rgp)
-            .transfer_sui(None, sender)
+            .transfer_oct(None, sender)
             .build(),
     );
     let effects1 = test_cluster.execute_transaction(tx).await;
@@ -112,7 +112,7 @@ async fn reconfig_with_revert_end_to_end_test() {
     let gas2 = gas_objects.pop().unwrap();
     let tx = test_cluster.wallet.sign_transaction(
         &TestTransactionBuilder::new(sender, gas2, rgp)
-            .transfer_sui(None, sender)
+            .transfer_oct(None, sender)
             .build(),
     );
     let net = test_cluster
@@ -303,17 +303,17 @@ async fn test_expired_locks() {
     let receiver = accounts_and_objs[1].0;
     let gas_object = accounts_and_objs[0].1[0];
 
-    let transfer_sui = |amount| {
+    let transfer_oct = |amount| {
         test_cluster.wallet.sign_transaction(
             &TestTransactionBuilder::new(sender, gas_object, gas_price)
-                .transfer_sui(Some(amount), receiver)
+                .transfer_oct(Some(amount), receiver)
                 .build(),
         )
     };
 
-    let t1 = transfer_sui(1);
+    let t1 = transfer_oct(1);
     // attempt to equivocate
-    let t2 = transfer_sui(2);
+    let t2 = transfer_oct(2);
 
     for (idx, validator) in test_cluster.all_validator_handles().into_iter().enumerate() {
         let state = validator.state();
@@ -1319,7 +1319,7 @@ async fn execute_add_stake_transaction(
         .into_iter()
         .filter(|change| match change {
             ObjectChange::Created { object_type, .. } => {
-                object_type.name == ident_str!("StakedSui").into()
+                object_type.name == ident_str!("StakedOct").into()
             }
             _ => false,
         })

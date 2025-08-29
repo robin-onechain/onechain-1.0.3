@@ -17,7 +17,7 @@ pub trait GovernanceReadApi {
     #[method(name = "getStakesByIds")]
     async fn get_stakes_by_ids(
         &self,
-        staked_sui_ids: Vec<ObjectID>,
+        staked_oct_ids: Vec<ObjectID>,
     ) -> RpcResult<Vec<DelegatedStake>>;
 
     /// Return all [DelegatedStake].

@@ -560,7 +560,7 @@ public fun create_regulated_currency<T: drop>(
     (treasury_cap, deny_cap, metadata)
 }
 
-/// The index into the deny list vector for the `sui::coin::Coin` type.
+/// The index into the deny list vector for the `one::coin::Coin` type.
 const DENY_LIST_COIN_INDEX: u64 = 0; // TODO public(package) const
 
 /// Adds the given address to the deny list, preventing it

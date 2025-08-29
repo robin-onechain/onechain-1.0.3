@@ -28,7 +28,7 @@ pub(crate) enum TypeFilter {
     ///
     ///  0x2::coin::Coin
     ///
-    /// would match both 0x2::coin::Coin and 0x2::coin::Coin<0x2::sui::SUI>.
+    /// would match both 0x2::coin::Coin and 0x2::coin::Coin<0x2::oct::OCT>.
     ByType(StructTag),
 }
 
@@ -339,9 +339,9 @@ mod tests {
             "address",
             "bool",
             "0x2::coin::Coin",
-            "0x2::coin::Coin<0x2::sui::SUI>",
+            "0x2::coin::Coin<0x2::oct::OCT>",
             "vector<u256>",
-            "vector<0x3::staking_pool::StakedSui>",
+            "vector<0x3::staking_pool::StakedOct>",
         ]
         .into_iter();
 
@@ -354,9 +354,9 @@ mod tests {
             address
             bool
             0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin
-            0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>
+            0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::oct::OCT>
             vector<u256>
-            vector<0x0000000000000000000000000000000000000000000000000000000000000003::staking_pool::StakedSui>"#]];
+            vector<0x0000000000000000000000000000000000000000000000000000000000000003::staking_pool::StakedOct>"#]];
         expect.assert_eq(&filters.join("\n"))
     }
 
@@ -366,7 +366,7 @@ mod tests {
             "0x2",
             "0x2::coin",
             "0x2::coin::Coin",
-            "0x2::coin::Coin<0x2::sui::SUI>",
+            "0x2::coin::Coin<0x2::oct::OCT>",
         ]
         .into_iter();
 
@@ -378,7 +378,7 @@ mod tests {
             0x0000000000000000000000000000000000000000000000000000000000000002::
             0x0000000000000000000000000000000000000000000000000000000000000002::coin::
             0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin
-            0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>"#]];
+            0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0x0000000000000000000000000000000000000000000000000000000000000002::oct::OCT>"#]];
         expect.assert_eq(&filters.join("\n"))
     }
 
@@ -407,9 +407,9 @@ mod tests {
     #[test]
     fn test_invalid_function_filters() {
         for invalid_function_filter in [
-            "0x2::coin::Coin<0x2::sui::SUI>",
+            "0x2::coin::Coin<0x2::oct::OCT>",
             "vector<u256>",
-            "vector<0x3::staking_pool::StakedSui>",
+            "vector<0x3::staking_pool::StakedOct>",
         ] {
             assert!(FqNameFilter::from_str(invalid_function_filter).is_err());
         }
@@ -450,9 +450,9 @@ mod tests {
             "address",
             "bool",
             "0x2::coin::Coin",
-            "0x2::coin::Coin<0x2::sui::SUI>",
+            "0x2::coin::Coin<0x2::oct::OCT>",
             "vector<u256>",
-            "vector<0x3::staking_pool::StakedSui>",
+            "vector<0x3::staking_pool::StakedOct>",
         ] {
             assert!(ModuleFilter::from_str(invalid_module_filter).is_err());
         }
@@ -483,7 +483,7 @@ mod tests {
         let sui = TypeFilter::from_str("0x2").unwrap();
         let coin_mod = TypeFilter::from_str("0x2::coin").unwrap();
         let coin_typ = TypeFilter::from_str("0x2::coin::Coin").unwrap();
-        let coin_sui = TypeFilter::from_str("0x2::coin::Coin<0x2::sui::SUI>").unwrap();
+        let coin_sui = TypeFilter::from_str("0x2::coin::Coin<0x2::oct::OCT>").unwrap();
         let coin_usd = TypeFilter::from_str("0x2::coin::Coin<0x3::usd::USD>").unwrap();
         let std_utf8 = TypeFilter::from_str("0x1::string::String").unwrap();
 

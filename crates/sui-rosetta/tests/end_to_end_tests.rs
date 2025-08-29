@@ -26,7 +26,7 @@ use crate::rosetta_client::RosettaEndpoint;
 mod rosetta_client;
 
 #[tokio::test]
-async fn test_get_staked_sui() {
+async fn test_get_staked_oct() {
     let test_cluster = TestClusterBuilder::new().build().await;
     let address = test_cluster.get_address_0();
     let client = test_cluster.wallet.get_client().await.unwrap();
@@ -396,12 +396,12 @@ async fn test_pay_sui() {
     let ops = serde_json::from_value(json!(
         [{
             "operation_identifier":{"index":0},
-            "type":"PaySui",
+            "type":"PayOct",
             "account": { "address" : recipient.to_string() },
             "amount" : { "value": "1000000000" }
         },{
             "operation_identifier":{"index":1},
-            "type":"PaySui",
+            "type":"PayOct",
             "account": { "address" : sender.to_string() },
             "amount" : { "value": "-1000000000" }
         }]
@@ -459,12 +459,12 @@ async fn test_pay_sui_multiple_times() {
         let ops = serde_json::from_value(json!(
             [{
                 "operation_identifier":{"index":0},
-                "type":"PaySui",
+                "type":"PayOct",
                 "account": { "address" : recipient.to_string() },
                 "amount" : { "value": "1000000000" }
             },{
                 "operation_identifier":{"index":1},
-                "type":"PaySui",
+                "type":"PayOct",
                 "account": { "address" : sender.to_string() },
                 "amount" : { "value": "-1000000000" }
             }]

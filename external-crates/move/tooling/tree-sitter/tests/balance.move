@@ -165,7 +165,7 @@ module sui::balance {
 #[test_only]
 module sui::balance_tests {
     use sui::balance;
-    use sui::sui::SUI;
+    use one::oct::OCT;
     use sui::test_utils;
 
     #[test]

@@ -8,7 +8,7 @@ mod get_object;
 mod get_reference_gas_price;
 mod multi_get_objects;
 mod multi_get_transaction_blocks;
-mod pay_sui;
+mod pay_oct;
 mod query_transactions;
 mod rpc_command_processor;
 mod validation;
@@ -73,9 +73,9 @@ impl Command {
         }
     }
 
-    pub fn new_pay_sui() -> Self {
+    pub fn new_pay_oct() -> Self {
         Self {
-            data: CommandData::PaySui(PaySui {}),
+            data: CommandData::PayOct(PayOct {}),
             ..Default::default()
         }
     }
@@ -175,7 +175,7 @@ impl Command {
 pub enum CommandData {
     DryRun(DryRun),
     GetCheckpoints(GetCheckpoints),
-    PaySui(PaySui),
+    PayOct(PayOct),
     QueryTransactionBlocks(QueryTransactionBlocks),
     MultiGetTransactionBlocks(MultiGetTransactionBlocks),
     MultiGetObjects(MultiGetObjects),
@@ -205,7 +205,7 @@ pub struct GetCheckpoints {
 }
 
 #[derive(Clone)]
-pub struct PaySui {}
+pub struct PayOct {}
 
 #[derive(Clone, Default)]
 pub struct QueryTransactionBlocks {

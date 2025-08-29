@@ -9,7 +9,7 @@ use raffles::example2;
 use sui::clock;
 use sui::coin::{Self, Coin};
 use sui::random::{Self, update_randomness_state_for_testing, Random};
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::test_scenario as ts;
 
 fun mint(addr: address, amount: u64, scenario: &mut ts::Scenario) {
@@ -53,28 +53,28 @@ fun test_example1() {
     // Play with 4 users (everything here is deterministic)
     ts.next_tx(user1);
     mint(user1, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     let t1 = game.buy_ticket(coin, &clock, ts.ctx());
     assert!(game.participants() == 1, 1);
     t1.destroy(); // loser
 
     ts.next_tx(user2);
     mint(user2, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     let t2 = game.buy_ticket(coin, &clock, ts.ctx());
     assert!(game.participants() == 2, 1);
     t2.destroy(); // loser
 
     ts.next_tx(user3);
     mint(user3, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     let t3 = game.buy_ticket(coin, &clock, ts.ctx());
     assert!(game.participants() == 3, 1);
     t3.destroy(); // loser
 
     ts.next_tx(user4);
     mint(user4, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     let t4 = game.buy_ticket(coin, &clock, ts.ctx());
     assert!(game.participants() == 4, 1);
     // this is the winner
@@ -131,25 +131,25 @@ fun test_example2() {
     // Play with 4 users (everything here is deterministic)
     ts.next_tx(user1);
     mint(user1, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     game.play(coin, &clock, ts.ctx());
     assert!(game.participants() == 1, 1);
 
     ts.next_tx(user2);
     mint(user2, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     game.play(coin, &clock, ts.ctx());
     assert!(game.participants() == 2, 1);
 
     ts.next_tx(user3);
     mint(user3, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     game.play(coin, &clock, ts.ctx());
     assert!(game.participants() == 3, 1);
 
     ts.next_tx(user4);
     mint(user4, 10, &mut ts);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     game.play(coin, &clock, ts.ctx());
     assert!(game.participants() == 4, 1);
 
@@ -160,7 +160,7 @@ fun test_example2() {
 
     // Check that received the reward
     ts.next_tx(user4);
-    let coin: Coin<SUI> = ts.take_from_sender();
+    let coin: Coin<OCT> = ts.take_from_sender();
     assert!(coin.value() == 40, 1);
     coin.burn_for_testing();
 

@@ -21,14 +21,14 @@ use crate::{
 };
 
 /// The number of Mist per Sui token
-pub const MIST_PER_SUI: u64 = 1_000_000_000;
+pub const MIST_PER_OCT: u64 = 1_000_000_000;
 
 /// Total supply denominated in Sui
 pub const TOTAL_SUPPLY_SUI: u64 = 10_000_000_000;
 
 // Note: cannot use checked arithmetic here since `const unwrap` is still unstable.
 /// Total supply denominated in Mist
-pub const TOTAL_SUPPLY_MIST: u64 = TOTAL_SUPPLY_SUI * MIST_PER_SUI;
+pub const TOTAL_SUPPLY_MIST: u64 = TOTAL_SUPPLY_SUI * MIST_PER_OCT;
 
 pub const GAS_MODULE_NAME: &IdentStr = ident_str!("sui");
 pub const GAS_STRUCT_NAME: &IdentStr = ident_str!("SUI");
@@ -66,7 +66,7 @@ mod checked {
         }
     }
 
-    /// Rust version of the Move sui::coin::Coin<Sui::sui::SUI> type
+    /// Rust version of the Move one::coin::Coin<Sui::sui::SUI> type
     #[derive(Clone, Debug, Serialize, Deserialize)]
     pub struct GasCoin(pub Coin);
 
@@ -83,12 +83,12 @@ mod checked {
             Coin::type_(TypeTag::Struct(Box::new(GAS::type_())))
         }
 
-        /// Return `true` if `s` is the type of a gas coin (i.e., 0x2::coin::Coin<0x2::sui::SUI>)
+        /// Return `true` if `s` is the type of a gas coin (i.e., 0x2::coin::Coin<0x2::oct::OCT>)
         pub fn is_gas_coin(s: &StructTag) -> bool {
             Coin::is_coin(s) && s.type_params.len() == 1 && GAS::is_gas_type(&s.type_params[0])
         }
 
-        /// Return `true` if `s` is the type of a gas balance (i.e., 0x2::balance::Balance<0x2::sui::SUI>)
+        /// Return `true` if `s` is the type of a gas balance (i.e., 0x2::balance::Balance<0x2::oct::OCT>)
         pub fn is_gas_balance(s: &StructTag) -> bool {
             Balance::is_balance(s)
                 && s.type_params.len() == 1

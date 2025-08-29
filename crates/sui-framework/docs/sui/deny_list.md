@@ -267,7 +267,7 @@ Stores the addresses that are denied for a given core type.
 </dt>
 <dd>
  Set of addresses that are banned for a given type.
- For example with <code><a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a></code>: If addresses A and B are banned from using
+ For example with <code><a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a></code>: If addresses A and B are banned from using
  "0...0123::my_coin::MY_COIN", this will be "0...0123::my_coin::MY_COIN" -> {A, B}.
 </dd>
 </dl>
@@ -312,7 +312,7 @@ The specified address cannot be added to the deny list.
 
 <a name="sui_deny_list_COIN_INDEX"></a>
 
-The index into the deny list vector for the <code><a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a></code> type.
+The index into the deny list vector for the <code><a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a></code> type.
 
 
 <pre><code><b>const</b> <a href="../sui/deny_list.md#sui_deny_list_COIN_INDEX">COIN_INDEX</a>: u64 = 0;

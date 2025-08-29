@@ -359,19 +359,19 @@ async fn test_full_node_indexes() -> Result<(), anyhow::Error> {
     let sender_balance_change = BalanceChange {
         change_type: BalanceChangeType::Pay,
         owner: sender,
-        coin_type: parse_struct_tag("0x2::sui::SUI").unwrap(),
+        coin_type: parse_struct_tag("0x2::oct::OCT").unwrap(),
         amount: -100000000000000,
     };
     let recipient_balance_change = BalanceChange {
         change_type: BalanceChangeType::Receive,
         owner: receiver,
-        coin_type: parse_struct_tag("0x2::sui::SUI").unwrap(),
+        coin_type: parse_struct_tag("0x2::oct::OCT").unwrap(),
         amount: 100000000000000,
     };
     let gas_balance_change = BalanceChange {
         change_type: BalanceChangeType::Gas,
         owner: sender,
-        coin_type: parse_struct_tag("0x2::sui::SUI").unwrap(),
+        coin_type: parse_struct_tag("0x2::oct::OCT").unwrap(),
         amount: (gas_used as i128).neg(),
     };
 
@@ -1232,7 +1232,7 @@ async fn test_access_old_object_pruned() {
     let sender = tx_builder.sender();
     let gas_object = tx_builder.gas_object();
     let effects = test_cluster
-        .sign_and_execute_transaction(&tx_builder.transfer_sui(None, sender).build())
+        .sign_and_execute_transaction(&tx_builder.transfer_oct(None, sender).build())
         .await
         .effects
         .unwrap();
@@ -1245,7 +1245,7 @@ async fn test_access_old_object_pruned() {
             .await
             // Make sure we are doing something different from the first transaction.
             // Otherwise we would just end up with the same digest.
-            .transfer_sui(Some(1), sender)
+            .transfer_oct(Some(1), sender)
             .build(),
     );
     for validator in test_cluster.swarm.active_validators() {

@@ -4,7 +4,7 @@
 /// This module provides handy functionality for wallets and `sui::Coin` management.
 module sui::pay;
 
-use sui::coin::Coin;
+use one::coin::Coin;
 
 /// For when empty vector is supplied into join function.
 const ENoCoins: u64 = 0;

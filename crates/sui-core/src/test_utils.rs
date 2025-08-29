@@ -187,7 +187,7 @@ pub fn make_transfer_sui_transaction(
     keypair: &AccountKeyPair,
     gas_price: u64,
 ) -> Transaction {
-    let data = TransactionData::new_transfer_sui(
+    let data = TransactionData::new_transfer_oct(
         recipient,
         sender,
         amount,
@@ -208,7 +208,7 @@ pub fn make_pay_sui_transaction(
     gas_price: u64,
     gas_budget: u64,
 ) -> Transaction {
-    let data = TransactionData::new_pay_sui(
+    let data = TransactionData::new_pay_oct(
         sender, coins, recipients, amounts, gas_object, gas_budget, gas_price,
     )
     .unwrap();

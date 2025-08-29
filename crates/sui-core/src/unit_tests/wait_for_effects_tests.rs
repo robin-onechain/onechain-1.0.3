@@ -77,7 +77,7 @@ impl TestContext {
             self.gas_object_ref,
             self.state.reference_gas_price_for_testing().unwrap(),
         )
-        .transfer_sui(None, self.sender)
+        .transfer_oct(None, self.sender)
         .build();
         let tx = to_sender_signed_transaction(tx_data, &self.keypair);
         VerifiedExecutableTransaction::new_from_checkpoint(

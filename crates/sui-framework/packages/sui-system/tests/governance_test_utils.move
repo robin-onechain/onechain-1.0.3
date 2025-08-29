@@ -7,16 +7,16 @@ module sui_system::governance_test_utils;
 use sui::address;
 use sui::balance::{Self, Balance};
 use sui::coin::{Self, Coin};
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::test_scenario::{Self, Scenario};
 use sui::test_utils::{Self, assert_eq};
 use sui_system::stake_subsidy;
-use sui_system::staking_pool::{StakedSui, StakingPool};
+use sui_system::staking_pool::{StakedOct, StakingPool};
 use sui_system::sui_system::{Self, SuiSystemState};
 use sui_system::sui_system_state_inner;
 use sui_system::validator::{Self, Validator};
 
-const MIST_PER_SUI: u64 = 1_000_000_000;
+const MIST_PER_OCT: u64 = 1_000_000_000;
 
 public fun create_validator_for_testing(
     addr: address,
@@ -37,7 +37,7 @@ public fun create_validator_for_testing(
         b"/ip4/127.0.0.1/udp/80",
         b"/ip4/127.0.0.1/udp/80",
         b"/ip4/127.0.0.1/udp/80",
-        option::some(balance::create_for_testing<SUI>(init_stake_amount_in_sui * MIST_PER_SUI)),
+        option::some(balance::create_for_testing<SUI>(init_stake_amount_in_sui * MIST_PER_OCT)),
         1,
         0,
         true,
@@ -79,7 +79,7 @@ public fun create_sui_system_state_for_testing(
     );
 
     let stake_subsidy = stake_subsidy::create(
-        balance::create_for_testing<SUI>(sui_supply_amount * MIST_PER_SUI), // sui_supply
+        balance::create_for_testing<SUI>(sui_supply_amount * MIST_PER_OCT), // sui_supply
         0, // stake subsidy initial distribution amount
         10, // stake_subsidy_period_length
         0, // stake_subsidy_decrease_rate
@@ -89,7 +89,7 @@ public fun create_sui_system_state_for_testing(
     sui_system::create(
         object::new(ctx), // it doesn't matter what ID sui system state has in tests
         validators,
-        balance::create_for_testing<SUI>(storage_fund_amount * MIST_PER_SUI), // storage_fund
+        balance::create_for_testing<SUI>(storage_fund_amount * MIST_PER_OCT), // storage_fund
         1, // protocol version
         0, // chain_start_timestamp_ms
         system_parameters,
@@ -123,7 +123,7 @@ public fun advance_epoch_with_reward_amounts_return_rebate(
     stoarge_rebate: u64,
     non_refundable_storage_rebate: u64,
     scenario: &mut Scenario,
-): Balance<SUI> {
+): Balance<OCT> {
     scenario.next_tx(@0x0);
     let new_epoch = scenario.ctx().epoch() + 1;
     let mut system_state = scenario.take_shared<SuiSystemState>();
@@ -153,8 +153,8 @@ public fun advance_epoch_with_reward_amounts(
     scenario: &mut Scenario,
 ) {
     let storage_rebate = advance_epoch_with_reward_amounts_return_rebate(
-        storage_charge * MIST_PER_SUI,
-        computation_charge * MIST_PER_SUI,
+        storage_charge * MIST_PER_OCT,
+        computation_charge * MIST_PER_OCT,
         0,
         0,
         scenario,
@@ -177,8 +177,8 @@ public fun advance_epoch_with_reward_amounts_and_slashing_rates(
     let storage_rebate = system_state.advance_epoch_for_testing(
         new_epoch,
         1,
-        storage_charge * MIST_PER_SUI,
-        computation_charge * MIST_PER_SUI,
+        storage_charge * MIST_PER_OCT,
+        computation_charge * MIST_PER_OCT,
         0,
         0,
         0,
@@ -198,21 +198,21 @@ public fun stake_with(staker: address, validator: address, amount: u64, scenario
     let ctx = scenario.ctx();
 
     system_state.request_add_stake(
-        coin::mint_for_testing(amount * MIST_PER_SUI, ctx),
+        coin::mint_for_testing(amount * MIST_PER_OCT, ctx),
         validator,
         ctx,
     );
     test_scenario::return_shared(system_state);
 }
 
-public fun unstake(staker: address, staked_sui_idx: u64, scenario: &mut Scenario) {
+public fun unstake(staker: address, staked_oct_idx: u64, scenario: &mut Scenario) {
     scenario.next_tx(staker);
-    let stake_sui_ids = scenario.ids_for_sender<StakedSui>();
-    let staked_sui = scenario.take_from_sender_by_id(stake_sui_ids[staked_sui_idx]);
+    let stake_sui_ids = scenario.ids_for_sender<StakedOct>();
+    let staked_oct = scenario.take_from_sender_by_id(stake_sui_ids[staked_oct_idx]);
     let mut system_state = scenario.take_shared<SuiSystemState>();
 
     let ctx = scenario.ctx();
-    system_state.request_withdraw_stake(staked_sui, ctx);
+    system_state.request_withdraw_stake(staked_oct, ctx);
     test_scenario::return_shared(system_state);
 }
 
@@ -248,7 +248,7 @@ public fun add_validator_full_flow(
         ctx,
     );
     system_state.request_add_stake(
-        coin::mint_for_testing<SUI>(init_stake_amount * MIST_PER_SUI, ctx),
+        coin::mint_for_testing<SUI>(init_stake_amount * MIST_PER_OCT, ctx),
         validator,
         ctx,
     );
@@ -396,15 +396,15 @@ public fun stake_plus_current_rewards(
 ): u64 {
     let mut sum = 0;
     scenario.next_tx(addr);
-    let mut stake_ids = scenario.ids_for_sender<StakedSui>();
+    let mut stake_ids = scenario.ids_for_sender<StakedOct>();
     let current_epoch = scenario.ctx().epoch();
 
     while (!stake_ids.is_empty()) {
-        let staked_sui_id = stake_ids.pop_back();
-        let staked_sui = scenario.take_from_sender_by_id<StakedSui>(staked_sui_id);
+        let staked_oct_id = stake_ids.pop_back();
+        let staked_oct = scenario.take_from_sender_by_id<StakedOct>(staked_oct_id);
         sum =
-            sum + staked_sui.amount() + staking_pool.calculate_rewards(&staked_sui, current_epoch);
-        scenario.return_to_sender(staked_sui);
+            sum + staked_oct.amount() + staking_pool.calculate_rewards(&staked_oct, current_epoch);
+        scenario.return_to_sender(staked_oct);
     };
     sum
 }
@@ -412,10 +412,10 @@ public fun stake_plus_current_rewards(
 public fun total_sui_balance(addr: address, scenario: &mut Scenario): u64 {
     let mut sum = 0;
     scenario.next_tx(addr);
-    let coin_ids = scenario.ids_for_sender<Coin<SUI>>();
+    let coin_ids = scenario.ids_for_sender<Coin<OCT>>();
     let mut i = 0;
     while (i < coin_ids.length()) {
-        let coin = scenario.take_from_sender_by_id<Coin<SUI>>(coin_ids[i]);
+        let coin = scenario.take_from_sender_by_id<Coin<OCT>>(coin_ids[i]);
         sum = sum + coin.value();
         scenario.return_to_sender(coin);
         i = i + 1;

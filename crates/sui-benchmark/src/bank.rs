@@ -63,7 +63,7 @@ impl BenchmarkBank {
 
         info!("Number of gas requests = {}", chunked_coin_configs.len());
         for chunk in chunked_coin_configs {
-            let gas_coins = self.pay_sui(chunk, &mut init_coin, gas_price).await?;
+            let gas_coins = self.pay_oct(chunk, &mut init_coin, gas_price).await?;
             new_gas_coins.extend(gas_coins);
         }
         let mut workloads = vec![];
@@ -95,7 +95,7 @@ impl BenchmarkBank {
         Ok(workloads)
     }
 
-    async fn pay_sui(
+    async fn pay_oct(
         &mut self,
         coin_configs: &[GasCoinConfig],
         init_coin: &mut Gas,

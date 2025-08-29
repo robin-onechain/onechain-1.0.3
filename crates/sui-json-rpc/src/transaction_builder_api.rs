@@ -97,7 +97,7 @@ impl TransactionBuilderServer for TransactionBuilderApi {
         Ok(TransactionBlockBytes::from_data(data).map_err(crate::Error::from)?)
     }
 
-    async fn transfer_sui(
+    async fn transfer_oct(
         &self,
         signer: SuiAddress,
         sui_object_id: ObjectID,
@@ -107,7 +107,7 @@ impl TransactionBuilderServer for TransactionBuilderApi {
     ) -> RpcResult<TransactionBlockBytes> {
         let data = self
             .0
-            .transfer_sui(
+            .transfer_oct(
                 signer,
                 sui_object_id,
                 *gas_budget,
@@ -143,7 +143,7 @@ impl TransactionBuilderServer for TransactionBuilderApi {
         Ok(TransactionBlockBytes::from_data(data).map_err(crate::Error::from)?)
     }
 
-    async fn pay_sui(
+    async fn pay_oct(
         &self,
         signer: SuiAddress,
         input_coins: Vec<ObjectID>,
@@ -153,7 +153,7 @@ impl TransactionBuilderServer for TransactionBuilderApi {
     ) -> RpcResult<TransactionBlockBytes> {
         let data = self
             .0
-            .pay_sui(
+            .pay_oct(
                 signer,
                 input_coins,
                 recipients,
@@ -165,7 +165,7 @@ impl TransactionBuilderServer for TransactionBuilderApi {
         Ok(TransactionBlockBytes::from_data(data).map_err(crate::Error::from)?)
     }
 
-    async fn pay_all_sui(
+    async fn pay_all_oct(
         &self,
         signer: SuiAddress,
         input_coins: Vec<ObjectID>,
@@ -174,7 +174,7 @@ impl TransactionBuilderServer for TransactionBuilderApi {
     ) -> RpcResult<TransactionBlockBytes> {
         let data = self
             .0
-            .pay_all_sui(signer, input_coins, recipient, *gas_budget)
+            .pay_all_oct(signer, input_coins, recipient, *gas_budget)
             .await
             .map_err(crate::Error::from)?;
         Ok(TransactionBlockBytes::from_data(data).map_err(crate::Error::from)?)
@@ -320,13 +320,13 @@ impl TransactionBuilderServer for TransactionBuilderApi {
     async fn request_withdraw_stake(
         &self,
         signer: SuiAddress,
-        staked_sui: ObjectID,
+        staked_oct: ObjectID,
         gas: Option<ObjectID>,
         gas_budget: BigInt<u64>,
     ) -> RpcResult<TransactionBlockBytes> {
         Ok(TransactionBlockBytes::from_data(
             self.0
-                .request_withdraw_stake(signer, staked_sui, gas, *gas_budget)
+                .request_withdraw_stake(signer, staked_oct, gas, *gas_budget)
                 .await
                 .map_err(crate::Error::from)?,
         )

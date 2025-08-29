@@ -7,7 +7,7 @@ module sui::kiosk_test_utils;
 use sui::coin::{Self, Coin};
 use sui::kiosk::{Self, Kiosk, KioskOwnerCap};
 use sui::package::{Self, Publisher};
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::transfer_policy::{Self as policy, TransferPolicy, TransferPolicyCap};
 
 public struct OTW has drop {}
@@ -34,7 +34,7 @@ public fun get_policy(ctx: &mut TxContext): (TransferPolicy<Asset>, TransferPoli
 }
 
 /// Prepare: Get Sui
-public fun get_sui(amount: u64, ctx: &mut TxContext): Coin<SUI> {
+public fun get_sui(amount: u64, ctx: &mut TxContext): Coin<OCT> {
     coin::mint_for_testing(amount, ctx)
 }
 

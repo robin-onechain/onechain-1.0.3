@@ -56,7 +56,7 @@
 
 //# programmable --sender A --inputs object(10,0) 43
 //> 0: SplitCoins(Gas, [Input(1)]);
-//> 1: sui::object_bag::add<u64, sui::coin::Coin<sui::sui::SUI>>(Input(0), Input(1), Result(0))
+//> 1: sui::object_bag::add<u64, one::coin::Coin<one::oct::OCT>>(Input(0), Input(1), Result(0))
 
 //# create-checkpoint
 
@@ -67,7 +67,7 @@
 }
 
 //# programmable --sender A --inputs object(10,0) 43
-//> 0: sui::object_bag::remove<u64, sui::coin::Coin<sui::sui::SUI>>(Input(0), Input(1));
+//> 0: sui::object_bag::remove<u64, one::coin::Coin<one::oct::OCT>>(Input(0), Input(1));
 //> 1: MergeCoins(Gas, [Result(0)])
 
 //# create-checkpoint

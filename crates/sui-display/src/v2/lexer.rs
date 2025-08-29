@@ -667,7 +667,7 @@ mod tests {
     /// Struct types are fully-qualified, with a numerical (hexadecimal) address.
     #[test]
     fn test_types() {
-        assert_snapshot!(lexemes(r#"{0x2::table::Table<address, 0x2::coin::Coin<0x2::sui::SUI>>}"#), @r###"
+        assert_snapshot!(lexemes(r#"{0x2::table::Table<address, 0x2::coin::Coin<0x2::oct::OCT>>}"#), @r###"
         L(false, LBrace, 0, "{")
         L(false, NumHex, 3, "2")
         L(false, CColon, 4, "::")
@@ -698,7 +698,7 @@ mod tests {
     /// by commas, surrounded by parentheses.
     #[test]
     fn test_positional_struct_literals() {
-        assert_snapshot!(lexemes(r#"{0x2::balance::Balance<0x2::sui::SUI>(42u64)}"#), @r###"
+        assert_snapshot!(lexemes(r#"{0x2::balance::Balance<0x2::oct::OCT>(42u64)}"#), @r###"
         L(false, LBrace, 0, "{")
         L(false, NumHex, 3, "2")
         L(false, CColon, 4, "::")
@@ -724,7 +724,7 @@ mod tests {
     /// affect the encoded output.
     #[test]
     fn test_struct_literals() {
-        assert_snapshot!(lexemes(r#"{0x2::coin::Coin<0x2::sui::SUI> { id: @0x123, value: 42u64 }}"#), @r###"
+        assert_snapshot!(lexemes(r#"{0x2::coin::Coin<0x2::oct::OCT> { id: @0x123, value: 42u64 }}"#), @r###"
         L(false, LBrace, 0, "{")
         L(false, NumHex, 3, "2")
         L(false, CColon, 4, "::")

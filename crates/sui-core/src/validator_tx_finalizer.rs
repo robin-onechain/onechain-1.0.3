@@ -723,7 +723,7 @@ mod tests {
             gas_object_ref,
             state.reference_gas_price_for_testing().unwrap(),
         )
-        .transfer_sui(None, sender)
+        .transfer_oct(None, sender)
         .build();
         let tx = to_sender_signed_transaction(tx_data, keypair);
         let response = clients

@@ -14,7 +14,7 @@ The following example creates a shop to sell digital donuts. Everyone needs acce
 ```move
 module examples::donuts;
 
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::coin::{Self, Coin};
 use sui::balance::{Self, Balance};
 
@@ -31,7 +31,7 @@ public struct Donut has key { id: UID }
 public struct DonutShop has key {
     id: UID,
     price: u64,
-    balance: Balance<SUI>
+    balance: Balance<OCT>
 }
 
 /// Init function is often ideal place for initializing
@@ -51,11 +51,11 @@ fun init(ctx: &mut TxContext) {
 
 /// Entry function available to everyone who owns a Coin.
 public fun buy_donut(
-    shop: &mut DonutShop, payment: &mut Coin<SUI>, ctx: &mut TxContext
+    shop: &mut DonutShop, payment: &mut Coin<OCT>, ctx: &mut TxContext
 ) {
     assert!(coin::value(payment) >= shop.price, ENotEnough);
 
-    // Take amount = `shop.price` from Coin<SUI>
+    // Take amount = `shop.price` from Coin<OCT>
     let paid = payment.balance_mut.split(shop.price);
 
     // Put the coin to the Shop's balance

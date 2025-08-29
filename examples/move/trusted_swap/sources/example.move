@@ -8,7 +8,7 @@ module trusted_swap::example;
 
 use sui::balance::{Self, Balance};
 use sui::coin::{Self, Coin};
-use sui::sui::SUI;
+use one::oct::OCT;
 
 public struct Object has key, store {
     id: UID,
@@ -20,7 +20,7 @@ public struct SwapRequest has key {
     id: UID,
     owner: address,
     object: Object,
-    fee: Balance<SUI>,
+    fee: Balance<OCT>,
 }
 
 // === Errors ===
@@ -43,7 +43,7 @@ public fun new(scarcity: u8, style: u8, ctx: &mut TxContext): Object {
 
 /// Anyone who owns an `Object` can make it available for swapping, which
 /// sends a `SwapRequest` to a `service` responsible for matching swaps.
-public fun request_swap(object: Object, fee: Coin<SUI>, service: address, ctx: &mut TxContext) {
+public fun request_swap(object: Object, fee: Coin<OCT>, service: address, ctx: &mut TxContext) {
     assert!(coin::value(&fee) >= MIN_FEE, EFeeTooLow);
 
     let request = SwapRequest {
@@ -58,7 +58,7 @@ public fun request_swap(object: Object, fee: Coin<SUI>, service: address, ctx: &
 
 /// When the service has two swap requests, it can execute them, sending the
 /// objects to the respective owners and taking its fee.
-public fun execute_swap(s1: SwapRequest, s2: SwapRequest): Balance<SUI> {
+public fun execute_swap(s1: SwapRequest, s2: SwapRequest): Balance<OCT> {
     let SwapRequest { id: id1, owner: owner1, object: o1, fee: mut fee1 } = s1;
     let SwapRequest { id: id2, owner: owner2, object: o2, fee: fee2 } = s2;
 
@@ -120,7 +120,7 @@ fun successful_swap() {
 
     {
         ts::next_tx(&mut ts, custodian);
-        let fee: Coin<SUI> = ts::take_from_sender(&ts);
+        let fee: Coin<OCT> = ts::take_from_sender(&ts);
 
         assert!(ts::ids_for_address<Object>(alice) == vector[i2], 0);
         assert!(ts::ids_for_address<Object>(bob) == vector[i1], 0);

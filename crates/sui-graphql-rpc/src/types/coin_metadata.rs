@@ -11,7 +11,7 @@ use super::move_object::{MoveObject, MoveObjectImpl};
 use super::move_value::MoveValue;
 use super::object::{self, Object, ObjectFilter, ObjectImpl, ObjectOwner, ObjectStatus};
 use super::owner::OwnerImpl;
-use super::stake::StakedSui;
+use super::stake::StakedOct;
 use super::sui_address::SuiAddress;
 use super::suins_registration::{DomainFormat, SuinsRegistration};
 use super::transaction_block::{self, TransactionBlock, TransactionBlockFilter};
@@ -59,7 +59,7 @@ impl CoinMetadata {
     }
 
     /// Total balance of all coins with marker type owned by this object. If type is not supplied,
-    /// it defaults to `0x2::sui::SUI`.
+    /// it defaults to `0x2::oct::OCT`.
     pub(crate) async fn balance(
         &self,
         ctx: &Context<'_>,
@@ -86,7 +86,7 @@ impl CoinMetadata {
 
     /// The coin objects for this object.
     ///
-    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::oct::OCT`.
     pub(crate) async fn coins(
         &self,
         ctx: &Context<'_>,
@@ -101,17 +101,17 @@ impl CoinMetadata {
             .await
     }
 
-    /// The `0x3::staking_pool::StakedSui` objects owned by this object.
-    pub(crate) async fn staked_suis(
+    /// The `0x3::staking_pool::StakedOct` objects owned by this object.
+    pub(crate) async fn staked_octs(
         &self,
         ctx: &Context<'_>,
         first: Option<u64>,
         after: Option<object::Cursor>,
         last: Option<u64>,
         before: Option<object::Cursor>,
-    ) -> Result<Connection<String, StakedSui>> {
+    ) -> Result<Connection<String, StakedOct>> {
         OwnerImpl::from(&self.super_.super_)
-            .staked_suis(ctx, first, after, last, before)
+            .staked_octs(ctx, first, after, last, before)
             .await
     }
 

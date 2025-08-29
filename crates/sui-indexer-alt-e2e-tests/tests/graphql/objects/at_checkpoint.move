@@ -5,19 +5,19 @@
 
 //# publish
 module P::M {
-  use sui::coin::Coin;
-  use sui::sui::SUI;
+  use one::coin::Coin;
+  use one::oct::OCT;
 
   public struct Wrapper has key, store {
     id: UID,
-    coin: Coin<SUI>,
+    coin: Coin<OCT>,
   }
 
-  public fun wrap(coin: Coin<SUI>, ctx: &mut TxContext): Wrapper {
+  public fun wrap(coin: Coin<OCT>, ctx: &mut TxContext): Wrapper {
     Wrapper { id: object::new(ctx), coin }
   }
 
-  public fun unwrap(wrapper: Wrapper): Coin<SUI> {
+  public fun unwrap(wrapper: Wrapper): Coin<OCT> {
     let Wrapper { id, coin } = wrapper;
     id.delete();
     coin

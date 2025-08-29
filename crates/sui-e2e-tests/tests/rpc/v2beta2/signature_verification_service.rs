@@ -44,7 +44,7 @@ async fn test_verify_signature_zklogin() -> Result<(), anyhow::Error> {
         .await;
 
     let tx_data = TestTransactionBuilder::new(zklogin_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let eph_sig = Signature::new_secure(&msg, kp);

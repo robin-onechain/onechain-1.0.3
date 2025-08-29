@@ -5,7 +5,7 @@
 
 //# publish
 module p::m {
-    use sui::sui::SUI;
+    use one::oct::OCT;
     use sui::coin;
 
     public fun sharer<T: key + store>(x: T) {
@@ -19,11 +19,11 @@ module p::m {
 
 //# programmable --sender A --inputs 10
 //> 0: SplitCoins(Gas, [Input(0)]);
-//> 1: sui::transfer::public_share_object<sui::coin::Coin<sui::sui::SUI>>(Result(0));
+//> 1: sui::transfer::public_share_object<one::coin::Coin<one::oct::OCT>>(Result(0));
 
 //# programmable --sender A --inputs 10
 //> 0: SplitCoins(Gas, [Input(0)]);
-//> 1: p::m::sharer<sui::coin::Coin<sui::sui::SUI>>(Result(0));
+//> 1: p::m::sharer<one::coin::Coin<one::oct::OCT>>(Result(0));
 
 //# run p::m::mint_shared
 

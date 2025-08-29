@@ -7,7 +7,7 @@ use super::cursor::Page;
 use super::dynamic_field::DynamicField;
 use super::dynamic_field::DynamicFieldName;
 use super::move_package::MovePackage;
-use super::stake::StakedSui;
+use super::stake::StakedOct;
 use super::suins_registration::{DomainFormat, NameService, SuinsRegistration};
 use crate::data::Db;
 use crate::types::balance::{self, Balance};
@@ -76,7 +76,7 @@ pub(crate) struct OwnerImpl {
         arg(name = "type", ty = "Option<ExactTypeFilter>"),
         ty = "Option<Balance>",
         desc = "Total balance of all coins with marker type owned by this object or address. If \
-                type is not supplied, it defaults to `0x2::sui::SUI`."
+                type is not supplied, it defaults to `0x2::oct::OCT`."
     ),
     field(
         name = "balances",
@@ -96,16 +96,16 @@ pub(crate) struct OwnerImpl {
         arg(name = "type", ty = "Option<ExactTypeFilter>"),
         ty = "Connection<String, Coin>",
         desc = "The coin objects for this object or address.\n\n\
-                `type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`."
+                `type` is a filter on the coin's type parameter, defaulting to `0x2::oct::OCT`."
     ),
     field(
-        name = "staked_suis",
+        name = "staked_octs",
         arg(name = "first", ty = "Option<u64>"),
         arg(name = "after", ty = "Option<object::Cursor>"),
         arg(name = "last", ty = "Option<u64>"),
         arg(name = "before", ty = "Option<object::Cursor>"),
-        ty = "Connection<String, StakedSui>",
-        desc = "The `0x3::staking_pool::StakedSui` objects owned by this object or address."
+        ty = "Connection<String, StakedOct>",
+        desc = "The `0x3::staking_pool::StakedOct` objects owned by this object or address."
     ),
     field(
         name = "default_suins_name",
@@ -133,7 +133,7 @@ pub(crate) enum IOwner {
     MoveObject(MoveObject),
     Coin(Coin),
     CoinMetadata(CoinMetadata),
-    StakedSui(StakedSui),
+    StakedOct(StakedOct),
     SuinsRegistration(SuinsRegistration),
 }
 
@@ -162,7 +162,7 @@ impl Owner {
     }
 
     /// Total balance of all coins with marker type owned by this object or address. If type is not
-    /// supplied, it defaults to `0x2::sui::SUI`.
+    /// supplied, it defaults to `0x2::oct::OCT`.
     pub(crate) async fn balance(
         &self,
         ctx: &Context<'_>,
@@ -187,7 +187,7 @@ impl Owner {
 
     /// The coin objects for this object or address.
     ///
-    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::oct::OCT`.
     pub(crate) async fn coins(
         &self,
         ctx: &Context<'_>,
@@ -202,17 +202,17 @@ impl Owner {
             .await
     }
 
-    /// The `0x3::staking_pool::StakedSui` objects owned by this object or address.
-    pub(crate) async fn staked_suis(
+    /// The `0x3::staking_pool::StakedOct` objects owned by this object or address.
+    pub(crate) async fn staked_octs(
         &self,
         ctx: &Context<'_>,
         first: Option<u64>,
         after: Option<object::Cursor>,
         last: Option<u64>,
         before: Option<object::Cursor>,
-    ) -> Result<Connection<String, StakedSui>> {
+    ) -> Result<Connection<String, StakedOct>> {
         OwnerImpl::from(self)
-            .staked_suis(ctx, first, after, last, before)
+            .staked_octs(ctx, first, after, last, before)
             .await
     }
 
@@ -400,16 +400,16 @@ impl OwnerImpl {
         .extend()
     }
 
-    pub(crate) async fn staked_suis(
+    pub(crate) async fn staked_octs(
         &self,
         ctx: &Context<'_>,
         first: Option<u64>,
         after: Option<object::Cursor>,
         last: Option<u64>,
         before: Option<object::Cursor>,
-    ) -> Result<Connection<String, StakedSui>> {
+    ) -> Result<Connection<String, StakedOct>> {
         let page = Page::from_params(ctx.data_unchecked(), first, after, last, before)?;
-        StakedSui::paginate(
+        StakedOct::paginate(
             ctx.data_unchecked(),
             page,
             self.address,

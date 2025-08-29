@@ -12,7 +12,7 @@ pub(crate) struct Key {
     #[bincode(with_serde)]
     pub(crate) owner: SuiAddress,
 
-    /// The coin type e.g. for `0x2::coin::Coin<0x2::sui::SUI>` this would be `0x2::sui::SUI`.
+    /// The coin type e.g. for `0x2::coin::Coin<0x2::oct::OCT>` this would be `0x2::oct::OCT`.
     #[bincode(with_serde)]
     pub(crate) type_: TypeTag,
 }

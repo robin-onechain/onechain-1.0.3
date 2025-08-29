@@ -350,7 +350,7 @@ fn create_coin(cluster: &mut FullCluster, owner: SuiAddress, amount: u64) -> Obj
 
     let mut builder = ProgrammableTransactionBuilder::new();
 
-    builder.transfer_sui(owner, Some(amount));
+    builder.transfer_oct(owner, Some(amount));
 
     let data = TransactionData::new_programmable(
         sender,

@@ -268,7 +268,7 @@ async fn test_indexing_with_tto() {
 async fn test_filter_by_type() {
     let cluster = TestClusterBuilder::new().build().await;
 
-    let sui = "0x2::coin::Coin<0x2::sui::SUI>"
+    let sui = "0x2::coin::Coin<0x2::oct::OCT>"
         .parse::<TypeTag>()
         .unwrap()
         .to_string();

@@ -100,7 +100,7 @@ impl FnDelegationTestCluster {
             .onchain_cluster
             .test_transaction_builder()
             .await
-            .transfer_sui(Some(1_000), recipient)
+            .transfer_oct(Some(1_000), recipient)
             .build();
         let tx_digest = tx.digest().to_string();
         let signed_tx = self.onchain_cluster.wallet.sign_transaction(&tx);
@@ -412,7 +412,7 @@ async fn test_get_all_balances() {
         .unwrap();
     // Only check that FN can return a valid response and not check the contents;
     // the contents is FN logic and thus should be tested on the FN side.
-    assert_eq!(response["result"][0]["coinType"], "0x2::sui::SUI");
+    assert_eq!(response["result"][0]["coinType"], "0x2::oct::OCT");
     test_cluster.stopped().await;
 }
 
@@ -471,8 +471,8 @@ async fn test_get_stakes_and_by_ids() {
         get_stakes_response["result"][0]["validatorAddress"],
         validator_address.to_string().as_str()
     );
-    assert!(get_stakes_response["result"][0]["stakes"][0]["stakedSuiId"].is_string());
-    let stake_id = get_stakes_response["result"][0]["stakes"][0]["stakedSuiId"]
+    assert!(get_stakes_response["result"][0]["stakes"][0]["stakedOctId"].is_string());
+    let stake_id = get_stakes_response["result"][0]["stakes"][0]["stakedOctId"]
         .as_str()
         .unwrap();
 
@@ -480,7 +480,7 @@ async fn test_get_stakes_and_by_ids() {
     let get_stakes_by_ids_response = test_cluster
         .execute_jsonrpc(
             "suix_getStakesByIds".to_string(),
-            json!({ "staked_sui_ids": [stake_id] }),
+            json!({ "staked_oct_ids": [stake_id] }),
         )
         .await
         .unwrap();
@@ -515,7 +515,7 @@ async fn test_get_stakes_invalid_params() {
     let response = test_cluster
         .execute_jsonrpc(
             "suix_getStakesByIds".to_string(),
-            json!({ "staked_sui_ids": ["invalid_stake_id"] }),
+            json!({ "staked_oct_ids": ["invalid_stake_id"] }),
         )
         .await
         .unwrap();
@@ -596,7 +596,7 @@ async fn test_get_balance() {
         .await
         .unwrap();
 
-    assert_eq!(response["result"]["coinType"], "0x2::sui::SUI");
+    assert_eq!(response["result"]["coinType"], "0x2::oct::OCT");
 
     // Test out the invalid coin type.
     let response = test_cluster

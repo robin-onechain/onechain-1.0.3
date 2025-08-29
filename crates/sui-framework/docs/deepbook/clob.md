@@ -484,7 +484,7 @@ Emitted only when a maker order is filled.
 <dd>
 </dd>
 <dt>
-<code>creation_fee: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;</code>
+<code>creation_fee: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;</code>
 </dt>
 <dd>
 </dd>
@@ -749,7 +749,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_create_pool">create_pool</a>&lt;BaseAsset, QuoteAsset&gt;(_tick_size: u64, _lot_size: u64, _creation_fee: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_create_pool">create_pool</a>&lt;BaseAsset, QuoteAsset&gt;(_tick_size: u64, _lot_size: u64, _creation_fee: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
 </code></pre>
 
 
@@ -778,7 +778,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_deposit_base">deposit_base</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;, _account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>)
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_deposit_base">deposit_base</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;, _account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>)
 </code></pre>
 
 
@@ -806,7 +806,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_deposit_quote">deposit_quote</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;, _account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>)
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_deposit_quote">deposit_quote</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;, _account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>)
 </code></pre>
 
 
@@ -834,7 +834,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_withdraw_base">withdraw_base</a>&lt;BaseAsset, QuoteAsset&gt;(pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, quantity: u64, account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_withdraw_base">withdraw_base</a>&lt;BaseAsset, QuoteAsset&gt;(pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, quantity: u64, account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;
 </code></pre>
 
 
@@ -864,7 +864,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_withdraw_quote">withdraw_quote</a>&lt;BaseAsset, QuoteAsset&gt;(pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, quantity: u64, account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_withdraw_quote">withdraw_quote</a>&lt;BaseAsset, QuoteAsset&gt;(pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, quantity: u64, account_cap: &<a href="../deepbook/custodian.md#deepbook_custodian_AccountCap">deepbook::custodian::AccountCap</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;
 </code></pre>
 
 
@@ -894,7 +894,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_swap_exact_base_for_quote">swap_exact_base_for_quote</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _quantity: u64, _base_coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;, _quote_coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;, _clock: &<a href="../sui/clock.md#sui_clock_Clock">sui::clock::Clock</a>, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;, <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;, u64)
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_swap_exact_base_for_quote">swap_exact_base_for_quote</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _quantity: u64, _base_coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;, _quote_coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;, _clock: &<a href="../sui/clock.md#sui_clock_Clock">sui::clock::Clock</a>, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;, <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;, u64)
 </code></pre>
 
 
@@ -925,7 +925,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_swap_exact_quote_for_base">swap_exact_quote_for_base</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _quantity: u64, _clock: &<a href="../sui/clock.md#sui_clock_Clock">sui::clock::Clock</a>, _quote_coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;, <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;, u64)
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_swap_exact_quote_for_base">swap_exact_quote_for_base</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _quantity: u64, _clock: &<a href="../sui/clock.md#sui_clock_Clock">sui::clock::Clock</a>, _quote_coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;, <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;, u64)
 </code></pre>
 
 
@@ -956,7 +956,7 @@ Deprecated since v1.0.0, use <code><a href="../deepbook/clob.md#deepbook_clob_Or
 Place a market order to the order book.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_place_market_order">place_market_order</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _quantity: u64, _is_bid: bool, _base_coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;, _quote_coin: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;, _clock: &<a href="../sui/clock.md#sui_clock_Clock">sui::clock::Clock</a>, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;BaseAsset&gt;, <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;QuoteAsset&gt;)
+<pre><code><b>public</b> <b>fun</b> <a href="../deepbook/clob.md#deepbook_clob_place_market_order">place_market_order</a>&lt;BaseAsset, QuoteAsset&gt;(_pool: &<b>mut</b> <a href="../deepbook/clob.md#deepbook_clob_Pool">deepbook::clob::Pool</a>&lt;BaseAsset, QuoteAsset&gt;, _quantity: u64, _is_bid: bool, _base_coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;, _quote_coin: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;, _clock: &<a href="../sui/clock.md#sui_clock_Clock">sui::clock::Clock</a>, _ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;BaseAsset&gt;, <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;QuoteAsset&gt;)
 </code></pre>
 
 

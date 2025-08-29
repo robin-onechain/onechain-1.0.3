@@ -113,7 +113,7 @@ async fn main() -> Result<(), anyhow::Error> {
     // construct an example programmable transaction.
     let pt = {
         let mut builder = ProgrammableTransactionBuilder::new();
-        builder.pay_sui(vec![sender], vec![1])?;
+        builder.pay_oct(vec![sender], vec![1])?;
         builder.finish()
     };
 

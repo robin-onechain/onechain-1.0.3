@@ -24,7 +24,7 @@ async fn test_notify_read_fastpath_transaction_outputs() {
     // Create a test transaction and effects.
     let (sender, sender_key) = get_account_key_pair();
     let tx_data = TestTransactionBuilder::new(sender, random_object_ref(), 1)
-        .transfer_sui(None, sender)
+        .transfer_oct(None, sender)
         .build();
     let tx = VerifiedTransaction::new_unchecked(to_sender_signed_transaction(tx_data, &sender_key));
     let tx_digest = *tx.digest();
@@ -92,7 +92,7 @@ async fn test_fast_path_execution() {
         gas_object_ref,
         state.reference_gas_price_for_testing().unwrap(),
     )
-    .transfer_sui(None, sender)
+    .transfer_oct(None, sender)
     .build();
     let cert = VerifiedExecutableTransaction::new_from_quorum_execution(
         VerifiedTransaction::new_unchecked(to_sender_signed_transaction(tx_data, &sender_key)),
@@ -151,7 +151,7 @@ async fn test_fast_path_then_consensus_execution() {
         gas_object_ref,
         state.reference_gas_price_for_testing().unwrap(),
     )
-    .transfer_sui(None, sender)
+    .transfer_oct(None, sender)
     .build();
     let cert = VerifiedExecutableTransaction::new_from_quorum_execution(
         VerifiedTransaction::new_unchecked(to_sender_signed_transaction(tx_data, &sender_key)),
@@ -217,7 +217,7 @@ async fn test_consensus_then_fast_path_execution() {
         gas_object_ref,
         state.reference_gas_price_for_testing().unwrap(),
     )
-    .transfer_sui(None, sender)
+    .transfer_oct(None, sender)
     .build();
     let cert = VerifiedExecutableTransaction::new_from_quorum_execution(
         VerifiedTransaction::new_unchecked(to_sender_signed_transaction(tx_data, &sender_key)),
@@ -270,7 +270,7 @@ async fn test_fast_path_then_consensus_execution_e2e() {
         gas_object_ref,
         state.reference_gas_price_for_testing().unwrap(),
     )
-    .transfer_sui(None, sender)
+    .transfer_oct(None, sender)
     .build();
     let cert = VerifiedExecutableTransaction::new_from_quorum_execution(
         VerifiedTransaction::new_unchecked(to_sender_signed_transaction(tx_data, &sender_key)),
@@ -350,7 +350,7 @@ async fn test_consensus_then_fast_path_execution_e2e() {
         gas_object_ref,
         state.reference_gas_price_for_testing().unwrap(),
     )
-    .transfer_sui(None, sender)
+    .transfer_oct(None, sender)
     .build();
     let cert = VerifiedExecutableTransaction::new_from_quorum_execution(
         VerifiedTransaction::new_unchecked(to_sender_signed_transaction(tx_data, &sender_key)),

@@ -3,7 +3,7 @@
 
 #[allow(unused_field)]
 module a::test1 {
-    use sui::coin::Coin;
+    use one::coin::Coin;
     use sui::object::UID;
 
     struct S1 {}
@@ -16,7 +16,7 @@ module a::test1 {
 
 #[allow(unused_field)]
 module a::test2 {
-    use sui::coin::Coin as Balance;
+    use one::coin::Coin as Balance;
     use sui::object::UID;
 
     struct S1 {}

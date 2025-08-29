@@ -2,7 +2,7 @@
 title: Module `sui::sui`
 ---
 
-Coin<SUI> is the token used to pay for gas in Sui.
+Coin<OCT> is the token used to pay for gas in Sui.
 It has 9 decimals, and the smallest unit (10^-9) is called "mist".
 
 
@@ -89,13 +89,13 @@ Sender is not @0x0 the system address.
 
 
 
-<a name="sui_sui_MIST_PER_SUI"></a>
+<a name="sui_sui_MIST_PER_OCT"></a>
 
 The amount of Mist per Sui token based on the fact that mist is
 10^-9 of a Sui token
 
 
-<pre><code><b>const</b> <a href="../sui/sui.md#sui_sui_MIST_PER_SUI">MIST_PER_SUI</a>: u64 = 1000000000;
+<pre><code><b>const</b> <a href="../sui/sui.md#sui_sui_MIST_PER_OCT">MIST_PER_OCT</a>: u64 = 1000000000;
 </code></pre>
 
 
@@ -128,7 +128,7 @@ Register the <code><a href="../sui/sui.md#sui_sui_SUI">SUI</a></code> Coin to ac
 This should be called only once during genesis creation.
 
 
-<pre><code><b>fun</b> <a href="../sui/sui.md#sui_sui_new">new</a>(ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;
+<pre><code><b>fun</b> <a href="../sui/sui.md#sui_sui_new">new</a>(ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;
 </code></pre>
 
 
@@ -152,9 +152,9 @@ This should be called only once during genesis creation.
     );
     <a href="../sui/transfer.md#sui_transfer_public_freeze_object">transfer::public_freeze_object</a>(metadata);
     <b>let</b> <b>mut</b> supply = treasury.treasury_into_supply();
-    <b>let</b> total_sui = supply.increase_supply(<a href="../sui/sui.md#sui_sui_TOTAL_SUPPLY_MIST">TOTAL_SUPPLY_MIST</a>);
+    <b>let</b> total_oct = supply.increase_supply(<a href="../sui/sui.md#sui_sui_TOTAL_SUPPLY_MIST">TOTAL_SUPPLY_MIST</a>);
     supply.destroy_supply();
-    total_sui
+    total_oct
 }
 </code></pre>
 
@@ -168,7 +168,7 @@ This should be called only once during genesis creation.
 
 
 
-<pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../sui/transfer.md#sui_transfer">transfer</a>(c: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, recipient: <b>address</b>)
+<pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../sui/transfer.md#sui_transfer">transfer</a>(c: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, recipient: <b>address</b>)
 </code></pre>
 
 

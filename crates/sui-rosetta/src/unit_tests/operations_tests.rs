@@ -24,7 +24,7 @@ async fn test_operation_data_parsing_pay_sui() -> Result<(), anyhow::Error> {
     let pt = {
         let mut builder = ProgrammableTransactionBuilder::new();
         builder
-            .pay_sui(vec![SuiAddress::random_for_testing_only()], vec![10000])
+            .pay_oct(vec![SuiAddress::random_for_testing_only()], vec![10000])
             .unwrap();
         builder.finish()
     };
@@ -40,7 +40,7 @@ async fn test_operation_data_parsing_pay_sui() -> Result<(), anyhow::Error> {
     let ops: Operations = data.clone().try_into()?;
     ops.0
         .iter()
-        .for_each(|op| assert_eq!(op.type_, OperationType::PaySui));
+        .for_each(|op| assert_eq!(op.type_, OperationType::PayOct));
     let metadata = ConstructionMetadata {
         sender,
         coins: vec![gas],

@@ -636,7 +636,7 @@ Convert <code><a href="../sui/token.md#sui_token_Token">Token</a></code> into an
 "to_coin" action.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/token.md#sui_token_to_coin">to_coin</a>&lt;T&gt;(t: <a href="../sui/token.md#sui_token_Token">sui::token::Token</a>&lt;T&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;, <a href="../sui/token.md#sui_token_ActionRequest">sui::token::ActionRequest</a>&lt;T&gt;)
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/token.md#sui_token_to_coin">to_coin</a>&lt;T&gt;(t: <a href="../sui/token.md#sui_token_Token">sui::token::Token</a>&lt;T&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;, <a href="../sui/token.md#sui_token_ActionRequest">sui::token::ActionRequest</a>&lt;T&gt;)
 </code></pre>
 
 
@@ -674,7 +674,7 @@ Convert an open <code>Coin</code> into a <code><a href="../sui/token.md#sui_toke
 the "from_coin" action.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/token.md#sui_token_from_coin">from_coin</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/token.md#sui_token_Token">sui::token::Token</a>&lt;T&gt;, <a href="../sui/token.md#sui_token_ActionRequest">sui::token::ActionRequest</a>&lt;T&gt;)
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/token.md#sui_token_from_coin">from_coin</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): (<a href="../sui/token.md#sui_token_Token">sui::token::Token</a>&lt;T&gt;, <a href="../sui/token.md#sui_token_ActionRequest">sui::token::ActionRequest</a>&lt;T&gt;)
 </code></pre>
 
 

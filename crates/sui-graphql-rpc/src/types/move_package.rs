@@ -12,7 +12,7 @@ use super::move_module::MoveModule;
 use super::move_object::MoveObject;
 use super::object::{self, Object, ObjectFilter, ObjectImpl, ObjectOwner, ObjectStatus};
 use super::owner::OwnerImpl;
-use super::stake::StakedSui;
+use super::stake::StakedOct;
 use super::sui_address::SuiAddress;
 use super::suins_registration::{DomainFormat, SuinsRegistration};
 use super::transaction_block::{self, TransactionBlock, TransactionBlockFilter};
@@ -196,7 +196,7 @@ impl MovePackage {
     }
 
     /// Total balance of all coins with marker type owned by this package. If type is not supplied,
-    /// it defaults to `0x2::sui::SUI`.
+    /// it defaults to `0x2::oct::OCT`.
     ///
     /// Note that coins owned by a package are inaccessible, because packages are immutable and
     /// cannot be owned by an address.
@@ -227,7 +227,7 @@ impl MovePackage {
 
     /// The coin objects owned by this package.
     ///
-    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::oct::OCT`.
     ///
     /// Note that coins owned by a package are inaccessible, because packages are immutable and
     /// cannot be owned by an address.
@@ -245,20 +245,20 @@ impl MovePackage {
             .await
     }
 
-    /// The `0x3::staking_pool::StakedSui` objects owned by this package.
+    /// The `0x3::staking_pool::StakedOct` objects owned by this package.
     ///
     /// Note that objects owned by a package are inaccessible, because packages are immutable and
     /// cannot be owned by an address.
-    pub(crate) async fn staked_suis(
+    pub(crate) async fn staked_octs(
         &self,
         ctx: &Context<'_>,
         first: Option<u64>,
         after: Option<object::Cursor>,
         last: Option<u64>,
         before: Option<object::Cursor>,
-    ) -> Result<Connection<String, StakedSui>> {
+    ) -> Result<Connection<String, StakedOct>> {
         OwnerImpl::from(&self.super_)
-            .staked_suis(ctx, first, after, last, before)
+            .staked_octs(ctx, first, after, last, before)
             .await
     }
 

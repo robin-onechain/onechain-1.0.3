@@ -249,7 +249,7 @@ fn withdraw_from_balance_tx_with_reservation(
         SUI_FRAMEWORK_PACKAGE_ID,
         Identifier::new("balance").unwrap(),
         Identifier::new("withdraw_from_account").unwrap(),
-        vec!["0x2::sui::SUI".parse().unwrap()],
+        vec!["0x2::oct::OCT".parse().unwrap()],
         vec![amount],
     );
 
@@ -257,7 +257,7 @@ fn withdraw_from_balance_tx_with_reservation(
         SUI_FRAMEWORK_PACKAGE_ID,
         Identifier::new("coin").unwrap(),
         Identifier::new("from_balance").unwrap(),
-        vec!["0x2::sui::SUI".parse().unwrap()],
+        vec!["0x2::oct::OCT".parse().unwrap()],
         vec![balance],
     );
 
@@ -291,7 +291,7 @@ fn make_send_to_account_tx(
         SUI_FRAMEWORK_PACKAGE_ID,
         Identifier::new("coin").unwrap(),
         Identifier::new("into_balance").unwrap(),
-        vec!["0x2::sui::SUI".parse().unwrap()],
+        vec!["0x2::oct::OCT".parse().unwrap()],
         vec![coin],
     );
 
@@ -299,7 +299,7 @@ fn make_send_to_account_tx(
         SUI_FRAMEWORK_PACKAGE_ID,
         Identifier::new("balance").unwrap(),
         Identifier::new("send_to_account").unwrap(),
-        vec!["0x2::sui::SUI".parse().unwrap()],
+        vec!["0x2::oct::OCT".parse().unwrap()],
         vec![balance, recipient_arg],
     );
 

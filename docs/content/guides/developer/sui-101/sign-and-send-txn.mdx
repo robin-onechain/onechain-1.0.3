@@ -155,7 +155,7 @@ Next, sign transaction data constructed using an example programmable transactio
     // construct an example programmable transaction.
     let pt = {
         let mut builder = ProgrammableTransactionBuilder::new();
-        builder.pay_sui(vec![sender], vec![1])?;
+        builder.pay_oct(vec![sender], vec![1])?;
         builder.finish()
     };
 
@@ -246,7 +246,7 @@ Create a transfer transaction in the CLI. Set the `$SUI_ADDRESS` to the one corr
 $ sui client gas
 ```
 ```sh
-$ sui client transfer-sui --to $SUI_ADDRESS --sui-coin-object-id $GAS_COIN_ID --gas-budget $GAS_BUDGET --serialize-unsigned-transaction
+$ sui client transfer-oct --to $SUI_ADDRESS --sui-coin-object-id $GAS_COIN_ID --gas-budget $GAS_BUDGET --serialize-unsigned-transaction
 ```
 ```sh
 $ sui keytool sign --address $SUI_ADDRESS --data $TX_BYTES

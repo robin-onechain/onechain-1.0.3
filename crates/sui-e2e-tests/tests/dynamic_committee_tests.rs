@@ -19,7 +19,7 @@ use sui_types::{
 };
 use sui_types::{
     base_types::{ObjectDigest, ObjectID, ObjectRef, SuiAddress},
-    governance::StakedSui,
+    governance::StakedOct,
     object::{Object, Owner},
     programmable_transaction_builder::ProgrammableTransactionBuilder,
     storage::ObjectStore,
@@ -173,9 +173,9 @@ impl StressTestRunner {
                 .get_object_by_key(&obj_ref.0, obj_ref.1);
             let Some(object) = object_opt else { continue };
             let struct_tag = object.struct_tag().unwrap();
-            let total_sui =
-                object.get_total_sui(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
-            println!(">> {struct_tag} TOTAL_SUI: {total_sui}");
+            let total_oct =
+                object.get_total_oct(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
+            println!(">> {struct_tag} TOTAL_SUI: {total_oct}");
         }
 
         println!("MUTATED:");
@@ -185,9 +185,9 @@ impl StressTestRunner {
                 .get_object_by_key(&obj_ref.0, obj_ref.1)
                 .unwrap();
             let struct_tag = object.struct_tag().unwrap();
-            let total_sui =
-                object.get_total_sui(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
-            println!(">> {struct_tag} TOTAL_SUI: {total_sui}");
+            let total_oct =
+                object.get_total_oct(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
+            println!(">> {struct_tag} TOTAL_SUI: {total_oct}");
         }
 
         println!("SHARED:");
@@ -198,9 +198,9 @@ impl StressTestRunner {
                 .get_object_by_key(&obj_id, version)
                 .unwrap();
             let struct_tag = object.struct_tag().unwrap();
-            let total_sui =
-                object.get_total_sui(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
-            println!(">> {struct_tag} TOTAL_SUI: {total_sui}");
+            let total_oct =
+                object.get_total_oct(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
+            println!(">> {struct_tag} TOTAL_SUI: {total_oct}");
         }
     }
 
@@ -317,10 +317,10 @@ mod add_stake {
             runner: &mut StressTestRunner,
             effects: &TransactionEffects,
         ) {
-            // Assert that a `StakedSui` object matching the amount delegated is created.
+            // Assert that a `StakedOct` object matching the amount delegated is created.
             // Assert that this staked sui
             let object = runner
-                .get_created_object_of_type_name(effects, "StakedSui")
+                .get_created_object_of_type_name(effects, "StakedOct")
                 .await
                 .unwrap();
 
@@ -333,15 +333,15 @@ mod add_stake {
                     .executor()
                     .type_layout_resolver(Box::new(cache.as_ref()));
                 let staked_amount =
-                    object.get_total_sui(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
+                    object.get_total_oct(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
                 assert_eq!(staked_amount, self.stake_amount);
             };
 
             // Get object contents and make sure that the values in it are correct.
-            let staked_sui: StakedSui =
+            let staked_oct: StakedOct =
                 bcs::from_bytes(object.data.try_as_move().unwrap().contents()).unwrap();
 
-            assert_eq!(staked_sui.principal(), self.stake_amount);
+            assert_eq!(staked_oct.principal(), self.stake_amount);
             assert_eq!(object.owner.get_owner_address().unwrap(), self.sender);
 
             // Keep track of all delegations, we will need it in stake withdrawals.
@@ -398,7 +398,7 @@ mod remove_stake {
             let pt = {
                 let mut builder = ProgrammableTransactionBuilder::new();
                 builder.obj(ObjectArg::SUI_SYSTEM_MUT).unwrap();
-                let staked_sui = builder
+                let staked_oct = builder
                     .obj(ObjectArg::ImmOrOwnedObject((
                         self.object_id,
                         self.version,
@@ -408,7 +408,7 @@ mod remove_stake {
 
                 move_call! {
                     builder,
-                    (SUI_SYSTEM_PACKAGE_ID)::sui_system::request_withdraw_stake(Argument::Input(0), staked_sui)
+                    (SUI_SYSTEM_PACKAGE_ID)::sui_system::request_withdraw_stake(Argument::Input(0), staked_oct)
                 };
                 builder.finish()
             };
@@ -470,7 +470,7 @@ async fn fuzz_dynamic_committee() {
     let active_validators = runner.system_state().active_validators;
     let total_stake = active_validators
         .iter()
-        .fold(0, |acc, v| acc + v.staking_pool_sui_balance);
+        .fold(0, |acc, v| acc + v.staking_pool_oct_balance);
 
     // Use the formula for voting_power from Sui System to check if the voting power is correctly
     // set. See `crates/sui-framework/packages/sui-system/sources/voting_power.move`.
@@ -483,7 +483,7 @@ async fn fuzz_dynamic_committee() {
     active_validators.iter().for_each(|v| {
         assert!(v.voting_power <= 1_000); // limitation
         let calculated_power =
-            ((v.staking_pool_sui_balance as u128 * 10_000) / total_stake as u128).min(1_000) as u64;
+            ((v.staking_pool_oct_balance as u128 * 10_000) / total_stake as u128).min(1_000) as u64;
         assert!(v.voting_power.abs_diff(calculated_power) < 2); // rounding error correction
     });
 

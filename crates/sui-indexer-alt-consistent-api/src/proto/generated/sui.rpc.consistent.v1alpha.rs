@@ -31,7 +31,7 @@ pub struct GetBalanceRequest {
     #[prost(string, optional, tag = "1")]
     pub owner: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. The marker type for the coins being aggregated into this
-    /// balance, e.g. `0x2::sui::SUI`.
+    /// balance, e.g. `0x2::oct::OCT`.
     #[prost(string, optional, tag = "2")]
     pub coin_type: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -82,7 +82,7 @@ pub struct ListObjectsByTypeRequest {
     ///   - `0x2`
     ///   - `0x2::coin`
     ///   - `0x2::coin::Coin`
-    ///   - `0x2::coin::Coin<0x2::sui::SUI>`
+    ///   - `0x2::coin::Coin<0x2::oct::OCT>`
     #[prost(string, optional, tag = "1")]
     pub object_type: ::core::option::Option<::prost::alloc::string::String>,
     /// The maximum number of entries to return. The service may return fewer than
@@ -118,7 +118,7 @@ pub struct ListOwnedObjectsRequest {
     ///   - `0x2`
     ///   - `0x2::coin`
     ///   - `0x2::coin::Coin`
-    ///   - `0x2::coin::Coin<0x2::sui::SUI>`
+    ///   - `0x2::coin::Coin<0x2::oct::OCT>`
     #[prost(string, optional, tag = "2")]
     pub object_type: ::core::option::Option<::prost::alloc::string::String>,
     /// The maximum number of entries to return. The service may return fewer than

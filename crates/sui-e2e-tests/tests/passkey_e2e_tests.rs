@@ -156,7 +156,7 @@ async fn create_credential_and_sign_test_tx(
         .fund_address_and_return_gas(rgp, Some(20000000000), sender)
         .await;
     let tx_data = TestTransactionBuilder::new(sender, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let intent_msg = IntentMessage::new(Intent::sui_transaction(), tx_data);
 

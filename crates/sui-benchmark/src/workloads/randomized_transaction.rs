@@ -185,7 +185,7 @@ impl RandomizedTransactionPayload {
 
     fn make_native_move_call(&mut self, builder: &mut ProgrammableTransactionBuilder) {
         builder
-            .pay_sui(
+            .pay_oct(
                 vec![self.transfer_to],
                 vec![rand::thread_rng().gen_range(0..=1)],
             )

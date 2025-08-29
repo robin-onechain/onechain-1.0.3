@@ -428,7 +428,7 @@ fn move_object_type_consistency() {
         assert!(!ty.is_gas_coin() || ty.is_coin());
         let cases = [
             ty.is_coin(),
-            ty.is_staked_sui(),
+            ty.is_staked_oct(),
             ty.is_coin_metadata(),
             ty.is_dynamic_field(),
         ];
@@ -439,8 +439,8 @@ fn move_object_type_consistency() {
     let ty = assert_consistent(&GasCoin::type_());
     assert!(ty.is_coin());
     assert!(ty.is_gas_coin());
-    let ty = assert_consistent(&StakedSui::type_());
-    assert!(ty.is_staked_sui());
+    let ty = assert_consistent(&StakedOct::type_());
+    assert!(ty.is_staked_oct());
     let ty = assert_consistent(&Coin::type_(TypeTag::U64));
     assert!(ty.is_coin());
     let ty = assert_consistent(&CoinMetadata::type_(GasCoin::type_()));

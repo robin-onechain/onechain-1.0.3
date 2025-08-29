@@ -17,7 +17,7 @@ use sui_open_rpc::Module;
 use sui_types::{
     base_types::{MoveObjectType, ObjectID, SuiAddress},
     committee::EpochId,
-    governance::StakedSui,
+    governance::StakedOct,
     sui_serde::BigInt,
     sui_system_state::{sui_system_state_summary::SuiSystemStateSummary, PoolTokenExchangeRate},
 };
@@ -53,7 +53,7 @@ impl GovernanceReadApi {
         let mut stakes = vec![];
         for stored_object in self.inner.multi_get_objects(ids).await? {
             let object = sui_types::object::Object::try_from(stored_object)?;
-            let stake_object = StakedSui::try_from(&object)?;
+            let stake_object = StakedOct::try_from(&object)?;
             stakes.push(stake_object);
         }
 
@@ -70,7 +70,7 @@ impl GovernanceReadApi {
             .get_owned_objects(
                 owner,
                 Some(SuiObjectDataFilter::StructType(
-                    MoveObjectType::staked_sui().into(),
+                    MoveObjectType::staked_oct().into(),
                 )),
                 None,
                 // Allow querying for up to 1000 staked objects
@@ -79,7 +79,7 @@ impl GovernanceReadApi {
             .await?
         {
             let object = sui_types::object::Object::try_from(stored_object)?;
-            let stake_object = StakedSui::try_from(&object)?;
+            let stake_object = StakedOct::try_from(&object)?;
             stakes.push(stake_object);
         }
 
@@ -88,7 +88,7 @@ impl GovernanceReadApi {
 
     pub async fn get_delegated_stakes(
         &self,
-        stakes: Vec<StakedSui>,
+        stakes: Vec<StakedOct>,
     ) -> Result<Vec<DelegatedStake>, IndexerError> {
         let pools = stakes
             .into_iter()
@@ -142,7 +142,7 @@ impl GovernanceReadApi {
                     StakeStatus::Pending
                 };
                 delegations.push(sui_json_rpc_types::Stake {
-                    staked_sui_id: stake.id(),
+                    staked_oct_id: stake.id(),
                     // TODO: this might change when we implement warm up period.
                     stake_request_epoch: stake.activation_epoch().saturating_sub(1),
                     stake_active_epoch: stake.activation_epoch(),
@@ -248,9 +248,9 @@ pub async fn exchange_rates(
 impl GovernanceReadApiServer for GovernanceReadApi {
     async fn get_stakes_by_ids(
         &self,
-        staked_sui_ids: Vec<ObjectID>,
+        staked_oct_ids: Vec<ObjectID>,
     ) -> RpcResult<Vec<DelegatedStake>> {
-        self.get_stakes_by_ids(staked_sui_ids)
+        self.get_stakes_by_ids(staked_oct_ids)
             .await
             .map_err(Into::into)
     }

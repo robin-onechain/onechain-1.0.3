@@ -837,7 +837,7 @@ async fn party_coin_grpc() {
         "0x2".parse().unwrap(),
         Identifier::new("transfer").unwrap(),
         Identifier::new("public_party_transfer").unwrap(),
-        vec!["0x2::coin::Coin<0x2::sui::SUI>".parse().unwrap()],
+        vec!["0x2::coin::Coin<0x2::oct::OCT>".parse().unwrap()],
         vec![party_coin_arg, party_owner],
     );
     builder

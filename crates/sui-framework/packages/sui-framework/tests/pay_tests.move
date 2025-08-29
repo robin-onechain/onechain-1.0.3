@@ -7,7 +7,7 @@ module sui::pay_tests;
 use sui::balance;
 use sui::coin::{Self, Coin};
 use sui::pay;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::test_scenario;
 use sui::test_utils;
 
@@ -23,16 +23,16 @@ fun test_coin_split_n() {
     coin.divide_and_keep(3, scenario.ctx());
 
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin1 = scenario.take_from_sender<Coin<SUI>>();
+    let coin1 = scenario.take_from_sender<Coin<OCT>>();
 
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin2 = scenario.take_from_sender<Coin<SUI>>();
+    let coin2 = scenario.take_from_sender<Coin<OCT>>();
 
     scenario.next_tx(TEST_SENDER_ADDR);
     assert!(coin1.value() == 3);
     assert!(coin2.value() == 3);
     assert!(coin.value() == 4);
-    assert!(!scenario.has_most_recent_for_sender<Coin<SUI>>(), 1);
+    assert!(!scenario.has_most_recent_for_sender<Coin<OCT>>(), 1);
 
     test_utils::destroy(coin);
     test_utils::destroy(coin1);
@@ -74,10 +74,10 @@ fun test_split_vec() {
     coin.split_vec(v, scenario.ctx());
 
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin1 = scenario.take_from_sender<Coin<SUI>>();
+    let coin1 = scenario.take_from_sender<Coin<OCT>>();
 
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin2 = scenario.take_from_sender<Coin<SUI>>();
+    let coin2 = scenario.take_from_sender<Coin<OCT>>();
 
     assert!(coin1.value() == 4);
     assert!(coin2.value() == 1);
@@ -100,7 +100,7 @@ fun test_split_and_transfer() {
     coin.split_and_transfer(3, TEST_SENDER_ADDR, scenario.ctx());
 
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin1 = scenario.take_from_sender<Coin<SUI>>();
+    let coin1 = scenario.take_from_sender<Coin<OCT>>();
     assert!(coin1.value() == 3);
     assert!(coin.value() == 7);
 
@@ -119,7 +119,7 @@ fun test_split_and_transfer_fail() {
     // Send 20 of 10 (should fail)
     coin.split_and_transfer(20, TEST_SENDER_ADDR, scenario.ctx());
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin_transfer_fail = scenario.take_from_sender<Coin<SUI>>();
+    let coin_transfer_fail = scenario.take_from_sender<Coin<OCT>>();
     assert!(coin_transfer_fail.value() == 7);
 
     test_utils::destroy(coin);
@@ -139,7 +139,7 @@ fun test_join_vec_and_transfer() {
     pay::join_vec_and_transfer(coin_vector, TEST_SENDER_ADDR);
 
     scenario.next_tx(TEST_SENDER_ADDR);
-    let coin1 = scenario.take_from_sender<Coin<SUI>>();
+    let coin1 = scenario.take_from_sender<Coin<OCT>>();
 
     // result is `3` coins of balance `2`
     assert!(coin1.value() == 6);

@@ -134,7 +134,7 @@ pub enum SuiClientCommands {
         /// Address (or its alias)
         #[arg(value_parser)]
         address: Option<KeyIdentity>,
-        /// Show balance for the specified coin (e.g., 0x2::sui::SUI).
+        /// Show balance for the specified coin (e.g., 0x2::oct::OCT).
         /// All coins will be shown if none is passed.
         #[clap(long, required = false)]
         coin_type: Option<String>,
@@ -352,7 +352,7 @@ pub enum SuiClientCommands {
 
     /// Pay all residual SUI coins to the recipient with input coins, after deducting the gas cost.
     /// The input coins also include the coin for gas payment, so no extra gas coin is required.
-    PayAllSui {
+    PayAllOct {
         /// The input coins to be used for pay recipients, including the gas coin.
         #[clap(long, num_args(1..))]
         input_coins: Vec<ObjectID>,
@@ -371,7 +371,7 @@ pub enum SuiClientCommands {
     /// Pay SUI coins to recipients following following specified amounts, with input coins.
     /// Length of recipients must be the same as that of amounts.
     /// The input coins also include the coin for gas payment, so no extra gas coin is required.
-    PaySui {
+    PayOct {
         /// The input coins to be used for pay recipients, including the gas coin.
         #[clap(long, num_args(1..))]
         input_coins: Vec<ObjectID>,
@@ -523,15 +523,15 @@ pub enum SuiClientCommands {
     /// Transfer SUI, and pay gas with the same SUI coin object.
     /// If amount is specified, only the amount is transferred; otherwise the entire object
     /// is transferred.
-    #[clap(name = "transfer-sui")]
-    TransferSui {
+    #[clap(name = "transfer-oct")]
+    TransferOct {
         /// Recipient address (or its alias if it's an address in the keystore)
         #[clap(long)]
         to: KeyIdentity,
 
         /// ID of the coin to transfer. This is also the gas object.
         #[clap(long)]
-        sui_coin_object_id: ObjectID,
+        oct_coin_object_id: ObjectID,
 
         /// The amount to transfer, if not specified, the entire coin object will be transferred.
         #[clap(long)]
@@ -1400,9 +1400,9 @@ impl SuiClientCommands {
                 .await?
             }
 
-            SuiClientCommands::TransferSui {
+            SuiClientCommands::TransferOct {
                 to,
-                sui_coin_object_id: object_id,
+                oct_coin_object_id: object_id,
                 amount,
                 gas_data,
                 processing,
@@ -1469,7 +1469,7 @@ impl SuiClientCommands {
 
                 ensure!(
                     !payment.gas.iter().any(|gas| input_coins.contains(gas)),
-                    "Gas coin is in input coins of Pay transaction, use PaySui transaction instead!"
+                    "Gas coin is in input coins of Pay transaction, use PayOct transaction instead!"
                 );
 
                 let gas_payment = client
@@ -1488,7 +1488,7 @@ impl SuiClientCommands {
                 .await?
             }
 
-            SuiClientCommands::PaySui {
+            SuiClientCommands::PayOct {
                 input_coins,
                 recipients,
                 amounts,
@@ -1497,11 +1497,11 @@ impl SuiClientCommands {
             } => {
                 ensure!(
                     !input_coins.is_empty(),
-                    "PaySui transaction requires a non-empty list of input coins"
+                    "PayOct transaction requires a non-empty list of input coins"
                 );
                 ensure!(
                     !recipients.is_empty(),
-                    "PaySui transaction requires a non-empty list of recipient addresses"
+                    "PayOct transaction requires a non-empty list of recipient addresses"
                 );
                 ensure!(
                     recipients.len() == amounts.len(),
@@ -1521,7 +1521,7 @@ impl SuiClientCommands {
 
                 let tx_kind = client
                     .transaction_builder()
-                    .pay_sui_tx_kind(recipients, amounts)?;
+                    .pay_oct_tx_kind(recipients, amounts)?;
 
                 let gas_payment = client
                     .transaction_builder()
@@ -1539,7 +1539,7 @@ impl SuiClientCommands {
                 .await?
             }
 
-            SuiClientCommands::PayAllSui {
+            SuiClientCommands::PayAllOct {
                 input_coins,
                 recipient,
                 gas_data,
@@ -1547,13 +1547,13 @@ impl SuiClientCommands {
             } => {
                 ensure!(
                     !input_coins.is_empty(),
-                    "PayAllSui transaction requires a non-empty list of input coins"
+                    "PayAllOct transaction requires a non-empty list of input coins"
                 );
                 let recipient = context.get_identity_address(Some(recipient))?;
                 let signer = context.get_object_owner(&input_coins[0]).await?;
                 let client = context.get_client().await?;
 
-                let tx_kind = client.transaction_builder().pay_all_sui_tx_kind(recipient);
+                let tx_kind = client.transaction_builder().pay_all_oct_tx_kind(recipient);
                 let gas_payment = client
                     .transaction_builder()
                     .input_refs(&input_coins)

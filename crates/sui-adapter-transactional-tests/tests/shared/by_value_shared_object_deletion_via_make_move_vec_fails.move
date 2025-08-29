@@ -8,7 +8,7 @@
 module t2::o2 {
     use sui::dynamic_field as df;
     use sui::dynamic_object_field as dof;
-    use sui::sui::SUI;
+    use one::oct::OCT;
     use sui::coin::{Self, Coin};
 
     public struct Obj2 has key, store {
@@ -19,7 +19,7 @@ module t2::o2 {
         transfer::public_share_object(coin::zero<SUI>(ctx))
     }
 
-    public fun pop_coin(mut o2: vector<Coin<SUI>>): Coin<SUI> {
+    public fun pop_coin(mut o2: vector<Coin<OCT>>): Coin<OCT> {
         let o = vector::pop_back(&mut o2);
         vector::destroy_empty(o2);
         o
@@ -91,7 +91,7 @@ module t2::o2 {
         transfer::share_object(o2);
     }
 
-    public fun share_coin(o2: Coin<SUI>) {
+    public fun share_coin(o2: Coin<OCT>) {
         transfer::public_share_object(o2);
     }
 }
@@ -172,7 +172,7 @@ module t2::o2 {
 //> 1: t2::o2::pop_coin(Result(0));
 //> 2: SplitCoins(Result(1), [Input(0)]);
 //> 3: TransferObjects([Result(2)], Input(2));
-//> 4: sui::transfer::public_share_object<sui::coin::Coin<sui::sui::SUI>>(Input(1));
+//> 4: sui::transfer::public_share_object<one::coin::Coin<one::oct::OCT>>(Input(1));
 
 // Try to reshare the shared object -- this should fail since the input was
 // used for the `MakeMoveVec` call

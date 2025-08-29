@@ -5,11 +5,11 @@
 
 module prettier::use_declaration;
 
-use sui::coin::Coin;
-use sui::coin::Coin as C;
+use one::coin::Coin;
+use one::coin::Coin as C;
 use sui::coin::{Self as c, Coin as C};
 use sui::coin::very_long_function_name_very_long_function_name as short_name;
-use beep::staked_sui::StakedSui;
+use beep::staked_oct::StakedOct;
 
 use sui::transfer_policy::{Self as policy, TransferPolicy, TransferPolicyCap, TransferRequest};
 use sui::transfer_policy::TransferPolicyCap as cap;

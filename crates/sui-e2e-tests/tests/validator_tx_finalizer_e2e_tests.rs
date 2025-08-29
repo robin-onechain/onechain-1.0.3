@@ -18,7 +18,7 @@ async fn test_validator_tx_finalizer_fastpath_tx() {
     let tx_data = cluster
         .test_transaction_builder()
         .await
-        .transfer_sui(None, dbg_addr(1))
+        .transfer_oct(None, dbg_addr(1))
         .build();
     let tx = cluster.sign_transaction(&tx_data);
     let tx_digest = *tx.digest();
@@ -96,13 +96,13 @@ async fn test_validator_tx_finalizer_equivocation() {
     let tx_data1 = cluster
         .test_transaction_builder()
         .await
-        .transfer_sui(None, dbg_addr(1))
+        .transfer_oct(None, dbg_addr(1))
         .build();
     let tx1 = cluster.sign_transaction(&tx_data1);
     let tx_data2 = cluster
         .test_transaction_builder()
         .await
-        .transfer_sui(None, dbg_addr(2))
+        .transfer_oct(None, dbg_addr(2))
         .build();
     let tx2 = cluster.sign_transaction(&tx_data2);
     let tx_digest1 = *tx1.digest();

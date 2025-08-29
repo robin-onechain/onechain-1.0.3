@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 module tto::M1 {
-    use sui::coin::Coin;
-    use sui::sui::SUI;
+    use one::coin::Coin;
+    use one::oct::OCT;
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
     use sui::transfer::{Self, Receiving};
@@ -12,7 +12,7 @@ module tto::M1 {
         id: UID,
     }
 
-    public fun start(coin: Coin<SUI>, ctx: &mut TxContext) {
+    public fun start(coin: Coin<OCT>, ctx: &mut TxContext) {
         let a = A { id: object::new(ctx) };
         let a_address = object::id_address(&a);
 
@@ -20,7 +20,7 @@ module tto::M1 {
         transfer::public_transfer(coin, a_address);
     }
 
-    public entry fun receive(parent: &mut A, x: Receiving<Coin<SUI>>) {
+    public entry fun receive(parent: &mut A, x: Receiving<Coin<OCT>>) {
         let coin = transfer::public_receive(&mut parent.id, x);
         transfer::public_transfer(coin, @tto);
     }

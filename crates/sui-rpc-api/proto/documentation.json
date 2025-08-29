@@ -4071,7 +4071,7 @@
           "fields": [
             {
               "name": "coin_type",
-              "description": "The type of the coin (e.g., 0x2::sui::SUI).",
+              "description": "The type of the coin (e.g., 0x2::oct::OCT).",
               "label": "optional",
               "type": "string",
               "longType": "string",
@@ -4419,7 +4419,7 @@
             },
             {
               "name": "coin_type",
-              "description": "Required. The type names for the coin (e.g., 0x2::sui::SUI).",
+              "description": "Required. The type names for the coin (e.g., 0x2::oct::OCT).",
               "label": "optional",
               "type": "string",
               "longType": "string",
@@ -7174,7 +7174,7 @@
             },
             {
               "name": "sui_balance",
-              "description": "The total number of SUI tokens in this pool, including the SUI in the rewards_pool, as well as in all the principal\nin the `StakedSui` object, updated at epoch boundaries.",
+              "description": "The total number of SUI tokens in this pool, including the SUI in the rewards_pool, as well as in all the principal\nin the `StakedOct` object, updated at epoch boundaries.",
               "label": "optional",
               "type": "uint64",
               "longType": "uint64",
@@ -7233,7 +7233,7 @@
               "defaultValue": ""
             },
             {
-              "name": "pending_total_sui_withdraw",
+              "name": "pending_total_oct_withdraw",
               "description": "Pending stake withdrawn during the current epoch, emptied at epoch boundaries.\nThis includes both the principal and rewards SUI withdrawn.",
               "label": "optional",
               "type": "uint64",

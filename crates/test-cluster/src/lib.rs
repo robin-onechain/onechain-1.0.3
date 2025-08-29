@@ -717,7 +717,7 @@ impl TestCluster {
         let (sender, gas) = context.get_one_gas_object().await.unwrap().unwrap();
         let tx = context.sign_transaction(
             &TestTransactionBuilder::new(sender, gas, rgp)
-                .transfer_sui(amount, funding_address)
+                .transfer_oct(amount, funding_address)
                 .build(),
         );
         context.execute_transaction_must_succeed(tx).await;
@@ -738,7 +738,7 @@ impl TestCluster {
         let tx = self
             .test_transaction_builder_with_sender(sender)
             .await
-            .transfer_sui(Some(amount), receiver)
+            .transfer_oct(Some(amount), receiver)
             .build();
         let effects = self
             .sign_and_execute_transaction(&tx)

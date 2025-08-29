@@ -1358,7 +1358,7 @@ impl AuthorityStore {
         let mut pending_objects = vec![];
         let mut count = 0;
         let mut size = 0;
-        let (mut total_sui, mut total_storage_rebate) = thread::scope(|s| {
+        let (mut total_oct, mut total_storage_rebate) = thread::scope(|s| {
             let pending_tasks = FuturesUnordered::new();
             for o in self.iter_live_object_set(false) {
                 match o {
@@ -1373,19 +1373,19 @@ impl AuthorityStore {
                                 let mut layout_resolver =
                                     executor.type_layout_resolver(Box::new(type_layout_store));
                                 let mut total_storage_rebate = 0;
-                                let mut total_sui = 0;
+                                let mut total_oct = 0;
                                 for object in task_objects {
                                     total_storage_rebate += object.storage_rebate;
-                                    // get_total_sui includes storage rebate, however all storage rebate is
+                                    // get_total_oct includes storage rebate, however all storage rebate is
                                     // also stored in the storage fund, so we need to subtract it here.
-                                    total_sui +=
-                                        object.get_total_sui(layout_resolver.as_mut()).unwrap()
+                                    total_oct +=
+                                        object.get_total_oct(layout_resolver.as_mut()).unwrap()
                                             - object.storage_rebate;
                                 }
                                 if count % 50_000_000 == 0 {
                                     info!("Processed {} objects", count);
                                 }
-                                (total_sui, total_storage_rebate)
+                                (total_oct, total_storage_rebate)
                             }));
                         }
                     }
@@ -1402,8 +1402,8 @@ impl AuthorityStore {
         let mut layout_resolver = executor.type_layout_resolver(Box::new(type_layout_store));
         for object in pending_objects {
             total_storage_rebate += object.storage_rebate;
-            total_sui +=
-                object.get_total_sui(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
+            total_oct +=
+                object.get_total_oct(layout_resolver.as_mut()).unwrap() - object.storage_rebate;
         }
         info!(
             "Scanned {} live objects, took {:?}",
@@ -1428,7 +1428,7 @@ impl AuthorityStore {
         let storage_fund_balance = system_state.storage_fund_total_object_storage_rebates;
         info!(
             "Total SUI amount in the network: {}, storage fund balance: {}, total storage rebate: {} at beginning of epoch {}",
-            total_sui, storage_fund_balance, total_storage_rebate, system_state.epoch
+            total_oct, storage_fund_balance, total_storage_rebate, system_state.epoch
         );
 
         let imbalance = (storage_fund_balance as i64) - (total_storage_rebate as i64);
@@ -1440,7 +1440,7 @@ impl AuthorityStore {
             .set(imbalance);
         self.metrics
             .sui_conservation_imbalance
-            .set((total_sui as i128 - TOTAL_SUPPLY_MIST as i128) as i64);
+            .set((total_oct as i128 - TOTAL_SUPPLY_MIST as i128) as i64);
 
         if let Some(expected_imbalance) = self
             .perpetual_tables
@@ -1464,18 +1464,18 @@ impl AuthorityStore {
                 .expect("DB write cannot fail");
         }
 
-        if let Some(expected_sui) = self
+        if let Some(expected_oct) = self
             .perpetual_tables
             .expected_network_sui_amount
             .get(&())
             .expect("DB read cannot fail")
         {
             fp_ensure!(
-                total_sui == expected_sui,
+                total_oct == expected_oct,
                 SuiError::from(
                     format!(
                         "Inconsistent state detected at epoch {}: total sui: {}, expecting {}",
-                        system_state.epoch, total_sui, expected_sui
+                        system_state.epoch, total_oct, expected_oct
                     )
                     .as_str()
                 )
@@ -1483,7 +1483,7 @@ impl AuthorityStore {
         } else {
             self.perpetual_tables
                 .expected_network_sui_amount
-                .insert(&(), &total_sui)
+                .insert(&(), &total_oct)
                 .expect("DB write cannot fail");
         }
 

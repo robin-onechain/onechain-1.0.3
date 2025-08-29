@@ -9,14 +9,14 @@ use std::string::String;
 use sui::bag::{Self, Bag};
 use sui::balance::Balance;
 use sui::event;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::url::{Self, Url};
 use sui_system::staking_pool::{
     Self,
     PoolTokenExchangeRate,
-    StakedSui,
+    StakedOct,
     StakingPool,
-    FungibleStakedSui
+    FungibleStakedOct
 };
 use sui_system::validator_cap::{Self, ValidatorOperationCap};
 
@@ -149,18 +149,18 @@ public struct UnstakingRequestEvent has copy, drop {
     reward_amount: u64,
 }
 
-/// Event emitted when a staked SUI is converted to a fungible staked SUI.
-public struct ConvertingToFungibleStakedSuiEvent has copy, drop {
+/// Event emitted when a staked OCT is converted to a fungible staked OCT.
+public struct ConvertingToFungibleStakedOctEvent has copy, drop {
     pool_id: ID,
     stake_activation_epoch: u64,
-    staked_sui_principal_amount: u64,
-    fungible_staked_sui_amount: u64,
+    staked_oct_principal_amount: u64,
+    fungible_staked_oct_amount: u64,
 }
 
-/// Event emitted when a fungible staked SUI is redeemed.
-public struct RedeemingFungibleStakedSuiEvent has copy, drop {
+/// Event emitted when a fungible staked OCT is redeemed.
+public struct RedeemingFungibleStakedOctEvent has copy, drop {
     pool_id: ID,
-    fungible_staked_sui_amount: u64,
+    fungible_staked_oct_amount: u64,
     sui_amount: u64,
 }
 
@@ -279,14 +279,14 @@ public(package) fun adjust_stake_and_gas_price(self: &mut Validator) {
 /// Request to add stake to the validator's staking pool, processed at the end of the epoch.
 public(package) fun request_add_stake(
     self: &mut Validator,
-    stake: Balance<SUI>,
+    stake: Balance<OCT>,
     staker_address: address,
     ctx: &mut TxContext,
-): StakedSui {
+): StakedOct {
     let stake_amount = stake.value();
     assert!(stake_amount > 0, EInvalidStakeAmount);
     let stake_epoch = ctx.epoch() + 1;
-    let staked_sui = self.staking_pool.request_add_stake(stake, stake_epoch, ctx);
+    let staked_oct = self.staking_pool.request_add_stake(stake, stake_epoch, ctx);
     // Process stake right away if staking pool is preactive.
     if (self.staking_pool.is_preactive()) {
         self.staking_pool.process_pending_stake();
@@ -299,41 +299,41 @@ public(package) fun request_add_stake(
         epoch: ctx.epoch(),
         amount: stake_amount,
     });
-    staked_sui
+    staked_oct
 }
 
-public(package) fun convert_to_fungible_staked_sui(
+public(package) fun convert_to_fungible_staked_oct(
     self: &mut Validator,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &mut TxContext,
-): FungibleStakedSui {
-    let stake_activation_epoch = staked_sui.activation_epoch();
-    let staked_sui_principal_amount = staked_sui.amount();
-    let fungible_staked_sui = self.staking_pool.convert_to_fungible_staked_sui(staked_sui, ctx);
+): FungibleStakedOct {
+    let stake_activation_epoch = staked_oct.activation_epoch();
+    let staked_oct_principal_amount = staked_oct.amount();
+    let fungible_staked_oct = self.staking_pool.convert_to_fungible_staked_oct(staked_oct, ctx);
 
-    event::emit(ConvertingToFungibleStakedSuiEvent {
+    event::emit(ConvertingToFungibleStakedOctEvent {
         pool_id: self.staking_pool_id(),
         stake_activation_epoch,
-        staked_sui_principal_amount,
-        fungible_staked_sui_amount: fungible_staked_sui.value(),
+        staked_oct_principal_amount,
+        fungible_staked_oct_amount: fungible_staked_oct.value(),
     });
 
-    fungible_staked_sui
+    fungible_staked_oct
 }
 
-public(package) fun redeem_fungible_staked_sui(
+public(package) fun redeem_fungible_staked_oct(
     self: &mut Validator,
-    fungible_staked_sui: FungibleStakedSui,
+    fungible_staked_oct: FungibleStakedOct,
     ctx: &TxContext,
-): Balance<SUI> {
-    let fungible_staked_sui_amount = fungible_staked_sui.value();
-    let sui = self.staking_pool.redeem_fungible_staked_sui(fungible_staked_sui, ctx);
+): Balance<OCT> {
+    let fungible_staked_oct_amount = fungible_staked_oct.value();
+    let sui = self.staking_pool.redeem_fungible_staked_oct(fungible_staked_oct, ctx);
 
     self.next_epoch_stake = self.next_epoch_stake - sui.value();
 
-    event::emit(RedeemingFungibleStakedSuiEvent {
+    event::emit(RedeemingFungibleStakedOctEvent {
         pool_id: self.staking_pool_id(),
-        fungible_staked_sui_amount,
+        fungible_staked_oct_amount,
         sui_amount: sui.value(),
     });
 
@@ -343,7 +343,7 @@ public(package) fun redeem_fungible_staked_sui(
 /// Request to add stake to the validator's staking pool at genesis
 public(package) fun request_add_stake_at_genesis(
     self: &mut Validator,
-    stake: Balance<SUI>,
+    stake: Balance<OCT>,
     staker_address: address,
     ctx: &mut TxContext,
 ) {
@@ -352,9 +352,9 @@ public(package) fun request_add_stake_at_genesis(
     assert!(stake_amount > 0, EInvalidStakeAmount);
 
     // 0 = genesis epoch
-    let staked_sui = self.staking_pool.request_add_stake(stake, 0, ctx);
+    let staked_oct = self.staking_pool.request_add_stake(stake, 0, ctx);
 
-    transfer::public_transfer(staked_sui, staker_address);
+    transfer::public_transfer(staked_oct, staker_address);
 
     // Process stake right away
     self.staking_pool.process_pending_stake();
@@ -364,12 +364,12 @@ public(package) fun request_add_stake_at_genesis(
 /// Request to withdraw stake from the validator's staking pool, processed at the end of the epoch.
 public(package) fun request_withdraw_stake(
     self: &mut Validator,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &TxContext,
-): Balance<SUI> {
-    let principal_amount = staked_sui.amount();
-    let stake_activation_epoch = staked_sui.activation_epoch();
-    let withdrawn_stake = self.staking_pool.request_withdraw_stake(staked_sui, ctx);
+): Balance<OCT> {
+    let principal_amount = staked_oct.amount();
+    let stake_activation_epoch = staked_oct.activation_epoch();
+    let withdrawn_stake = self.staking_pool.request_withdraw_stake(staked_oct, ctx);
     let withdraw_amount = withdrawn_stake.value();
     let reward_amount = withdraw_amount - principal_amount;
     self.next_epoch_stake = self.next_epoch_stake - withdraw_amount;
@@ -426,7 +426,7 @@ public(package) fun set_candidate_commission_rate(self: &mut Validator, new_comm
 }
 
 /// Deposit stakes rewards into the validator's staking pool, called at the end of the epoch.
-public(package) fun deposit_stake_rewards(self: &mut Validator, reward: Balance<SUI>) {
+public(package) fun deposit_stake_rewards(self: &mut Validator, reward: Balance<OCT>) {
     self.next_epoch_stake = self.next_epoch_stake + reward.value();
     self.staking_pool.deposit_rewards(reward);
 }
@@ -951,7 +951,7 @@ public(package) fun new_for_testing(
     p2p_address: vector<u8>,
     primary_address: vector<u8>,
     worker_address: vector<u8>,
-    initial_stake_option: Option<Balance<SUI>>,
+    initial_stake_option: Option<Balance<OCT>>,
     gas_price: u64,
     commission_rate: u64,
     is_active_at_genesis: bool,

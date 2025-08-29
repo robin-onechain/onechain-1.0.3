@@ -89,7 +89,7 @@ impl TestContext {
             self.gas_object_ref,
             self.state.reference_gas_price_for_testing().unwrap(),
         )
-        .transfer_sui(None, self.sender)
+        .transfer_oct(None, self.sender)
         .build();
         to_sender_signed_transaction(tx_data, &self.keypair)
     }
@@ -230,7 +230,7 @@ async fn test_submit_transaction_wrong_epoch() {
             .reference_gas_price_for_testing()
             .unwrap(),
     )
-    .transfer_sui(None, test_context.sender)
+    .transfer_oct(None, test_context.sender)
     .build();
 
     // Manually set wrong epoch
@@ -256,7 +256,7 @@ async fn test_submit_transaction_signature_verification_failure() {
             .reference_gas_price_for_testing()
             .unwrap(),
     )
-    .transfer_sui(None, test_context.sender)
+    .transfer_oct(None, test_context.sender)
     .build();
 
     // Sign with a different keypair to cause signature verification failure
@@ -282,7 +282,7 @@ async fn test_submit_transaction_gas_object_validation() {
             .reference_gas_price_for_testing()
             .unwrap(),
     )
-    .transfer_sui(None, test_context.sender)
+    .transfer_oct(None, test_context.sender)
     .build();
 
     let transaction = to_sender_signed_transaction(tx_data, &test_context.keypair);

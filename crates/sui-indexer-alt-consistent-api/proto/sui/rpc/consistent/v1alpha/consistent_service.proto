@@ -46,7 +46,7 @@ message GetBalanceRequest {
   optional string owner = 1;
 
   // Required. The marker type for the coins being aggregated into this
-  // balance, e.g. `0x2::sui::SUI`.
+  // balance, e.g. `0x2::oct::OCT`.
   optional string coin_type = 2;
 }
 
@@ -94,7 +94,7 @@ message ListObjectsByTypeRequest {
   //  - `0x2`
   //  - `0x2::coin`
   //  - `0x2::coin::Coin`
-  //  - `0x2::coin::Coin<0x2::sui::SUI>`
+  //  - `0x2::coin::Coin<0x2::oct::OCT>`
   optional string object_type = 1;
 
   // The maximum number of entries to return. The service may return fewer than
@@ -129,7 +129,7 @@ message ListOwnedObjectsRequest {
   //  - `0x2`
   //  - `0x2::coin`
   //  - `0x2::coin::Coin`
-  //  - `0x2::coin::Coin<0x2::sui::SUI>`
+  //  - `0x2::coin::Coin<0x2::oct::OCT>`
   optional string object_type = 2;
 
   // The maximum number of entries to return. The service may return fewer than

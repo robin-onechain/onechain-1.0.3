@@ -25,9 +25,9 @@ use super::{
 use async_graphql::connection::Connection;
 use async_graphql::*;
 use move_core_types::language_storage::StructTag;
-use sui_json_rpc_types::{Stake as RpcStakedSui, StakeStatus as RpcStakeStatus};
+use sui_json_rpc_types::{Stake as RpcStakedOct, StakeStatus as RpcStakeStatus};
 use sui_types::base_types::MoveObjectType;
-use sui_types::governance::StakedSui as NativeStakedSui;
+use sui_types::governance::StakedOct as NativeStakedOct;
 
 #[derive(Copy, Clone, Enum, PartialEq, Eq)]
 /// The stake's possible status: active, pending, or unstaked.
@@ -40,24 +40,24 @@ pub(crate) enum StakeStatus {
     Unstaked,
 }
 
-pub(crate) enum StakedSuiDowncastError {
-    NotAStakedSui,
+pub(crate) enum StakedOctDowncastError {
+    NotAStakedOct,
     Bcs(bcs::Error),
 }
 
 #[derive(Clone)]
-pub(crate) struct StakedSui {
-    /// Representation of this StakedSui as a generic Move Object.
+pub(crate) struct StakedOct {
+    /// Representation of this StakedOct as a generic Move Object.
     pub super_: MoveObject,
 
     /// Deserialized representation of the Move Object's contents as a
-    /// `0x3::staking_pool::StakedSui`.
-    pub native: NativeStakedSui,
+    /// `0x3::staking_pool::StakedOct`.
+    pub native: NativeStakedOct,
 }
 
-/// Represents a `0x3::staking_pool::StakedSui` Move object on-chain.
+/// Represents a `0x3::staking_pool::StakedOct` Move object on-chain.
 #[Object]
-impl StakedSui {
+impl StakedOct {
     pub(crate) async fn address(&self) -> SuiAddress {
         OwnerImpl::from(&self.super_.super_).address().await
     }
@@ -78,7 +78,7 @@ impl StakedSui {
     }
 
     /// Total balance of all coins with marker type owned by this object. If type is not supplied,
-    /// it defaults to `0x2::sui::SUI`.
+    /// it defaults to `0x2::oct::OCT`.
     pub(crate) async fn balance(
         &self,
         ctx: &Context<'_>,
@@ -105,7 +105,7 @@ impl StakedSui {
 
     /// The coin objects for this object.
     ///
-    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::sui::SUI`.
+    ///`type` is a filter on the coin's type parameter, defaulting to `0x2::oct::OCT`.
     pub(crate) async fn coins(
         &self,
         ctx: &Context<'_>,
@@ -120,17 +120,17 @@ impl StakedSui {
             .await
     }
 
-    /// The `0x3::staking_pool::StakedSui` objects owned by this object.
-    pub(crate) async fn staked_suis(
+    /// The `0x3::staking_pool::StakedOct` objects owned by this object.
+    pub(crate) async fn staked_octs(
         &self,
         ctx: &Context<'_>,
         first: Option<u64>,
         after: Option<object::Cursor>,
         last: Option<u64>,
         before: Option<object::Cursor>,
-    ) -> Result<Connection<String, StakedSui>> {
+    ) -> Result<Connection<String, StakedOct>> {
         OwnerImpl::from(&self.super_.super_)
-            .staked_suis(ctx, first, after, last, before)
+            .staked_octs(ctx, first, after, last, before)
             .await
     }
 
@@ -379,7 +379,7 @@ impl StakedSui {
     }
 }
 
-impl StakedSui {
+impl StakedOct {
     /// Query the database for a `page` of Staked SUI. The page uses the same cursor type as is used
     /// for `Object`, and is further filtered to a particular `owner`.
     ///
@@ -391,8 +391,8 @@ impl StakedSui {
         page: Page<object::Cursor>,
         owner: SuiAddress,
         checkpoint_viewed_at: u64,
-    ) -> Result<Connection<String, StakedSui>, Error> {
-        let type_: StructTag = MoveObjectType::staked_sui().into();
+    ) -> Result<Connection<String, StakedOct>, Error> {
+        let type_: StructTag = MoveObjectType::staked_oct().into();
 
         let filter = ObjectFilter {
             type_: Some(type_.into()),
@@ -404,42 +404,42 @@ impl StakedSui {
             let address = object.address;
             let move_object = MoveObject::try_from(&object).map_err(|_| {
                 Error::Internal(format!(
-                    "Expected {address} to be a StakedSui, but it's not a Move Object.",
+                    "Expected {address} to be a StakedOct, but it's not a Move Object.",
                 ))
             })?;
 
-            StakedSui::try_from(&move_object).map_err(|_| {
+            StakedOct::try_from(&move_object).map_err(|_| {
                 Error::Internal(format!(
-                    "Expected {address} to be a StakedSui, but it is not."
+                    "Expected {address} to be a StakedOct, but it is not."
                 ))
             })
         })
         .await
     }
 
-    /// The JSON-RPC representation of a StakedSui so that we can "cheat" to implement fields that
+    /// The JSON-RPC representation of a StakedOct so that we can "cheat" to implement fields that
     /// are not yet implemented directly for GraphQL.
     ///
     /// TODO: Make this obsolete
-    async fn rpc_stake(&self, ctx: &Context<'_>) -> Result<RpcStakedSui, Error> {
+    async fn rpc_stake(&self, ctx: &Context<'_>) -> Result<RpcStakedOct, Error> {
         ctx.data_unchecked::<PgManager>()
-            .fetch_rpc_staked_sui(self.native.clone())
+            .fetch_rpc_staked_oct(self.native.clone())
             .await
     }
 }
 
-impl TryFrom<&MoveObject> for StakedSui {
-    type Error = StakedSuiDowncastError;
+impl TryFrom<&MoveObject> for StakedOct {
+    type Error = StakedOctDowncastError;
 
     fn try_from(move_object: &MoveObject) -> Result<Self, Self::Error> {
-        if !move_object.native.is_staked_sui() {
-            return Err(StakedSuiDowncastError::NotAStakedSui);
+        if !move_object.native.is_staked_oct() {
+            return Err(StakedOctDowncastError::NotAStakedOct);
         }
 
         Ok(Self {
             super_: move_object.clone(),
             native: bcs::from_bytes(move_object.native.contents())
-                .map_err(StakedSuiDowncastError::Bcs)?,
+                .map_err(StakedOctDowncastError::Bcs)?,
         })
     }
 }

@@ -21,7 +21,7 @@
 
 //# run-graphql
 {
-  objects(filter: {type: "0x3::staking_pool::StakedSui"}) {
+  objects(filter: {type: "0x3::staking_pool::StakedOct"}) {
     edges {
       node {
         asMoveObject {
@@ -88,9 +88,9 @@
 }
 
 //# run-graphql
-# Fetch coins of 0x2::sui::SUI inner type
+# Fetch coins of 0x2::oct::OCT inner type
 {
-  objects(filter: {type: "0x2::coin::Coin<0x2::sui::SUI>"}) {
+  objects(filter: {type: "0x2::coin::Coin<0x2::oct::OCT>"}) {
     edges {
       node {
         asMoveObject {

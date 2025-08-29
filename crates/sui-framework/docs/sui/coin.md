@@ -394,7 +394,7 @@ Trying to split a coin more times than its balance allows.
 
 <a name="sui_coin_DENY_LIST_COIN_INDEX"></a>
 
-The index into the deny list vector for the <code><a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a></code> type.
+The index into the deny list vector for the <code><a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a></code> type.
 
 
 <pre><code><b>const</b> <a href="../sui/coin.md#sui_coin_DENY_LIST_COIN_INDEX">DENY_LIST_COIN_INDEX</a>: u64 = 0;
@@ -514,7 +514,7 @@ Get mutable reference to the treasury's <code>Supply</code>.
 Public getter for the coin's value
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_value">value</a>&lt;T&gt;(self: &<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;): u64
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_value">value</a>&lt;T&gt;(self: &<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;): u64
 </code></pre>
 
 
@@ -539,7 +539,7 @@ Public getter for the coin's value
 Get immutable reference to the balance of a coin.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/balance.md#sui_balance">balance</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: &<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;): &<a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/balance.md#sui_balance">balance</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: &<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;): &<a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;
 </code></pre>
 
 
@@ -564,7 +564,7 @@ Get immutable reference to the balance of a coin.
 Get a mutable reference to the balance of a coin.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_balance_mut">balance_mut</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;): &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_balance_mut">balance_mut</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;): &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;
 </code></pre>
 
 
@@ -589,7 +589,7 @@ Get a mutable reference to the balance of a coin.
 Wrap a balance into a Coin to make it transferable.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_from_balance">from_balance</a>&lt;T&gt;(<a href="../sui/balance.md#sui_balance">balance</a>: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_from_balance">from_balance</a>&lt;T&gt;(<a href="../sui/balance.md#sui_balance">balance</a>: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;
 </code></pre>
 
 
@@ -614,7 +614,7 @@ Wrap a balance into a Coin to make it transferable.
 Destruct a Coin wrapper and keep the balance.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_into_balance">into_balance</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_into_balance">into_balance</a>&lt;T&gt;(<a href="../sui/coin.md#sui_coin">coin</a>: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;
 </code></pre>
 
 
@@ -642,7 +642,7 @@ Take a <code><a href="../sui/coin.md#sui_coin_Coin">Coin</a></code> worth of <co
 Aborts if <code><a href="../sui/coin.md#sui_coin_value">value</a> &gt; <a href="../sui/balance.md#sui_balance">balance</a>.<a href="../sui/coin.md#sui_coin_value">value</a></code>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_take">take</a>&lt;T&gt;(<a href="../sui/balance.md#sui_balance">balance</a>: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;, <a href="../sui/coin.md#sui_coin_value">value</a>: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_take">take</a>&lt;T&gt;(<a href="../sui/balance.md#sui_balance">balance</a>: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;, <a href="../sui/coin.md#sui_coin_value">value</a>: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;
 </code></pre>
 
 
@@ -670,7 +670,7 @@ Aborts if <code><a href="../sui/coin.md#sui_coin_value">value</a> &gt; <a href="
 Put a <code><a href="../sui/coin.md#sui_coin_Coin">Coin</a>&lt;T&gt;</code> to the <code>Balance&lt;T&gt;</code>.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_put">put</a>&lt;T&gt;(<a href="../sui/balance.md#sui_balance">balance</a>: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;, <a href="../sui/coin.md#sui_coin">coin</a>: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;)
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_put">put</a>&lt;T&gt;(<a href="../sui/balance.md#sui_balance">balance</a>: &<b>mut</b> <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;T&gt;, <a href="../sui/coin.md#sui_coin">coin</a>: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;)
 </code></pre>
 
 
@@ -696,7 +696,7 @@ Consume the coin <code>c</code> and add its value to <code>self</code>.
 Aborts if <code>c.<a href="../sui/coin.md#sui_coin_value">value</a> + self.<a href="../sui/coin.md#sui_coin_value">value</a> &gt; U64_MAX</code>
 
 
-<pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_join">join</a>&lt;T&gt;(self: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;, c: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;)
+<pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_join">join</a>&lt;T&gt;(self: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;, c: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;)
 </code></pre>
 
 
@@ -724,7 +724,7 @@ Split coin <code>self</code> to two coins, one with balance <code>split_amount</
 and the remaining balance is left is <code>self</code>.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_split">split</a>&lt;T&gt;(self: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;, split_amount: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_split">split</a>&lt;T&gt;(self: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;, split_amount: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;
 </code></pre>
 
 
@@ -750,7 +750,7 @@ Split coin <code>self</code> into <code>n - 1</code> coins with equal balances. 
 <code>self</code>. Return newly created coins.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_divide_into_n">divide_into_n</a>&lt;T&gt;(self: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;, n: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): vector&lt;<a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_divide_into_n">divide_into_n</a>&lt;T&gt;(self: &<b>mut</b> <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;, n: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): vector&lt;<a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;&gt;
 </code></pre>
 
 
@@ -779,7 +779,7 @@ Make any Coin with a zero value. Useful for placeholding
 bids/payments or preemptively making empty balances.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_zero">zero</a>&lt;T&gt;(ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_zero">zero</a>&lt;T&gt;(ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;
 </code></pre>
 
 
@@ -804,7 +804,7 @@ bids/payments or preemptively making empty balances.
 Destroy a coin with value zero
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_destroy_zero">destroy_zero</a>&lt;T&gt;(c: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;)
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_destroy_zero">destroy_zero</a>&lt;T&gt;(c: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;)
 </code></pre>
 
 
@@ -980,7 +980,7 @@ Create a coin worth <code><a href="../sui/coin.md#sui_coin_value">value</a></cod
 in <code>cap</code> accordingly.
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_mint">mint</a>&lt;T&gt;(cap: &<b>mut</b> <a href="../sui/coin.md#sui_coin_TreasuryCap">sui::coin::TreasuryCap</a>&lt;T&gt;, <a href="../sui/coin.md#sui_coin_value">value</a>: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_mint">mint</a>&lt;T&gt;(cap: &<b>mut</b> <a href="../sui/coin.md#sui_coin_TreasuryCap">sui::coin::TreasuryCap</a>&lt;T&gt;, <a href="../sui/coin.md#sui_coin_value">value</a>: u64, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;
 </code></pre>
 
 
@@ -1036,7 +1036,7 @@ Destroy the coin <code>c</code> and decrease the total supply in <code>cap</code
 accordingly.
 
 
-<pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_burn">burn</a>&lt;T&gt;(cap: &<b>mut</b> <a href="../sui/coin.md#sui_coin_TreasuryCap">sui::coin::TreasuryCap</a>&lt;T&gt;, c: <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;T&gt;): u64
+<pre><code><b>public</b> <b>entry</b> <b>fun</b> <a href="../sui/coin.md#sui_coin_burn">burn</a>&lt;T&gt;(cap: &<b>mut</b> <a href="../sui/coin.md#sui_coin_TreasuryCap">sui::coin::TreasuryCap</a>&lt;T&gt;, c: <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;T&gt;): u64
 </code></pre>
 
 

@@ -8,8 +8,8 @@ title: Module `sui_system::validator`
 -  [Struct `Validator`](#sui_system_validator_Validator)
 -  [Struct `StakingRequestEvent`](#sui_system_validator_StakingRequestEvent)
 -  [Struct `UnstakingRequestEvent`](#sui_system_validator_UnstakingRequestEvent)
--  [Struct `ConvertingToFungibleStakedSuiEvent`](#sui_system_validator_ConvertingToFungibleStakedSuiEvent)
--  [Struct `RedeemingFungibleStakedSuiEvent`](#sui_system_validator_RedeemingFungibleStakedSuiEvent)
+-  [Struct `ConvertingToFungibleStakedOctEvent`](#sui_system_validator_ConvertingToFungibleStakedOctEvent)
+-  [Struct `RedeemingFungibleStakedOctEvent`](#sui_system_validator_RedeemingFungibleStakedOctEvent)
 -  [Constants](#@Constants_0)
 -  [Function `new_metadata`](#sui_system_validator_new_metadata)
 -  [Function `new`](#sui_system_validator_new)
@@ -17,8 +17,8 @@ title: Module `sui_system::validator`
 -  [Function `activate`](#sui_system_validator_activate)
 -  [Function `adjust_stake_and_gas_price`](#sui_system_validator_adjust_stake_and_gas_price)
 -  [Function `request_add_stake`](#sui_system_validator_request_add_stake)
--  [Function `convert_to_fungible_staked_sui`](#sui_system_validator_convert_to_fungible_staked_sui)
--  [Function `redeem_fungible_staked_sui`](#sui_system_validator_redeem_fungible_staked_sui)
+-  [Function `convert_to_fungible_staked_oct`](#sui_system_validator_convert_to_fungible_staked_oct)
+-  [Function `redeem_fungible_staked_oct`](#sui_system_validator_redeem_fungible_staked_oct)
 -  [Function `request_add_stake_at_genesis`](#sui_system_validator_request_add_stake_at_genesis)
 -  [Function `request_withdraw_stake`](#sui_system_validator_request_withdraw_stake)
 -  [Function `request_set_gas_price`](#sui_system_validator_request_set_gas_price)
@@ -460,14 +460,14 @@ Event emitted when a new unstake request is received.
 
 </details>
 
-<a name="sui_system_validator_ConvertingToFungibleStakedSuiEvent"></a>
+<a name="sui_system_validator_ConvertingToFungibleStakedOctEvent"></a>
 
-## Struct `ConvertingToFungibleStakedSuiEvent`
+## Struct `ConvertingToFungibleStakedOctEvent`
 
-Event emitted when a staked SUI is converted to a fungible staked SUI.
+Event emitted when a staked OCT is converted to a fungible staked OCT.
 
 
-<pre><code><b>public</b> <b>struct</b> <a href="../sui_system/validator.md#sui_system_validator_ConvertingToFungibleStakedSuiEvent">ConvertingToFungibleStakedSuiEvent</a> <b>has</b> <b>copy</b>, drop
+<pre><code><b>public</b> <b>struct</b> <a href="../sui_system/validator.md#sui_system_validator_ConvertingToFungibleStakedOctEvent">ConvertingToFungibleStakedOctEvent</a> <b>has</b> <b>copy</b>, drop
 </code></pre>
 
 
@@ -488,12 +488,12 @@ Event emitted when a staked SUI is converted to a fungible staked SUI.
 <dd>
 </dd>
 <dt>
-<code>staked_sui_principal_amount: u64</code>
+<code>staked_oct_principal_amount: u64</code>
 </dt>
 <dd>
 </dd>
 <dt>
-<code>fungible_staked_sui_amount: u64</code>
+<code>fungible_staked_oct_amount: u64</code>
 </dt>
 <dd>
 </dd>
@@ -502,14 +502,14 @@ Event emitted when a staked SUI is converted to a fungible staked SUI.
 
 </details>
 
-<a name="sui_system_validator_RedeemingFungibleStakedSuiEvent"></a>
+<a name="sui_system_validator_RedeemingFungibleStakedOctEvent"></a>
 
-## Struct `RedeemingFungibleStakedSuiEvent`
+## Struct `RedeemingFungibleStakedOctEvent`
 
-Event emitted when a fungible staked SUI is redeemed.
+Event emitted when a fungible staked OCT is redeemed.
 
 
-<pre><code><b>public</b> <b>struct</b> <a href="../sui_system/validator.md#sui_system_validator_RedeemingFungibleStakedSuiEvent">RedeemingFungibleStakedSuiEvent</a> <b>has</b> <b>copy</b>, drop
+<pre><code><b>public</b> <b>struct</b> <a href="../sui_system/validator.md#sui_system_validator_RedeemingFungibleStakedOctEvent">RedeemingFungibleStakedOctEvent</a> <b>has</b> <b>copy</b>, drop
 </code></pre>
 
 
@@ -525,7 +525,7 @@ Event emitted when a fungible staked SUI is redeemed.
 <dd>
 </dd>
 <dt>
-<code>fungible_staked_sui_amount: u64</code>
+<code>fungible_staked_oct_amount: u64</code>
 </dt>
 <dd>
 </dd>
@@ -949,7 +949,7 @@ Process pending stake and pending withdraws, and update the gas price.
 Request to add stake to the validator's staking pool, processed at the end of the epoch.
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_add_stake">request_add_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, stake: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, staker_address: <b>address</b>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedSui">sui_system::staking_pool::StakedSui</a>
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_add_stake">request_add_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, stake: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, staker_address: <b>address</b>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedOct">sui_system::staking_pool::StakedOct</a>
 </code></pre>
 
 
@@ -963,11 +963,11 @@ Request to add stake to the validator's staking pool, processed at the end of th
     stake: Balance&lt;SUI&gt;,
     staker_address: <b>address</b>,
     ctx: &<b>mut</b> TxContext,
-): StakedSui {
+): StakedOct {
     <b>let</b> <a href="../sui_system/validator.md#sui_system_validator_stake_amount">stake_amount</a> = stake.value();
     <b>assert</b>!(<a href="../sui_system/validator.md#sui_system_validator_stake_amount">stake_amount</a> &gt; 0, <a href="../sui_system/validator.md#sui_system_validator_EInvalidStakeAmount">EInvalidStakeAmount</a>);
     <b>let</b> stake_epoch = ctx.epoch() + 1;
-    <b>let</b> staked_sui = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_request_add_stake">request_add_stake</a>(stake, stake_epoch, ctx);
+    <b>let</b> staked_oct = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_request_add_stake">request_add_stake</a>(stake, stake_epoch, ctx);
     // Process stake right away <b>if</b> staking pool is preactive.
     <b>if</b> (self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_is_preactive">is_preactive</a>()) {
         self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.process_pending_stake();
@@ -980,7 +980,7 @@ Request to add stake to the validator's staking pool, processed at the end of th
         epoch: ctx.epoch(),
         amount: <a href="../sui_system/validator.md#sui_system_validator_stake_amount">stake_amount</a>,
     });
-    staked_sui
+    staked_oct
 }
 </code></pre>
 
@@ -988,13 +988,13 @@ Request to add stake to the validator's staking pool, processed at the end of th
 
 </details>
 
-<a name="sui_system_validator_convert_to_fungible_staked_sui"></a>
+<a name="sui_system_validator_convert_to_fungible_staked_oct"></a>
 
-## Function `convert_to_fungible_staked_sui`
+## Function `convert_to_fungible_staked_oct`
 
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_convert_to_fungible_staked_sui">convert_to_fungible_staked_sui</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, staked_sui: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedSui">sui_system::staking_pool::StakedSui</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedSui">sui_system::staking_pool::FungibleStakedSui</a>
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_convert_to_fungible_staked_oct">convert_to_fungible_staked_oct</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, staked_oct: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedOct">sui_system::staking_pool::StakedOct</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedOct">sui_system::staking_pool::FungibleStakedOct</a>
 </code></pre>
 
 
@@ -1003,21 +1003,21 @@ Request to add stake to the validator's staking pool, processed at the end of th
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_convert_to_fungible_staked_sui">convert_to_fungible_staked_sui</a>(
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_convert_to_fungible_staked_oct">convert_to_fungible_staked_oct</a>(
     self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">Validator</a>,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &<b>mut</b> TxContext,
-): FungibleStakedSui {
-    <b>let</b> stake_activation_epoch = staked_sui.activation_epoch();
-    <b>let</b> staked_sui_principal_amount = staked_sui.amount();
-    <b>let</b> fungible_staked_sui = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_convert_to_fungible_staked_sui">convert_to_fungible_staked_sui</a>(staked_sui, ctx);
-    event::emit(<a href="../sui_system/validator.md#sui_system_validator_ConvertingToFungibleStakedSuiEvent">ConvertingToFungibleStakedSuiEvent</a> {
+): FungibleStakedOct {
+    <b>let</b> stake_activation_epoch = staked_oct.activation_epoch();
+    <b>let</b> staked_oct_principal_amount = staked_oct.amount();
+    <b>let</b> fungible_staked_oct = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_convert_to_fungible_staked_oct">convert_to_fungible_staked_oct</a>(staked_oct, ctx);
+    event::emit(<a href="../sui_system/validator.md#sui_system_validator_ConvertingToFungibleStakedOctEvent">ConvertingToFungibleStakedOctEvent</a> {
         pool_id: self.<a href="../sui_system/validator.md#sui_system_validator_staking_pool_id">staking_pool_id</a>(),
         stake_activation_epoch,
-        staked_sui_principal_amount,
-        fungible_staked_sui_amount: fungible_staked_sui.value(),
+        staked_oct_principal_amount,
+        fungible_staked_oct_amount: fungible_staked_oct.value(),
     });
-    fungible_staked_sui
+    fungible_staked_oct
 }
 </code></pre>
 
@@ -1025,13 +1025,13 @@ Request to add stake to the validator's staking pool, processed at the end of th
 
 </details>
 
-<a name="sui_system_validator_redeem_fungible_staked_sui"></a>
+<a name="sui_system_validator_redeem_fungible_staked_oct"></a>
 
-## Function `redeem_fungible_staked_sui`
+## Function `redeem_fungible_staked_oct`
 
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_redeem_fungible_staked_sui">redeem_fungible_staked_sui</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, fungible_staked_sui: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedSui">sui_system::staking_pool::FungibleStakedSui</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_redeem_fungible_staked_oct">redeem_fungible_staked_oct</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, fungible_staked_oct: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_FungibleStakedOct">sui_system::staking_pool::FungibleStakedOct</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;
 </code></pre>
 
 
@@ -1040,17 +1040,17 @@ Request to add stake to the validator's staking pool, processed at the end of th
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_redeem_fungible_staked_sui">redeem_fungible_staked_sui</a>(
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_redeem_fungible_staked_oct">redeem_fungible_staked_oct</a>(
     self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">Validator</a>,
-    fungible_staked_sui: FungibleStakedSui,
+    fungible_staked_oct: FungibleStakedOct,
     ctx: &TxContext,
 ): Balance&lt;SUI&gt; {
-    <b>let</b> fungible_staked_sui_amount = fungible_staked_sui.value();
-    <b>let</b> sui = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_redeem_fungible_staked_sui">redeem_fungible_staked_sui</a>(fungible_staked_sui, ctx);
+    <b>let</b> fungible_staked_oct_amount = fungible_staked_oct.value();
+    <b>let</b> sui = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_redeem_fungible_staked_oct">redeem_fungible_staked_oct</a>(fungible_staked_oct, ctx);
     self.next_epoch_stake = self.next_epoch_stake - sui.value();
-    event::emit(<a href="../sui_system/validator.md#sui_system_validator_RedeemingFungibleStakedSuiEvent">RedeemingFungibleStakedSuiEvent</a> {
+    event::emit(<a href="../sui_system/validator.md#sui_system_validator_RedeemingFungibleStakedOctEvent">RedeemingFungibleStakedOctEvent</a> {
         pool_id: self.<a href="../sui_system/validator.md#sui_system_validator_staking_pool_id">staking_pool_id</a>(),
-        fungible_staked_sui_amount,
+        fungible_staked_oct_amount,
         sui_amount: sui.value(),
     });
     sui
@@ -1068,7 +1068,7 @@ Request to add stake to the validator's staking pool, processed at the end of th
 Request to add stake to the validator's staking pool at genesis
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_add_stake_at_genesis">request_add_stake_at_genesis</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, stake: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;, staker_address: <b>address</b>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_add_stake_at_genesis">request_add_stake_at_genesis</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, stake: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;, staker_address: <b>address</b>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>)
 </code></pre>
 
 
@@ -1087,8 +1087,8 @@ Request to add stake to the validator's staking pool at genesis
     <b>let</b> <a href="../sui_system/validator.md#sui_system_validator_stake_amount">stake_amount</a> = stake.value();
     <b>assert</b>!(<a href="../sui_system/validator.md#sui_system_validator_stake_amount">stake_amount</a> &gt; 0, <a href="../sui_system/validator.md#sui_system_validator_EInvalidStakeAmount">EInvalidStakeAmount</a>);
     // 0 = <a href="../sui_system/genesis.md#sui_system_genesis">genesis</a> epoch
-    <b>let</b> staked_sui = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_request_add_stake">request_add_stake</a>(stake, 0, ctx);
-    transfer::public_transfer(staked_sui, staker_address);
+    <b>let</b> staked_oct = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_request_add_stake">request_add_stake</a>(stake, 0, ctx);
+    transfer::public_transfer(staked_oct, staker_address);
     // Process stake right away
     self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.process_pending_stake();
     self.next_epoch_stake = self.next_epoch_stake + <a href="../sui_system/validator.md#sui_system_validator_stake_amount">stake_amount</a>;
@@ -1106,7 +1106,7 @@ Request to add stake to the validator's staking pool at genesis
 Request to withdraw stake from the validator's staking pool, processed at the end of the epoch.
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_withdraw_stake">request_withdraw_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, staked_sui: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedSui">sui_system::staking_pool::StakedSui</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_withdraw_stake">request_withdraw_stake</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, staked_oct: <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakedOct">sui_system::staking_pool::StakedOct</a>, ctx: &<a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;
 </code></pre>
 
 
@@ -1117,12 +1117,12 @@ Request to withdraw stake from the validator's staking pool, processed at the en
 
 <pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_request_withdraw_stake">request_withdraw_stake</a>(
     self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">Validator</a>,
-    staked_sui: StakedSui,
+    staked_oct: StakedOct,
     ctx: &TxContext,
 ): Balance&lt;SUI&gt; {
-    <b>let</b> principal_amount = staked_sui.amount();
-    <b>let</b> stake_activation_epoch = staked_sui.activation_epoch();
-    <b>let</b> withdrawn_stake = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_request_withdraw_stake">request_withdraw_stake</a>(staked_sui, ctx);
+    <b>let</b> principal_amount = staked_oct.amount();
+    <b>let</b> stake_activation_epoch = staked_oct.activation_epoch();
+    <b>let</b> withdrawn_stake = self.<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.<a href="../sui_system/validator.md#sui_system_validator_request_withdraw_stake">request_withdraw_stake</a>(staked_oct, ctx);
     <b>let</b> withdraw_amount = withdrawn_stake.value();
     <b>let</b> reward_amount = withdraw_amount - principal_amount;
     self.next_epoch_stake = self.next_epoch_stake - withdraw_amount;
@@ -1270,7 +1270,7 @@ Set new commission rate for the candidate validator.
 Deposit stakes rewards into the validator's staking pool, called at the end of the epoch.
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_deposit_stake_rewards">deposit_stake_rewards</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, reward: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">sui::sui::SUI</a>&gt;)
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../sui_system/validator.md#sui_system_validator_deposit_stake_rewards">deposit_stake_rewards</a>(self: &<b>mut</b> <a href="../sui_system/validator.md#sui_system_validator_Validator">sui_system::validator::Validator</a>, reward: <a href="../sui/balance.md#sui_balance_Balance">sui::balance::Balance</a>&lt;<a href="../sui/sui.md#sui_sui_SUI">one::oct::OCT</a>&gt;)
 </code></pre>
 
 

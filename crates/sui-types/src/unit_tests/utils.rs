@@ -72,7 +72,7 @@ pub fn create_fake_transaction() -> Transaction {
     let object = Object::immutable_with_id_for_testing(object_id);
     let pt = {
         let mut builder = ProgrammableTransactionBuilder::new();
-        builder.transfer_sui(recipient, None);
+        builder.transfer_oct(recipient, None);
         builder.finish()
     };
     let data = TransactionData::new_programmable(
@@ -91,7 +91,7 @@ pub fn make_transaction_data(sender: SuiAddress) -> TransactionData {
     ));
     let pt = {
         let mut builder = ProgrammableTransactionBuilder::new();
-        builder.transfer_sui(dbg_addr(2), None);
+        builder.transfer_oct(dbg_addr(2), None);
         builder.finish()
     };
     TransactionData::new_programmable(

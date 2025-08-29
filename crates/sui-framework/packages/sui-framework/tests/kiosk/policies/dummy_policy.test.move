@@ -5,8 +5,8 @@
 /// Dummy policy which showcases all of the methods.
 module sui::dummy_policy;
 
-use sui::coin::Coin;
-use sui::sui::SUI;
+use one::coin::Coin;
+use one::oct::OCT;
 use sui::transfer_policy::{Self as policy, TransferPolicy, TransferPolicyCap, TransferRequest};
 
 public struct Rule has drop {}
@@ -19,7 +19,7 @@ public fun set<T>(policy: &mut TransferPolicy<T>, cap: &TransferPolicyCap<T>) {
 public fun pay<T>(
     policy: &mut TransferPolicy<T>,
     request: &mut TransferRequest<T>,
-    payment: Coin<SUI>,
+    payment: Coin<OCT>,
 ) {
     policy::add_to_balance(Rule {}, policy, payment);
     policy::add_receipt(Rule {}, request);

@@ -8,7 +8,7 @@
 module t2::o2 {
     use sui::dynamic_field as df;
     use sui::dynamic_object_field as dof;
-    use sui::sui::SUI;
+    use one::oct::OCT;
     use sui::coin::{Self, Coin};
 
     public struct Obj2 has key, store {
@@ -49,7 +49,7 @@ module t2::o2 {
         transfer::share_object(o2);
     }
 
-    public fun share_coin(o2: Coin<SUI>) {
+    public fun share_coin(o2: Coin<OCT>) {
         transfer::public_share_object(o2);
     }
 
@@ -90,28 +90,28 @@ module t2::o2 {
 
 // Try to double-use the input
 //# programmable --inputs 0 object(10,0) @0x0
-//> 0: t2::o2::id<sui::coin::Coin<sui::sui::SUI>>(Input(1));
+//> 0: t2::o2::id<one::coin::Coin<one::oct::OCT>>(Input(1));
 //> 1: SplitCoins(Result(0), [Input(0)]);
 //> 2: TransferObjects([Result(1)], Input(2));
-//> 3: sui::transfer::public_share_object<sui::coin::Coin<sui::sui::SUI>>(Input(1));
+//> 3: sui::transfer::public_share_object<one::coin::Coin<one::oct::OCT>>(Input(1));
 
 // Try to double-use the input using a user-defined function
 //# programmable --inputs 0 object(10,0) @0x0
-//> 0: t2::o2::id<sui::coin::Coin<sui::sui::SUI>>(Input(1));
+//> 0: t2::o2::id<one::coin::Coin<one::oct::OCT>>(Input(1));
 //> 1: SplitCoins(Result(0), [Input(0)]);
 //> 2: TransferObjects([Result(1)], Input(2));
 //> 3: t2::o2::share_coin(Input(1));
 
 // Try to transfer the shared object and double-use the input
 //# programmable --inputs 0 object(10,0) @0x0
-//> 0: t2::o2::id<sui::coin::Coin<sui::sui::SUI>>(Input(1));
+//> 0: t2::o2::id<one::coin::Coin<one::oct::OCT>>(Input(1));
 //> 1: SplitCoins(Result(0), [Input(0)]);
 //> 2: TransferObjects([Result(1)], Input(2));
 //> 3: TransferObjects([Input(1)], Input(2));
 
 // Try to transfer the shared object
 //# programmable --inputs 0 object(10,0) @0x0
-//> 0: t2::o2::id<sui::coin::Coin<sui::sui::SUI>>(Input(1));
+//> 0: t2::o2::id<one::coin::Coin<one::oct::OCT>>(Input(1));
 //> 1: SplitCoins(Result(0), [Input(0)]);
 //> 2: TransferObjects([Result(1)], Input(2));
 //> 3: TransferObjects([Result(0)], Input(2));

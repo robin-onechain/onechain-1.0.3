@@ -11,7 +11,7 @@ module sui_system::validator_builder;
 
 use sui::bag;
 use sui::balance;
-use sui::sui::SUI;
+use one::oct::OCT;
 use sui::url;
 use sui_system::validator::{Self, Validator, ValidatorMetadata};
 

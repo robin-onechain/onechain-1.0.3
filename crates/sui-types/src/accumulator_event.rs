@@ -60,13 +60,13 @@ impl AccumulatorEvent {
 
         debug_assert_eq!(
             *ty,
-            "0x2::balance::Balance<0x2::sui::SUI>"
+            "0x2::balance::Balance<0x2::oct::OCT>"
                 .parse::<TypeTag>()
                 .unwrap()
         );
 
         let AccumulatorValue::Integer(value) = value else {
-            fatal!("Balance<SUI> accumulator value is not an integer");
+            fatal!("Balance<OCT> accumulator value is not an integer");
         };
 
         match operation {

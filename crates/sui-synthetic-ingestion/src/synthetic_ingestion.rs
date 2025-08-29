@@ -9,7 +9,7 @@ use sui_test_transaction_builder::TestTransactionBuilder;
 use sui_types::crypto::get_account_key_pair;
 use sui_types::effects::TransactionEffectsAPI;
 use sui_types::full_checkpoint_content::CheckpointData;
-use sui_types::gas_coin::MIST_PER_SUI;
+use sui_types::gas_coin::MIST_PER_OCT;
 use sui_types::utils::to_sender_signed_transaction;
 use tokio::fs;
 use tracing::info;
@@ -53,7 +53,7 @@ pub async fn generate_ingestion(config: Config) {
     let gas_price = sim.reference_gas_price();
     let (sender, keypair) = get_account_key_pair();
     let mut gas_object = {
-        let effects = sim.request_gas(sender, MIST_PER_SUI * 1000000).unwrap();
+        let effects = sim.request_gas(sender, MIST_PER_OCT * 1000000).unwrap();
         // `request_gas` will create a transaction, which we don't want to include in the benchmark.
         // Put it in a checkpoint and then remove the checkpoint file.
         sim.create_checkpoint();
@@ -66,7 +66,7 @@ pub async fn generate_ingestion(config: Config) {
     for i in 0..num_checkpoints {
         for _ in 0..checkpoint_size {
             let tx_data = TestTransactionBuilder::new(sender, gas_object, gas_price)
-                .transfer_sui(Some(1), sender)
+                .transfer_oct(Some(1), sender)
                 .build();
             let tx = to_sender_signed_transaction(tx_data, &keypair);
             let (effects, _) = sim.execute_transaction(tx).unwrap();

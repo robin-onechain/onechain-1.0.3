@@ -320,7 +320,7 @@ Return the owner of an AccountCap
 
 
 
-<pre><code><b>public</b>(package) <b>fun</b> <a href="../deepbook/custodian_v2.md#deepbook_custodian_v2_withdraw_asset">withdraw_asset</a>&lt;Asset&gt;(<a href="../deepbook/custodian.md#deepbook_custodian">custodian</a>: &<b>mut</b> <a href="../deepbook/custodian_v2.md#deepbook_custodian_v2_Custodian">deepbook::custodian_v2::Custodian</a>&lt;Asset&gt;, quantity: u64, account_cap: &<a href="../deepbook/custodian_v2.md#deepbook_custodian_v2_AccountCap">deepbook::custodian_v2::AccountCap</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">sui::coin::Coin</a>&lt;Asset&gt;
+<pre><code><b>public</b>(package) <b>fun</b> <a href="../deepbook/custodian_v2.md#deepbook_custodian_v2_withdraw_asset">withdraw_asset</a>&lt;Asset&gt;(<a href="../deepbook/custodian.md#deepbook_custodian">custodian</a>: &<b>mut</b> <a href="../deepbook/custodian_v2.md#deepbook_custodian_v2_Custodian">deepbook::custodian_v2::Custodian</a>&lt;Asset&gt;, quantity: u64, account_cap: &<a href="../deepbook/custodian_v2.md#deepbook_custodian_v2_AccountCap">deepbook::custodian_v2::AccountCap</a>, ctx: &<b>mut</b> <a href="../sui/tx_context.md#sui_tx_context_TxContext">sui::tx_context::TxContext</a>): <a href="../sui/coin.md#sui_coin_Coin">one::coin::Coin</a>&lt;Asset&gt;
 </code></pre>
 
 

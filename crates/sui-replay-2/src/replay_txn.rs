@@ -283,7 +283,7 @@ fn get_packages(txn_data: &TransactionData) -> Result<BTreeSet<ObjectID>, anyhow
 
 // Load the given objects. Objects are loaded and returned as a map from ObjectID to a map of
 // version to Object.
-// Returns also the packages of the type parameters instantiated (e.g. `SUI` in `Coin<SUI>`).
+// Returns also the packages of the type parameters instantiated (e.g. `SUI` in `Coin<OCT>`).
 #[allow(clippy::type_complexity)]
 fn load_objects(
     object_keys: &[ObjectKey],

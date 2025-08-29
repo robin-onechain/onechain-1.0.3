@@ -5,7 +5,7 @@
 /// A `TransferPolicy` Rule which implements percentage-based royalty fee.
 module sui::royalty_policy {
     use sui::coin::{Self, Coin};
-    use sui::sui::SUI;
+    use one::oct::OCT;
     use sui::transfer_policy::{Self as policy, TransferPolicy, TransferPolicyCap, TransferRequest};
 
     /// The `amount_bp` passed is more than 100%.
@@ -38,7 +38,7 @@ module sui::royalty_policy {
     public fun pay<T: key + store>(
         policy: &mut TransferPolicy<T>,
         request: &mut TransferRequest<T>,
-        payment: &mut Coin<SUI>,
+        payment: &mut Coin<OCT>,
         ctx: &mut TxContext,
     ) {
         let config: &Config = policy::get_rule(Rule {}, policy);
@@ -57,7 +57,7 @@ module sui::royalty_policy {
 module sui::royalty_policy_tests {
     use sui::coin;
     use sui::royalty_policy;
-    use sui::sui::SUI;
+    use one::oct::OCT;
     use sui::transfer_policy as policy;
     use sui::transfer_policy_tests as test;
 

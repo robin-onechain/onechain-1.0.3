@@ -21,7 +21,7 @@ task 3, line 60:
 //# view-object 1,1
 Owner: Account Address ( A )
 Version: 2
-Contents: sui::coin::Coin<test::first_coin::FIRST_COIN> {
+Contents: one::coin::Coin<test::first_coin::FIRST_COIN> {
     id: sui::object::UID {
         id: sui::object::ID {
             bytes: fake(1,1),
@@ -36,7 +36,7 @@ task 4, line 62:
 //# view-object 1,2
 Owner: Account Address ( A )
 Version: 2
-Contents: sui::coin::Coin<test::second_coin::SECOND_COIN> {
+Contents: one::coin::Coin<test::second_coin::SECOND_COIN> {
     id: sui::object::UID {
         id: sui::object::ID {
             bytes: fake(1,2),

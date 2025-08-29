@@ -449,7 +449,7 @@ pub async fn pick_highest_balance_coin(
 
     // Only look at SUI coins specifically
     let mut stream = coin_read_api
-        .get_coins_stream(address, Some("0x2::sui::SUI".to_string()))
+        .get_coins_stream(address, Some("0x2::oct::OCT".to_string()))
         .boxed();
 
     let mut coins_checked = 0;

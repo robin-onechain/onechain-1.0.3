@@ -292,7 +292,7 @@ async fn test_transaction_execution() {
         .validator_fullnode_handle
         .test_transaction_builder()
         .await
-        .transfer_sui(Some(1_000), recipient)
+        .transfer_oct(Some(1_000), recipient)
         .build();
     let signed_tx = cluster
         .network
@@ -405,7 +405,7 @@ async fn test_zklogin_sig_verify() {
         .fund_address_and_return_gas(rgp, Some(20000000000), zklogin_addr)
         .await;
     let tx_data = TestTransactionBuilder::new(zklogin_addr, gas, rgp)
-        .transfer_sui(None, SuiAddress::ZERO)
+        .transfer_oct(None, SuiAddress::ZERO)
         .build();
     let msg = IntentMessage::new(Intent::sui_transaction(), tx_data.clone());
     let eph_sig = Signature::new_secure(&msg, kp);
@@ -511,7 +511,7 @@ async fn test_transaction_dry_run() {
         .validator_fullnode_handle
         .test_transaction_builder()
         .await
-        .transfer_sui(Some(1_000), recipient)
+        .transfer_oct(Some(1_000), recipient)
         .build();
     let tx_bytes = Base64::encode(bcs::to_bytes(&tx).unwrap());
 
@@ -603,7 +603,7 @@ async fn test_transaction_dry_run_with_kind() {
         .validator_fullnode_handle
         .test_transaction_builder()
         .await
-        .transfer_sui(Some(1_000), recipient)
+        .transfer_oct(Some(1_000), recipient)
         .build();
     let tx_kind_bytes = Base64::encode(bcs::to_bytes(&tx.into_kind()).unwrap());
 
@@ -810,7 +810,7 @@ async fn test_payload_using_vars_mutation_passes() {
         .validator_fullnode_handle
         .test_transaction_builder()
         .await
-        .transfer_sui(Some(1_000), recipient)
+        .transfer_oct(Some(1_000), recipient)
         .build();
     let signed_tx = cluster
         .network

@@ -16,7 +16,7 @@ async fn get_coin_info() {
         .await
         .unwrap();
 
-    let coin_type_sdk: TypeTag = "0x2::sui::SUI".parse().unwrap();
+    let coin_type_sdk: TypeTag = "0x2::oct::OCT".parse().unwrap();
     let request = GetCoinInfoRequest {
         coin_type: Some(coin_type_sdk.to_string()),
     };

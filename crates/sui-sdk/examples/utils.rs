@@ -184,7 +184,7 @@ pub async fn fetch_coin(
     sui: &SuiClient,
     sender: &SuiAddress,
 ) -> Result<Option<Coin>, anyhow::Error> {
-    let coin_type = "0x2::sui::SUI".to_string();
+    let coin_type = "0x2::oct::OCT".to_string();
     let coins_stream = sui
         .coin_read_api()
         .get_coins_stream(*sender, Some(coin_type));

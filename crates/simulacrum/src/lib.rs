@@ -38,7 +38,7 @@ use sui_types::{
     committee::Committee,
     effects::TransactionEffects,
     error::ExecutionError,
-    gas_coin::MIST_PER_SUI,
+    gas_coin::MIST_PER_OCT,
     inner_temporary_store::InnerTemporaryStore,
     messages_checkpoint::{EndOfEpochData, VerifiedCheckpoint},
     signature::VerifyParams,
@@ -385,13 +385,13 @@ impl<R, S: store::SimulatorStore> Simulacrum<R, S> {
     /// ```
     /// use simulacrum::Simulacrum;
     /// use sui_types::base_types::SuiAddress;
-    /// use sui_types::gas_coin::MIST_PER_SUI;
+    /// use sui_types::gas_coin::MIST_PER_OCT;
     ///
     /// # fn main() {
     /// let mut simulacrum = Simulacrum::new();
-    /// let (account, kp, gas) = simulacrum.funded_account(MIST_PER_SUI).unwrap();
+    /// let (account, kp, gas) = simulacrum.funded_account(MIST_PER_OCT).unwrap();
     ///
-    /// // `account` is a fresh SuiAddress that owns a Coin<SUI> object with single SUI in it,
+    /// // `account` is a fresh SuiAddress that owns a Coin<OCT> object with single SUI in it,
     /// // referred to by `gas`.
     /// // ...
     /// # }
@@ -420,14 +420,14 @@ impl<R, S: store::SimulatorStore> Simulacrum<R, S> {
     /// ```
     /// use simulacrum::Simulacrum;
     /// use sui_types::base_types::SuiAddress;
-    /// use sui_types::gas_coin::MIST_PER_SUI;
+    /// use sui_types::gas_coin::MIST_PER_OCT;
     ///
     /// # fn main() {
     /// let mut simulacrum = Simulacrum::new();
     /// let address = SuiAddress::generate(simulacrum.rng());
-    /// simulacrum.request_gas(address, MIST_PER_SUI).unwrap();
+    /// simulacrum.request_gas(address, MIST_PER_OCT).unwrap();
     ///
-    /// // `account` now has a Coin<SUI> object with single SUI in it.
+    /// // `account` now has a Coin<OCT> object with single SUI in it.
     /// // ...
     /// # }
     /// ```
@@ -439,7 +439,7 @@ impl<R, S: store::SimulatorStore> Simulacrum<R, S> {
             .store()
             .owned_objects(*sender)
             .find(|object| {
-                object.is_gas_coin() && object.get_coin_value_unsafe() > amount + MIST_PER_SUI
+                object.is_gas_coin() && object.get_coin_value_unsafe() > amount + MIST_PER_OCT
             })
             .ok_or_else(|| {
                 anyhow!("unable to find a coin with enough to satisfy request for {amount} Mist")
@@ -449,13 +449,13 @@ impl<R, S: store::SimulatorStore> Simulacrum<R, S> {
             payment: vec![object.compute_object_reference()],
             owner: *sender,
             price: self.reference_gas_price(),
-            budget: MIST_PER_SUI,
+            budget: MIST_PER_OCT,
         };
 
         let pt = {
             let mut builder =
                 sui_types::programmable_transaction_builder::ProgrammableTransactionBuilder::new();
-            builder.transfer_sui(address, Some(amount));
+            builder.transfer_oct(address, Some(amount));
             builder.finish()
         };
 
@@ -684,7 +684,7 @@ impl Simulacrum {
 
         let pt = {
             let mut builder = ProgrammableTransactionBuilder::new();
-            builder.transfer_sui(recipient, Some(transfer_amount));
+            builder.transfer_oct(recipient, Some(transfer_amount));
             builder.finish()
         };
 

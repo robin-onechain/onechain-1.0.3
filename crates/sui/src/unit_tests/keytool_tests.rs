@@ -525,7 +525,7 @@ async fn test_sign_command() -> Result<(), anyhow::Error> {
         ObjectDigest::random(),
     );
     let gas_price = 1;
-    let tx_data = TransactionData::new_pay_sui(
+    let tx_data = TransactionData::new_pay_oct(
         *sender,
         vec![gas],
         vec![SuiAddress::random_for_testing_only()],

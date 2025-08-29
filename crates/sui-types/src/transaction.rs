@@ -1890,7 +1890,7 @@ impl TransactionData {
         Self::new_programmable(sender, vec![gas_payment], pt, gas_budget, gas_price)
     }
 
-    pub fn new_transfer_sui(
+    pub fn new_transfer_oct(
         recipient: SuiAddress,
         sender: SuiAddress,
         amount: Option<u64>,
@@ -1898,7 +1898,7 @@ impl TransactionData {
         gas_budget: u64,
         gas_price: u64,
     ) -> Self {
-        Self::new_transfer_sui_allow_sponsor(
+        Self::new_transfer_oct_allow_sponsor(
             recipient,
             sender,
             amount,
@@ -1909,7 +1909,7 @@ impl TransactionData {
         )
     }
 
-    pub fn new_transfer_sui_allow_sponsor(
+    pub fn new_transfer_oct_allow_sponsor(
         recipient: SuiAddress,
         sender: SuiAddress,
         amount: Option<u64>,
@@ -1920,7 +1920,7 @@ impl TransactionData {
     ) -> Self {
         let pt = {
             let mut builder = ProgrammableTransactionBuilder::new();
-            builder.transfer_sui(recipient, amount);
+            builder.transfer_oct(recipient, amount);
             builder.finish()
         };
         Self::new_programmable_allow_sponsor(
@@ -1956,7 +1956,7 @@ impl TransactionData {
         ))
     }
 
-    pub fn new_pay_sui(
+    pub fn new_pay_oct(
         sender: SuiAddress,
         mut coins: Vec<ObjectRef>,
         recipients: Vec<SuiAddress>,
@@ -1968,7 +1968,7 @@ impl TransactionData {
         coins.insert(0, gas_payment);
         let pt = {
             let mut builder = ProgrammableTransactionBuilder::new();
-            builder.pay_sui(recipients, amounts)?;
+            builder.pay_oct(recipients, amounts)?;
             builder.finish()
         };
         Ok(Self::new_programmable(
@@ -1976,7 +1976,7 @@ impl TransactionData {
         ))
     }
 
-    pub fn new_pay_all_sui(
+    pub fn new_pay_all_oct(
         sender: SuiAddress,
         mut coins: Vec<ObjectRef>,
         recipient: SuiAddress,
@@ -1987,7 +1987,7 @@ impl TransactionData {
         coins.insert(0, gas_payment);
         let pt = {
             let mut builder = ProgrammableTransactionBuilder::new();
-            builder.pay_all_sui(recipient);
+            builder.pay_all_oct(recipient);
             builder.finish()
         };
         Self::new_programmable(sender, coins, pt, gas_budget, gas_price)

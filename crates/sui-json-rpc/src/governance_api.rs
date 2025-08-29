@@ -23,7 +23,7 @@ use sui_types::base_types::{ObjectID, SuiAddress};
 use sui_types::committee::EpochId;
 use sui_types::dynamic_field::get_dynamic_field_from_store;
 use sui_types::error::{SuiError, UserInputError};
-use sui_types::governance::StakedSui;
+use sui_types::governance::StakedOct;
 use sui_types::id::ID;
 use sui_types::object::ObjectRead;
 use sui_types::sui_serde::BigInt;
@@ -47,10 +47,10 @@ impl GovernanceReadApi {
         Self { state, metrics }
     }
 
-    async fn get_staked_sui(&self, owner: SuiAddress) -> Result<Vec<StakedSui>, Error> {
+    async fn get_staked_oct(&self, owner: SuiAddress) -> Result<Vec<StakedOct>, Error> {
         let state = self.state.clone();
         let result =
-            spawn_monitored_task!(async move { state.get_staked_sui(owner).await }).await??;
+            spawn_monitored_task!(async move { state.get_staked_oct(owner).await }).await??;
 
         self.metrics
             .get_stake_sui_result_size
@@ -63,11 +63,11 @@ impl GovernanceReadApi {
 
     async fn get_stakes_by_ids(
         &self,
-        staked_sui_ids: Vec<ObjectID>,
+        staked_oct_ids: Vec<ObjectID>,
     ) -> Result<Vec<DelegatedStake>, Error> {
         let state = self.state.clone();
         let stakes_read = spawn_monitored_task!(async move {
-            staked_sui_ids
+            staked_oct_ids
                 .iter()
                 .map(|id| state.get_object_read(id))
                 .collect::<Result<Vec<_>, _>>()
@@ -78,17 +78,17 @@ impl GovernanceReadApi {
             return Ok(vec![]);
         }
 
-        let mut stakes: Vec<(StakedSui, bool)> = vec![];
+        let mut stakes: Vec<(StakedOct, bool)> = vec![];
         for stake in stakes_read.into_iter() {
             match stake {
-                ObjectRead::Exists(_, o, _) => stakes.push((StakedSui::try_from(&o)?, true)),
+                ObjectRead::Exists(_, o, _) => stakes.push((StakedOct::try_from(&o)?, true)),
                 ObjectRead::Deleted(oref) => {
                     match self
                         .state
                         .find_object_lt_or_eq_version(&oref.0, &oref.1.one_before().unwrap())
                         .await?
                     {
-                        Some(o) => stakes.push((StakedSui::try_from(&o)?, false)),
+                        Some(o) => stakes.push((StakedOct::try_from(&o)?, false)),
                         None => Err(SuiRpcInputError::UserInputError(
                             UserInputError::ObjectNotFound {
                                 object_id: oref.0,
@@ -111,7 +111,7 @@ impl GovernanceReadApi {
 
     async fn get_stakes(&self, owner: SuiAddress) -> Result<Vec<DelegatedStake>, Error> {
         let timer = self.metrics.get_stake_sui_latency.start_timer();
-        let stakes = self.get_staked_sui(owner).await?;
+        let stakes = self.get_staked_oct(owner).await?;
         if stakes.is_empty() {
             return Ok(vec![]);
         }
@@ -128,7 +128,7 @@ impl GovernanceReadApi {
 
     async fn get_delegated_stakes(
         &self,
-        stakes: Vec<(StakedSui, bool)>,
+        stakes: Vec<(StakedOct, bool)>,
     ) -> Result<Vec<DelegatedStake>, Error> {
         let pools = stakes.into_iter().fold(
             BTreeMap::<_, Vec<_>>::new(),
@@ -190,7 +190,7 @@ impl GovernanceReadApi {
                     StakeStatus::Pending
                 };
                 delegations.push(Stake {
-                    staked_sui_id: stake.id(),
+                    staked_oct_id: stake.id(),
                     // TODO: this might change when we implement warm up period.
                     stake_request_epoch: stake.activation_epoch() - 1,
                     stake_active_epoch: stake.activation_epoch(),
@@ -217,9 +217,9 @@ impl GovernanceReadApiServer for GovernanceReadApi {
     #[instrument(skip(self))]
     async fn get_stakes_by_ids(
         &self,
-        staked_sui_ids: Vec<ObjectID>,
+        staked_oct_ids: Vec<ObjectID>,
     ) -> RpcResult<Vec<DelegatedStake>> {
-        with_tracing!(async move { self.get_stakes_by_ids(staked_sui_ids).await })
+        with_tracing!(async move { self.get_stakes_by_ids(staked_oct_ids).await })
     }
 
     #[instrument(skip(self))]

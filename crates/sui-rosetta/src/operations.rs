@@ -100,7 +100,7 @@ impl Operations {
             .type_()
             .ok_or_else(|| Error::MissingInput("Operation type".into()))?;
         match type_ {
-            OperationType::PaySui => self.pay_sui_ops_to_internal(),
+            OperationType::PayOct => self.pay_sui_ops_to_internal(),
             OperationType::PayCoin => self.pay_coin_ops_to_internal(),
             OperationType::Stake => self.stake_ops_to_internal(),
             OperationType::WithdrawStake => self.withdraw_stake_ops_to_internal(),
@@ -129,7 +129,7 @@ impl Operations {
             }
         }
         let sender = sender.ok_or_else(|| Error::MissingInput("Sender address".to_string()))?;
-        Ok(InternalOperation::PaySui {
+        Ok(InternalOperation::PayOct {
             sender,
             recipients,
             amounts,
@@ -474,7 +474,7 @@ impl Operations {
                                 amount.into(),
                                 currency.clone(),
                             ),
-                            None => Operation::pay_sui(status, recipient, amount.into()),
+                            None => Operation::pay_oct(status, recipient, amount.into()),
                         }
                     }),
             );
@@ -485,7 +485,7 @@ impl Operations {
                     -(total_paid as i128),
                     currency.clone(),
                 )),
-                _ => operations.push(Operation::pay_sui(status, sender, -(total_paid as i128))),
+                _ => operations.push(Operation::pay_oct(status, sender, -(total_paid as i128))),
             }
         } else if !stake_ids.is_empty() {
             let stake_ids = stake_ids.into_iter().flatten().collect::<Vec<_>>();
@@ -676,7 +676,7 @@ impl Operations {
             .chain(staking_balance)
             .collect();
 
-        // This is a workaround for the payCoin cases that are mistakenly considered to be paySui operations
+        // This is a workaround for the payCoin cases that are mistakenly considered to be payOct operations
         // In this case we remove any irrelevant, SUI specific operation entries that sum up to 0 balance changes per address
         // and keep only the actual entries for the right coin type transfers, as they have been extracted from the transaction's
         // balance changes section.
@@ -818,10 +818,10 @@ impl Operation {
         }
     }
 
-    fn pay_sui(status: Option<OperationStatus>, address: SuiAddress, amount: i128) -> Self {
+    fn pay_oct(status: Option<OperationStatus>, address: SuiAddress, amount: i128) -> Self {
         Operation {
             operation_identifier: Default::default(),
-            type_: OperationType::PaySui,
+            type_: OperationType::PayOct,
             status,
             account: Some(address.into()),
             amount: Some(Amount::new(amount, None)),

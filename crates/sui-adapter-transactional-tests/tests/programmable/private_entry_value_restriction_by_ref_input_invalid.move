@@ -8,8 +8,8 @@
 
 //# publish
 module test::m1 {
-    use sui::coin::Coin;
-    use sui::sui::SUI;
+    use one::coin::Coin;
+    use one::oct::OCT;
 
     public struct R has key, store { id: UID }
     public fun r(ctx: &mut TxContext): R { R { id: object::new(ctx) } }
@@ -20,7 +20,7 @@ module test::m1 {
     public fun dirty(_: &mut R) {}
 
     entry fun priv(_: R) { abort 0 }
-    entry fun coin(_: &mut Coin<SUI>) {}
+    entry fun coin(_: &mut Coin<OCT>) {}
 }
 
 //# programmable --sender A --inputs @A

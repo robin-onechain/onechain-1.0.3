@@ -18,7 +18,7 @@ use tokio_cron_scheduler::{Job, JobScheduler};
 use tracing::{error, info};
 use uuid::Uuid;
 
-const MIST_PER_SUI: i128 = 1_000_000_000;
+const MIST_PER_OCT: i128 = 1_000_000_000;
 
 // MonitoringEntry is an enum that represents the types of monitoring entries that can be scheduled.
 #[derive(Serialize, Deserialize)]
@@ -214,8 +214,8 @@ impl SchedulerService {
         let incident_body = Body {
             details: format!(
                 "Current balance: {}, Lower bound: {}, for job: {}",
-                current_balance / MIST_PER_SUI,
-                lower_bound / MIST_PER_SUI,
+                current_balance / MIST_PER_OCT,
+                lower_bound / MIST_PER_OCT,
                 name
             ),
             ..Default::default()

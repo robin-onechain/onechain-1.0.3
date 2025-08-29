@@ -1119,7 +1119,7 @@ mod tests {
     fn test_struct_positional_literals() {
         assert_snapshot!(strands(
             "{ 0x1::string::String(42u64, 'foo', vector[1u256, 2u256, 3u256]) \
-             | 0x2::coin::Coin<0x2::sui::SUI> (true, 100u32,) }"
+             | 0x2::coin::Coin<0x2::oct::OCT> (true, 100u32,) }"
         ));
     }
 
@@ -1127,7 +1127,7 @@ mod tests {
     fn test_struct_named_literals() {
         assert_snapshot!(strands(
             "{ 0x1::string::String { length: 42u64, value: 'foo', data: vector[1u128, 2u128, 3u128], } \
-             | 0x2::coin::Coin<0x2::sui::SUI> { is_locked: true, amount: 100u32 } }"
+             | 0x2::coin::Coin<0x2::oct::OCT> { is_locked: true, amount: 100u32 } }"
         ));
     }
 
@@ -1151,7 +1151,7 @@ mod tests {
 
     #[test]
     fn test_struct_literal_whitespace() {
-        assert_snapshot!(strands(r#"{0x1 :: coin :: Coin<0x2::sui::SUI>()}"#));
+        assert_snapshot!(strands(r#"{0x1 :: coin :: Coin<0x2::oct::OCT>()}"#));
     }
 
     #[test]
@@ -1163,8 +1163,8 @@ mod tests {
     fn test_nested_datatype() {
         assert_snapshot!(strands(
             r#"{
-                0x1::option::Option<0x2::coin::Coin<0x2::sui::SUI>>::Some#1(
-                    0x2::coin::Coin<0x2::sui::SUI> {
+                0x1::option::Option<0x2::coin::Coin<0x2::oct::OCT>>::Some#1(
+                    0x2::coin::Coin<0x2::oct::OCT> {
                         balance: 100u64
                     }
                 )
@@ -1191,7 +1191,7 @@ mod tests {
         assert_snapshot!(strands(
             "{ vector<vector<u8>> \
              | vector<0x1::string::String> \
-             | vector<0x2::coin::Coin< 0x2::sui::SUI >> \
+             | vector<0x2::coin::Coin< 0x2::oct::OCT >> \
              | vector<3::validator::Validator> }"
         ));
     }

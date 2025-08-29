@@ -134,7 +134,7 @@ The `RentalPolicy` struct is a shared object that every creator mints. The struc
 ```move
 public struct RentalPolicy<phantom T> has key, store {
   id: UID,
-  balance: Balance<SUI>,
+  balance: Balance<OCT>,
   /// Note: Move does not support float numbers.
   ///
   /// If you need to represent a float, you need to determine the desired
@@ -302,7 +302,7 @@ public fun rent<T: key + store>(
   borrower_kiosk: &mut Kiosk,
   rental_policy: &mut RentalPolicy<T>,
   item_id: ID,
-  mut coin: Coin<SUI>,
+  mut coin: Coin<OCT>,
   clock: &Clock,
   ctx: &mut TxContext,
 ) {

@@ -5,7 +5,7 @@
 
 module prettier::use_declaration;
 
-use beep::staked_sui::StakedSui;
+use beep::staked_oct::StakedOct;
 use sui::coin::{
     Self as c,
     Coin,

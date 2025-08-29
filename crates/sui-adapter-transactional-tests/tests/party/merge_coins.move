@@ -22,7 +22,7 @@ fun init(witness: M, ctx: &mut TxContext) {
 //> 1: sui::coin::mint<ex::m::M>(Input(0), Input(1));
 //> 2: TransferObjects([Result(0)], Input(2));
 //> 3: sui::party::single_owner(Input(2));
-//> sui::transfer::public_party_transfer<sui::coin::Coin<ex::m::M>>(Result(1), Result(3))
+//> sui::transfer::public_party_transfer<one::coin::Coin<ex::m::M>>(Result(1), Result(3))
 
 //# programmable --sender A --inputs object(2,0) object(2,1) @A
 //> MergeCoins(Input(1), [Input(0)])
@@ -35,7 +35,7 @@ fun init(witness: M, ctx: &mut TxContext) {
 //> 1: sui::coin::mint<ex::m::M>(Input(0), Input(1));
 //> 2: TransferObjects([Result(0)], Input(2));
 //> 3: sui::party::single_owner(Input(2));
-//> sui::transfer::public_party_transfer<sui::coin::Coin<ex::m::M>>(Result(1), Result(3))
+//> sui::transfer::public_party_transfer<one::coin::Coin<ex::m::M>>(Result(1), Result(3))
 
 //# programmable --sender A --inputs object(5,0) object(5,1) @A
 //> MergeCoins(Input(0), [Input(1)])
