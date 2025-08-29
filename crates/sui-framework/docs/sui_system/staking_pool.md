@@ -159,7 +159,7 @@ A staking pool embedded in each validator struct in the system state object.
  Pending stake amount for this epoch, emptied at epoch boundaries.
 </dd>
 <dt>
-<code>pending_total_oct_withdraw: u64</code>
+<code>pending_total_sui_withdraw: u64</code>
 </dt>
 <dd>
  Pending stake withdrawn during the current epoch, emptied at epoch boundaries.
@@ -591,7 +591,7 @@ Create a new, empty staking pool.
         pool_token_balance: 0,
         <a href="../sui_system/staking_pool.md#sui_system_staking_pool_exchange_rates">exchange_rates</a>: table::new(ctx),
         pending_stake: 0,
-        pending_total_oct_withdraw: 0,
+        pending_total_sui_withdraw: 0,
         pending_pool_token_withdraw: 0,
         extra_fields: bag::new(ctx),
     }
@@ -682,7 +682,7 @@ A proportional amount of pool token withdraw is recorded and processed at epoch 
         ctx.epoch(),
     );
     <b>let</b> total_sui_withdraw_amount = principal_withdraw_amount + rewards_withdraw.value();
-    pool.pending_total_oct_withdraw = pool.pending_total_oct_withdraw + total_sui_withdraw_amount;
+    pool.pending_total_sui_withdraw = pool.pending_total_sui_withdraw + total_sui_withdraw_amount;
     pool.pending_pool_token_withdraw =
         pool.pending_pool_token_withdraw + pool_token_withdraw_amount;
     // If the pool is inactive or preactive, we immediately process the withdrawal.
@@ -734,7 +734,7 @@ A proportional amount of pool token withdraw is recorded and processed at epoch 
     fungible_staked_oct_data.total_supply = fungible_staked_oct_data.total_supply - value;
     <b>let</b> <b>mut</b> sui_out = fungible_staked_oct_data.principal.<a href="../sui_system/staking_pool.md#sui_system_staking_pool_split">split</a>(principal_amount);
     sui_out.join(pool.rewards_pool.<a href="../sui_system/staking_pool.md#sui_system_staking_pool_split">split</a>(rewards_amount));
-    pool.pending_total_oct_withdraw = pool.pending_total_oct_withdraw + sui_out.value();
+    pool.pending_total_sui_withdraw = pool.pending_total_sui_withdraw + sui_out.value();
     pool.pending_pool_token_withdraw = pool.pending_pool_token_withdraw + value;
     sui_out
 }
@@ -1003,9 +1003,9 @@ Also called immediately upon withdrawal if the pool is inactive.
 
 
 <pre><code><b>fun</b> <a href="../sui_system/staking_pool.md#sui_system_staking_pool_process_pending_stake_withdraw">process_pending_stake_withdraw</a>(pool: &<b>mut</b> <a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakingPool">StakingPool</a>) {
-    pool.<a href="../sui_system/staking_pool.md#sui_system_staking_pool_sui_balance">sui_balance</a> = pool.<a href="../sui_system/staking_pool.md#sui_system_staking_pool_sui_balance">sui_balance</a> - pool.pending_total_oct_withdraw;
+    pool.<a href="../sui_system/staking_pool.md#sui_system_staking_pool_sui_balance">sui_balance</a> = pool.<a href="../sui_system/staking_pool.md#sui_system_staking_pool_sui_balance">sui_balance</a> - pool.pending_total_sui_withdraw;
     pool.pool_token_balance = pool.pool_token_balance - pool.pending_pool_token_withdraw;
-    pool.pending_total_oct_withdraw = 0;
+    pool.pending_total_sui_withdraw = 0;
     pool.pending_pool_token_withdraw = 0;
 }
 </code></pre>
@@ -1632,7 +1632,7 @@ Returns the total withdrawal from the staking pool this epoch.
 
 
 <pre><code><b>public</b> <b>fun</b> <a href="../sui_system/staking_pool.md#sui_system_staking_pool_pending_stake_withdraw_amount">pending_stake_withdraw_amount</a>(<a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>: &<a href="../sui_system/staking_pool.md#sui_system_staking_pool_StakingPool">StakingPool</a>): u64 {
-    <a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.pending_total_oct_withdraw
+    <a href="../sui_system/staking_pool.md#sui_system_staking_pool">staking_pool</a>.pending_total_sui_withdraw
 }
 </code></pre>
 

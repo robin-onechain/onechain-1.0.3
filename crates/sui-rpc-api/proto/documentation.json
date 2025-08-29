@@ -7233,7 +7233,7 @@
               "defaultValue": ""
             },
             {
-              "name": "pending_total_oct_withdraw",
+              "name": "pending_total_sui_withdraw",
               "description": "Pending stake withdrawn during the current epoch, emptied at epoch boundaries.\nThis includes both the principal and rewards SUI withdrawn.",
               "label": "optional",
               "type": "uint64",
@@ -7241,7 +7241,7 @@
               "fullType": "uint64",
               "ismap": false,
               "isoneof": true,
-              "oneofdecl": "_pending_total_sui_withdraw",
+              "oneofdecl": "_pending_total_oct_withdraw",
               "defaultValue": ""
             },
             {

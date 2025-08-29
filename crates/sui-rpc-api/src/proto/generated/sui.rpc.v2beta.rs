@@ -3067,7 +3067,7 @@ pub struct StakingPool {
     /// Pending stake withdrawn during the current epoch, emptied at epoch boundaries.
     /// This includes both the principal and rewards SUI withdrawn.
     #[prost(uint64, optional, tag = "9")]
-    pub pending_total_oct_withdraw: ::core::option::Option<u64>,
+    pub pending_total_sui_withdraw: ::core::option::Option<u64>,
     /// Pending pool token withdrawn during the current epoch, emptied at epoch boundaries.
     #[prost(uint64, optional, tag = "10")]
     pub pending_pool_token_withdraw: ::core::option::Option<u64>,

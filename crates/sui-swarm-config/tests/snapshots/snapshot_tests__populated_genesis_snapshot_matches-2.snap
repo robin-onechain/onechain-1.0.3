@@ -257,7 +257,7 @@ validators:
           id: "0x9504fc1bfd9d4e2fbf86806590d97a105d89e9205a22320b8d1efb4515426c7f"
           size: 1
         pending_stake: 0
-        pending_total_oct_withdraw: 0
+        pending_total_sui_withdraw: 0
         pending_pool_token_withdraw: 0
         extra_fields:
           id:

@@ -63,7 +63,7 @@ impl AuthorityStoreMetrics {
         Self {
             sui_conservation_check_latency: register_int_gauge_with_registry!(
                 "sui_conservation_check_latency",
-                "Number of seconds took to scan all live objects in the store for SUI conservation check",
+                "Number of seconds took to scan all live objects in the store for OCT conservation check",
                 registry,
             ).unwrap(),
             sui_conservation_live_object_count: register_int_gauge_with_registry!(
@@ -78,7 +78,7 @@ impl AuthorityStoreMetrics {
             ).unwrap(),
             sui_conservation_imbalance: register_int_gauge_with_registry!(
                 "sui_conservation_imbalance",
-                "Total amount of SUI in the network - 10B * 10^9. This delta shows the amount of imbalance",
+                "Total amount of OCT in the network - 10B * 10^9. This delta shows the amount of imbalance",
                 registry,
             ).unwrap(),
             sui_conservation_storage_fund: register_int_gauge_with_registry!(
@@ -116,7 +116,7 @@ pub struct AuthorityStore {
     pub(crate) root_state_notify_read:
         NotifyRead<EpochId, (CheckpointSequenceNumber, GlobalStateHash)>,
 
-    /// Whether to enable expensive SUI conservation check at epoch boundaries.
+    /// Whether to enable expensive OCT conservation check at epoch boundaries.
     enable_epoch_sui_conservation_check: bool,
 
     metrics: AuthorityStoreMetrics,
@@ -1353,7 +1353,7 @@ impl AuthorityStore {
         }
 
         let executor = old_epoch_store.executor();
-        info!("Starting SUI conservation check. This may take a while..");
+        info!("Starting OCT conservation check. This may take a while..");
         let cur_time = Instant::now();
         let mut pending_objects = vec![];
         let mut count = 0;
@@ -1423,11 +1423,11 @@ impl AuthorityStore {
         // It is safe to call this function because we are in the middle of reconfiguration.
         let system_state = self
             .get_sui_system_state_object_unsafe()
-            .expect("Reading sui system state object cannot fail")
+            .expect("Reading one system state object cannot fail")
             .into_sui_system_state_summary();
         let storage_fund_balance = system_state.storage_fund_total_object_storage_rebates;
         info!(
-            "Total SUI amount in the network: {}, storage fund balance: {}, total storage rebate: {} at beginning of epoch {}",
+            "Total OCT amount in the network: {}, storage fund balance: {}, total storage rebate: {} at beginning of epoch {}",
             total_oct, storage_fund_balance, total_storage_rebate, system_state.epoch
         );
 
@@ -1474,7 +1474,7 @@ impl AuthorityStore {
                 total_oct == expected_oct,
                 SuiError::from(
                     format!(
-                        "Inconsistent state detected at epoch {}: total sui: {}, expecting {}",
+                        "Inconsistent state detected at epoch {}: total one: {}, expecting {}",
                         system_state.epoch, total_oct, expected_oct
                     )
                     .as_str()
